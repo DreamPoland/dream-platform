@@ -1,0 +1,35 @@
+dependencies {
+    implementation project(":core")
+
+    // -- spigot api --
+    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+
+    // -- configs--
+    implementation "eu.okaeri:okaeri-configs-yaml-bukkit:4.0.6"
+    implementation "eu.okaeri:okaeri-configs-serdes-bukkit:4.0.6"
+    implementation "eu.okaeri:okaeri-configs-serdes-commons:4.0.6"
+
+    // -- json configure --
+    implementation 'eu.okaeri:okaeri-configs-json-simple:4.0.6'
+
+    // -- persistence data --
+    implementation 'eu.okaeri:okaeri-persistence-flat:2.0.0-beta.1'
+    implementation 'eu.okaeri:okaeri-persistence-jdbc:2.0.0-beta.1'
+    implementation 'eu.okaeri:okaeri-persistence-redis:2.0.0-beta.1'
+    implementation 'eu.okaeri:okaeri-persistence-mongo:2.0.0-beta.1'
+
+    // -- injector --
+    implementation 'eu.okaeri:okaeri-injector:2.1.0'
+
+    // -- dream-utilities --
+    implementation "cc.dreamcode:utilities:1.0.1"
+
+    // -- dream-command --
+    implementation "cc.dreamcode.command:core:1.0.4"
+    implementation "cc.dreamcode.command:bukkit:1.0.4"
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
