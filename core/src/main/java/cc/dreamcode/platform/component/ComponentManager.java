@@ -1,12 +1,14 @@
 package cc.dreamcode.platform.component;
 
 import cc.dreamcode.platform.component.resolver.ObjectComponentClassResolver;
-import cc.dreamcode.utilities.builders.ListBuilder;
 import eu.okaeri.injector.Injector;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @SuppressWarnings("rawtypes")
@@ -14,9 +16,7 @@ import java.util.function.Consumer;
 public final class ComponentManager {
 
     private final Injector injector;
-    private final List<Class<? extends ComponentClassResolver>> classResolvers = new ListBuilder<Class<? extends ComponentClassResolver>>()
-            .add(ObjectComponentClassResolver.class)
-            .build();
+    private final List<Class<? extends ComponentClassResolver>> classResolvers = new ArrayList<>();
 
     /**
      * This method implement new class resolver, before component will be registered.
@@ -35,26 +35,25 @@ public final class ComponentManager {
      * @param consumer       apply changes after register.
      */
     @SuppressWarnings("ALL")
+    @SneakyThrows
     public <T> void registerComponent(@NonNull Class<T> componentClass, Consumer<T> consumer) {
+        final ComponentClassResolver defaultObjectResolver = ObjectComponentClassResolver.class.getConstructor().newInstance();
+        final AtomicReference<ComponentClassResolver> reference = new AtomicReference<>(defaultObjectResolver);
+
         for (Class<? extends ComponentClassResolver> componentResolvers : this.classResolvers) {
-            try {
-                final ComponentClassResolver componentClassResolver = componentResolvers.newInstance();
-                if (componentClassResolver.isAssignableFrom(componentClass)) {
-                    this.injector.injectFields(componentClassResolver);
-                    if (consumer != null) {
-                        consumer.accept((T) componentClassResolver.process(this.injector, componentClass));
-                    }
-                    else {
-                        componentClassResolver.process(this.injector, componentClass);
-                    }
-                    return;
-                }
-            }
-            catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+            final ComponentClassResolver componentClassResolver = componentResolvers.newInstance();
+            if (componentClassResolver.isAssignableFrom(componentClass)) {
+                reference.set(componentClassResolver);
             }
         }
 
+        this.injector.injectFields(reference.get());
+        if (consumer != null) {
+            consumer.accept((T) reference.get().process(this.injector, componentClass));
+        }
+        else {
+            reference.get().process(this.injector, componentClass);
+        }
     }
 
     /**
