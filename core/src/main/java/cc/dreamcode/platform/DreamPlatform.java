@@ -9,7 +9,7 @@ public interface DreamPlatform {
 
     void enable(@NonNull ComponentManager componentManager);
 
-    void disable(@NonNull ComponentManager componentManager);
+    void disable();
 
     DreamLogger getDreamLogger();
 

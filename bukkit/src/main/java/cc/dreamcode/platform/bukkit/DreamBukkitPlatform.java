@@ -24,13 +24,13 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
     @Override
     public void onLoad() {
         this.injector = OkaeriInjector.create();
-        this.registerInjectable(this);
+        this.injector.registerInjectable(this);
 
         this.dreamLogger = new DreamLogger(this.getLogger());
-        this.registerInjectable(this.dreamLogger);
+        this.injector.registerInjectable(this.dreamLogger);
 
         this.componentManager = new ComponentManager(this.injector);
-        this.registerInjectable(this.componentManager);
+        this.injector.registerInjectable(this.componentManager);
 
         try {
             this.load(this.componentManager);
@@ -67,7 +67,7 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
         }
 
         try {
-            this.disable(this.componentManager);
+            this.disable();
         }
         catch (Exception e) {
             throw new BukkitPluginException("An error was caught when plugin are stopping...", e);
