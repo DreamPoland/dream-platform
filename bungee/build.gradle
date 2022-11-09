@@ -1,12 +1,12 @@
 dependencies {
     implementation project(":core")
 
-    // -- spigot api --
-    compileOnly 'org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT'
+    // -- bungee-cord --
+    compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
 
     // -- configs--
-    implementation "eu.okaeri:okaeri-configs-yaml-bukkit:4.0.6"
-    implementation 'eu.okaeri:okaeri-configs-serdes-bukkit:4.0.6'
+    implementation "eu.okaeri:okaeri-configs-yaml-bungee:4.0.6"
+    implementation 'eu.okaeri:okaeri-configs-serdes-bungee:4.0.6'
     implementation "eu.okaeri:okaeri-configs-serdes-commons:4.0.6"
 
     // -- json configure --
@@ -26,7 +26,7 @@ dependencies {
 
     // -- dream-command --
     implementation "cc.dreamcode.command:core:1.1-SNAPSHOT"
-    implementation "cc.dreamcode.command:bukkit:1.1-SNAPSHOT"
+    implementation "cc.dreamcode.command:bungee:1.1-SNAPSHOT"
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'

@@ -1,6 +1,6 @@
 package cc.dreamcode.platform.bukkit.component;
 
-import cc.dreamcode.command.bukkit.BukkitCommandHandler;
+import cc.dreamcode.command.bukkit.BukkitCommand;
 import cc.dreamcode.command.bukkit.BukkitCommandProvider;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.utilities.builders.MapBuilder;
@@ -10,13 +10,13 @@ import lombok.NonNull;
 
 import java.util.Map;
 
-public class CommandComponentClassResolver extends ComponentClassResolver<Class<BukkitCommandHandler>> {
+public class CommandComponentClassResolver extends ComponentClassResolver<Class<BukkitCommand>> {
 
     private @Inject BukkitCommandProvider bukkitCommandProvider;
 
     @Override
-    public boolean isAssignableFrom(@NonNull Class<BukkitCommandHandler> bukkitCommandHandlerClass) {
-        return BukkitCommandHandler.class.isAssignableFrom(bukkitCommandHandlerClass);
+    public boolean isAssignableFrom(@NonNull Class<BukkitCommand> BukkitCommandClass) {
+        return BukkitCommand.class.isAssignableFrom(BukkitCommandClass);
     }
 
     @Override
@@ -25,20 +25,20 @@ public class CommandComponentClassResolver extends ComponentClassResolver<Class<
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<BukkitCommandHandler> bukkitCommandHandlerClass) {
-        final BukkitCommandHandler bukkitCommandHandler = injector.createInstance(bukkitCommandHandlerClass);
+    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<BukkitCommand> bukkitCommandClass) {
+        final BukkitCommand bukkitCommand = injector.createInstance(bukkitCommandClass);
 
         return new MapBuilder<String, Object>()
-                .put("name", bukkitCommandHandler.getName())
-                .put("aliases", bukkitCommandHandler.getAliases())
+                .put("name", bukkitCommand.getName())
+                .put("aliases", bukkitCommand.getAliases())
                 .build();
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<BukkitCommandHandler> bukkitCommandHandlerClass) {
-        final BukkitCommandHandler bukkitCommandHandler = injector.createInstance(bukkitCommandHandlerClass);
+    public Object resolve(@NonNull Injector injector, @NonNull Class<BukkitCommand> bukkitCommandClass) {
+        final BukkitCommand bukkitCommand = injector.createInstance(bukkitCommandClass);
 
-        this.bukkitCommandProvider.addCommand(bukkitCommandHandler);
-        return bukkitCommandHandler;
+        this.bukkitCommandProvider.addCommand(bukkitCommand);
+        return bukkitCommand;
     }
 }

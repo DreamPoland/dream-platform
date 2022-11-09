@@ -2,3 +2,4 @@ rootProject.name = 'dream-platform'
 
 include 'core'
 include 'bukkit'
+include 'bungee'
