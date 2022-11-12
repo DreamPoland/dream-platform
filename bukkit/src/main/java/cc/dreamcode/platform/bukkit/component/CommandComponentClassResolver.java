@@ -3,7 +3,7 @@ package cc.dreamcode.platform.bukkit.component;
 import cc.dreamcode.command.bukkit.BukkitCommand;
 import cc.dreamcode.command.bukkit.BukkitCommandProvider;
 import cc.dreamcode.platform.component.ComponentClassResolver;
-import cc.dreamcode.utilities.builders.MapBuilder;
+import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
