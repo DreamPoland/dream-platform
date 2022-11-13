@@ -22,7 +22,7 @@ dependencies {
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
 
     // -- dream-utilities --
-    implementation "cc.dreamcode:utilities:1.0.3"
+    implementation "cc.dreamcode:utilities:1.0.4"
 
     // -- dream-command --
     implementation "cc.dreamcode.command:core:1.1.1"
