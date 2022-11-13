@@ -3,7 +3,7 @@ package cc.dreamcode.platform.bungee.component;
 import cc.dreamcode.platform.bungee.DreamBungeePlatform;
 import cc.dreamcode.platform.bungee.persistence.StorageConfig;
 import cc.dreamcode.platform.component.ComponentClassResolver;
-import cc.dreamcode.utilities.builders.MapBuilder;
+import cc.dreamcode.utilities.builder.MapBuilder;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.zaxxer.hikari.HikariConfig;
