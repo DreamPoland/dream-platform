@@ -94,6 +94,19 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
     }
 
     @Override
+    public void registerInjectable(@NonNull String name, @NonNull Object object) {
+        this.injector.registerInjectable(name, object);
+
+        this.dreamLogger.info(
+                new DreamLogger.Builder()
+                        .type("Added injectable object")
+                        .name(object.getClass().getSimpleName())
+                        .meta("name", name)
+                        .build()
+        );
+    }
+
+    @Override
     public <T> T createInstance(@NonNull Class<T> type) {
         return this.injector.createInstance(type);
     }

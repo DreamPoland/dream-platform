@@ -13,6 +13,8 @@ public interface DreamPlatform {
 
     DreamLogger getDreamLogger();
 
+    void registerInjectable(@NonNull String name, @NonNull Object object);
+
     void registerInjectable(@NonNull Object object);
 
     <T> T createInstance(@NonNull Class<T> type);
