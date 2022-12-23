@@ -63,7 +63,7 @@ public class DocumentPersistenceComponentClassResolver extends ComponentClassRes
                                 this.dreamBungeePlatform.getDataFolder(),
                                 ".yml"
                         ),
-                        YamlBungeeConfigurer::new,
+                        JsonSimpleConfigurer::new,
                         new SerdesBungee(),
                         new SerdesCommons(),
                         this.dreamBungeePlatform.getPluginSerdesPack()

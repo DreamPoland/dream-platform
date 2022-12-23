@@ -3,12 +3,11 @@ plugins {
     id 'idea'
     id 'checkstyle'
     id 'maven-publish'
-    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 allprojects {
     group 'cc.dreamcode.platform'
-    version '1.0.15'
+    version '1.1'
 
     apply plugin: 'java-library'
     apply plugin: 'checkstyle'
@@ -42,8 +41,6 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'com.github.johnrengelman.shadow'
-
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 

@@ -63,7 +63,7 @@ public class DocumentPersistenceComponentClassResolver extends ComponentClassRes
                                 this.dreamBukkitPlatform.getDataFolder(),
                                 ".yml"
                         ),
-                        YamlBukkitConfigurer::new,
+                        JsonSimpleConfigurer::new,
                         new SerdesBukkit(),
                         new SerdesCommons(),
                         this.dreamBukkitPlatform.getPluginSerdesPack()
