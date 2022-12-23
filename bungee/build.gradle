@@ -5,12 +5,12 @@ dependencies {
     compileOnly 'net.md-5:bungeecord-api:1.19-R0.1-SNAPSHOT'
 
     // -- configs--
-    implementation "eu.okaeri:okaeri-configs-yaml-bungee:4.0.6"
-    implementation 'eu.okaeri:okaeri-configs-serdes-bungee:4.0.6'
-    implementation "eu.okaeri:okaeri-configs-serdes-commons:4.0.6"
+    implementation "eu.okaeri:okaeri-configs-yaml-bungee:4.0.8"
+    implementation 'eu.okaeri:okaeri-configs-serdes-bungee:4.0.8'
+    implementation "eu.okaeri:okaeri-configs-serdes-commons:4.0.8"
 
     // -- json configure --
-    implementation 'eu.okaeri:okaeri-configs-json-simple:4.0.6'
+    implementation 'eu.okaeri:okaeri-configs-json-simple:4.0.8'
 
     // -- persistence data --
     implementation 'eu.okaeri:okaeri-persistence-flat:2.0.0-beta.1'
@@ -25,8 +25,8 @@ dependencies {
     implementation "cc.dreamcode:utilities:1.0.5"
 
     // -- dream-command --
-    implementation "cc.dreamcode.command:core:1.1.1"
-    implementation "cc.dreamcode.command:bungee:1.1.1"
+    implementation "cc.dreamcode.command:core:1.2.1"
+    implementation "cc.dreamcode.command:bungee:1.2.1"
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
