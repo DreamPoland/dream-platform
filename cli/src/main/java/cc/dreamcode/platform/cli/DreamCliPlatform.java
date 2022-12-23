@@ -32,6 +32,9 @@ public abstract class DreamCliPlatform implements DreamPlatform {
 
         DreamVersion dreamVersion = dreamCliPlatform.getDreamVersion();
 
+        dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
+                dreamVersion.getVersion(),
+                dreamVersion.getAuthor()));
         dreamCliPlatform.dreamLogger.info(String.format("Loading %s resources...",
                 dreamVersion.getName()));
 
@@ -41,10 +44,6 @@ public abstract class DreamCliPlatform implements DreamPlatform {
         catch (Exception e) {
             throw new CliPlatformException("An error was caught when platform are starting...", e);
         }
-
-        dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
-                dreamVersion.getVersion(),
-                dreamVersion.getAuthor()));
 
         Thread shutdownHook = new Thread(() -> {
             dreamCliPlatform.dreamLogger.info(String.format("Disabling %s...",
