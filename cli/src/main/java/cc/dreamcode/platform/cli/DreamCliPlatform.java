@@ -21,6 +21,11 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     @Getter private ComponentManager componentManager;
 
     public static void run(@NonNull DreamCliPlatform dreamCliPlatform) {
+        DreamVersion dreamVersion = dreamCliPlatform.getDreamVersion();
+
+        dreamCliPlatform.dreamLogger.info(String.format("Loading %s resources...",
+                dreamVersion.getName()));
+
         dreamCliPlatform.injector = OkaeriInjector.create();
         dreamCliPlatform.injector.registerInjectable(dreamCliPlatform);
 
@@ -37,13 +42,14 @@ public abstract class DreamCliPlatform implements DreamPlatform {
             throw new CliPlatformException("An error was caught when platform are starting...", e);
         }
 
-        DreamVersion dreamVersion = dreamCliPlatform.getDreamVersion();
-
         dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
                 dreamVersion.getVersion(),
                 dreamVersion.getAuthor()));
 
         Thread shutdownHook = new Thread(() -> {
+            dreamCliPlatform.dreamLogger.info(String.format("Disabling %s...",
+                    dreamVersion.getName()));
+
             try {
                 dreamCliPlatform.disable();
             }
