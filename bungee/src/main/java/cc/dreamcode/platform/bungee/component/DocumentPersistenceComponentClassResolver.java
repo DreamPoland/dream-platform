@@ -61,7 +61,7 @@ public class DocumentPersistenceComponentClassResolver extends ComponentClassRes
                 return new DocumentPersistence(
                         new FlatPersistence(
                                 this.dreamBungeePlatform.getDataFolder(),
-                                ".yml"
+                                ".json"
                         ),
                         JsonSimpleConfigurer::new,
                         new SerdesBungee(),
