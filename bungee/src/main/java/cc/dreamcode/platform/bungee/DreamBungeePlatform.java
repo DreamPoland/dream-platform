@@ -26,7 +26,7 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
         this.injector = OkaeriInjector.create();
         this.injector.registerInjectable(this);
 
-        this.dreamLogger = new DreamLogger(this.getLogger());
+        this.dreamLogger = new DreamBungeeLogger(this.getLogger());
         this.injector.registerInjectable(this.dreamLogger);
 
         this.componentManager = new ComponentManager(this.injector);

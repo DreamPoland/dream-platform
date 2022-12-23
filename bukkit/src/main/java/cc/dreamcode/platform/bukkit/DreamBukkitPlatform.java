@@ -26,7 +26,7 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
         this.injector = OkaeriInjector.create();
         this.injector.registerInjectable(this);
 
-        this.dreamLogger = new DreamLogger(this.getLogger());
+        this.dreamLogger = new DreamBukkitLogger(this.getLogger());
         this.injector.registerInjectable(this.dreamLogger);
 
         this.componentManager = new ComponentManager(this.injector);

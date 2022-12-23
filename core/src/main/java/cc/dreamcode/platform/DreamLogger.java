@@ -10,34 +10,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-public class DreamLogger {
+public interface DreamLogger {
 
-    private final Logger logger;
+    void info(String text);
 
-    public void info(String text) {
-        this.logger.info(text);
-    }
+    void debug(String text);
 
-    public void debug(String text) {
-        this.logger.info("[DEBUG] " + text);
-    }
+    void warning(String text);
 
-    public void warning(String text) {
-        this.logger.warning(text);
-    }
+    void error(String text);
 
-    public void error(String text) {
-        this.logger.severe(text);
-    }
-
-    public void error(String text, Throwable throwable) {
-        this.logger.log(Level.SEVERE, text, throwable);
-    }
+    void error(String text, Throwable throwable);
 
 
     // Logging builder from okaeri-platform with features
-    public static class Builder {
+    class Builder {
 
         private String type;
         private String name;
