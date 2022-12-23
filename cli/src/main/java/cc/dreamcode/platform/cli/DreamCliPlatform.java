@@ -21,11 +21,6 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     @Getter private ComponentManager componentManager;
 
     public static void run(@NonNull DreamCliPlatform dreamCliPlatform) {
-        DreamVersion dreamVersion = dreamCliPlatform.getDreamVersion();
-
-        dreamCliPlatform.dreamLogger.info(String.format("Loading %s resources...",
-                dreamVersion.getName()));
-
         dreamCliPlatform.injector = OkaeriInjector.create();
         dreamCliPlatform.injector.registerInjectable(dreamCliPlatform);
 
@@ -34,6 +29,11 @@ public abstract class DreamCliPlatform implements DreamPlatform {
 
         dreamCliPlatform.componentManager = new ComponentManager(dreamCliPlatform.injector);
         dreamCliPlatform.injector.registerInjectable(dreamCliPlatform.componentManager);
+
+        DreamVersion dreamVersion = dreamCliPlatform.getDreamVersion();
+
+        dreamCliPlatform.dreamLogger.info(String.format("Loading %s resources...",
+                dreamVersion.getName()));
 
         try {
             dreamCliPlatform.enable(dreamCliPlatform.componentManager);
