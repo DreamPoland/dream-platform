@@ -1,3 +1,7 @@
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
 dependencies {
     implementation project(":core")
 
@@ -27,9 +31,4 @@ dependencies {
     // -- dream-command --
     implementation "cc.dreamcode.command:core:1.2.1"
     implementation "cc.dreamcode.command:bungee:1.2.1"
-
-    compileOnly 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
-    testCompileOnly 'org.projectlombok:lombok:1.18.24'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }

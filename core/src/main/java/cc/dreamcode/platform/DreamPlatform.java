@@ -13,6 +13,8 @@ public interface DreamPlatform {
 
     DreamLogger getDreamLogger();
 
+    DreamVersion getDreamVersion();
+
     void registerInjectable(@NonNull String name, @NonNull Object object);
 
     void registerInjectable(@NonNull Object object);

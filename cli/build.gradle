@@ -1,0 +1,27 @@
+dependencies {
+    implementation project(":core")
+
+    // -- logging --
+    implementation "ch.qos.logback:logback-core:1.4.5"
+    implementation "ch.qos.logback:logback-classic:1.4.5"
+    implementation "org.slf4j:slf4j-api:2.0.6"
+
+    // -- dream-utilities --
+    implementation "cc.dreamcode:utilities:1.0.5"
+
+    // -- configs--
+    implementation 'eu.okaeri:okaeri-configs-yaml-snakeyaml:4.0.8'
+    implementation 'eu.okaeri:okaeri-configs-serdes-commons:4.0.8'
+
+    // -- json configure --
+    implementation 'eu.okaeri:okaeri-configs-json-simple:4.0.8'
+
+    // -- persistence data --
+    implementation 'eu.okaeri:okaeri-persistence-flat:2.0.0-beta.1'
+    implementation 'eu.okaeri:okaeri-persistence-jdbc:2.0.0-beta.1'
+    implementation 'eu.okaeri:okaeri-persistence-redis:2.0.0-beta.1'
+    implementation 'eu.okaeri:okaeri-persistence-mongo:2.0.0-beta.1'
+
+    // -- injector --
+    implementation 'eu.okaeri:okaeri-injector:2.1.0'
+}
