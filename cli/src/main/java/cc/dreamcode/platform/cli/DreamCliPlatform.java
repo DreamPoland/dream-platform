@@ -20,6 +20,45 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     @Getter private DreamLogger dreamLogger;
     @Getter private ComponentManager componentManager;
 
+    public static void run(@NonNull DreamCliPlatform dreamCliPlatform) {
+        dreamCliPlatform.injector = OkaeriInjector.create();
+        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform);
+
+        dreamCliPlatform.dreamLogger = new DreamCliLogger(LoggerFactory.getLogger(dreamCliPlatform.getClass()));
+        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform.dreamLogger);
+
+        dreamCliPlatform.componentManager = new ComponentManager(dreamCliPlatform.injector);
+        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform.componentManager);
+
+        try {
+            dreamCliPlatform.enable(dreamCliPlatform.componentManager);
+        }
+        catch (Exception e) {
+            throw new CliPlatformException("An error was caught when platform are starting...", e);
+        }
+
+        DreamVersion dreamVersion = dreamCliPlatform.getDreamVersion();
+
+        dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
+                dreamVersion.getVersion(),
+                dreamVersion.getAuthor()));
+
+        Thread shutdownHook = new Thread(() -> {
+            try {
+                dreamCliPlatform.disable();
+            }
+            catch (Exception e) {
+                throw new CliPlatformException("An error was caught when plugin are stopping...", e);
+            }
+
+            dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
+                    dreamVersion.getVersion(),
+                    dreamVersion.getAuthor()));
+        });
+
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
+    }
+
     public abstract OkaeriSerdesPack getPluginSerdesPack();
 
     @Override
@@ -60,44 +99,5 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     @Override
     public <T> Optional<T> getInject(@NonNull Class<T> value) {
         return this.getInject("", value);
-    }
-
-    public static void run(@NonNull DreamCliPlatform dreamCliPlatform) {
-        dreamCliPlatform.injector = OkaeriInjector.create();
-        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform);
-
-        dreamCliPlatform.dreamLogger = new DreamCliLogger(LoggerFactory.getLogger(dreamCliPlatform.getClass()));
-        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform.dreamLogger);
-
-        dreamCliPlatform.componentManager = new ComponentManager(dreamCliPlatform.injector);
-        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform.componentManager);
-
-        try {
-            dreamCliPlatform.enable(dreamCliPlatform.componentManager);
-        }
-        catch (Exception e) {
-            throw new CliPlatformException("An error was caught when platform are starting...", e);
-        }
-
-        DreamVersion dreamVersion = dreamCliPlatform.getDreamVersion();
-
-        dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
-                dreamVersion.getVersion(),
-                dreamVersion.getAuthor()));
-
-        Thread shutdownHook = new Thread(() -> {
-            try {
-                dreamCliPlatform.disable();
-            }
-            catch (Exception e) {
-                throw new CliPlatformException("An error was caught when plugin are stopping...", e);
-            }
-
-            dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
-                    dreamVersion.getVersion(),
-                    dreamVersion.getAuthor()));
-        });
-
-        Runtime.getRuntime().addShutdownHook(shutdownHook);
     }
 }
