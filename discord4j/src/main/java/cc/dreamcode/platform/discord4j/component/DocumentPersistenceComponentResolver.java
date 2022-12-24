@@ -3,6 +3,7 @@ package cc.dreamcode.platform.discord4j.component;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.discord4j.DreamDiscord4JPlatform;
 import cc.dreamcode.platform.discord4j.persistence.StorageConfig;
+import cc.dreamcode.platform.discord4j.serdes.SerdesDiscord4J;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -63,6 +64,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                                 ".json"
                         ),
                         JsonSimpleConfigurer::new,
+                        new SerdesDiscord4J(),
                         new SerdesCommons(),
                         this.dreamDiscord4jPlatform.getPluginSerdesPack()
                 );
@@ -76,6 +78,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                                 mariadbHikari
                         ),
                         JsonSimpleConfigurer::new,
+                        new SerdesDiscord4J(),
                         new SerdesCommons(),
                         this.dreamDiscord4jPlatform.getPluginSerdesPack()
                 );
@@ -89,6 +92,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                                 jdbcHikari
                         ),
                         JsonSimpleConfigurer::new,
+                        new SerdesDiscord4J(),
                         new SerdesCommons(),
                         this.dreamDiscord4jPlatform.getPluginSerdesPack()
                 );
@@ -102,6 +106,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                                 redisClient
                         ),
                         JsonSimpleConfigurer::new,
+                        new SerdesDiscord4J(),
                         new SerdesCommons(),
                         this.dreamDiscord4jPlatform.getPluginSerdesPack()
                 );
@@ -115,6 +120,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                                 this.storageConfig.prefix
                         ),
                         JsonSimpleConfigurer::new,
+                        new SerdesDiscord4J(),
                         new SerdesCommons(),
                         this.dreamDiscord4jPlatform.getPluginSerdesPack()
                 );

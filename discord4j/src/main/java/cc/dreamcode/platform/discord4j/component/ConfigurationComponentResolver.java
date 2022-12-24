@@ -4,6 +4,7 @@ import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.discord4j.DreamDiscord4JPlatform;
 import cc.dreamcode.platform.discord4j.component.configuration.Configuration;
 import cc.dreamcode.platform.discord4j.exception.Discord4JPlatformException;
+import cc.dreamcode.platform.discord4j.serdes.SerdesDiscord4J;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.OkaeriConfig;
@@ -63,7 +64,7 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
         }
 
         return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesCommons(), this.dreamDiscord4jPlatform.getPluginSerdesPack());
+            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesDiscord4J(), new SerdesCommons(), this.dreamDiscord4jPlatform.getPluginSerdesPack());
             it.withBindFile(new File(configuration.child()));
             it.saveDefaults();
             it.load(true);

@@ -5,13 +5,16 @@ import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.discord4j.component.command.DiscordCommand;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import discord4j.core.GatewayDiscordClient;
+import discord4j.core.event.domain.interaction.ChatInputAutoCompleteEvent;
 import discord4j.core.event.domain.interaction.ChatInputInteractionEvent;
+import discord4j.discordjson.json.ApplicationCommandOptionChoiceData;
 import discord4j.discordjson.json.ApplicationCommandOptionData;
 import discord4j.discordjson.json.ApplicationCommandRequest;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,10 +70,19 @@ public class CommandComponentResolver extends ComponentClassResolver<Class<Disco
         }
 
         this.discordClient.on(ChatInputInteractionEvent.class).subscribe(event -> {
-            this.dreamLogger.info(event.getCommandName() + " testes");
             if (event.getCommandName().equals(discordCommand.commandRequest().name())) {
-                this.dreamLogger.info(event.getCommandName() + " teste1");
                 discordCommand.content(event);
+            }
+        });
+
+        this.discordClient.on(ChatInputAutoCompleteEvent.class).subscribe(event -> {
+            if (event.getCommandName().equals(discordCommand.commandRequest().name())) {
+                List<ApplicationCommandOptionChoiceData> suggestion = discordCommand.autoComplete(event);
+                if (suggestion == null || suggestion.isEmpty()) {
+                    return;
+                }
+
+                event.respondWithSuggestions(suggestion);
             }
         });
 
