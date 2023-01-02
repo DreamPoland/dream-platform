@@ -7,6 +7,7 @@ import cc.dreamcode.utilities.builder.MapBuilder;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.zaxxer.hikari.HikariConfig;
+import eu.okaeri.configs.json.gson.JsonGsonConfigurer;
 import eu.okaeri.configs.json.simple.JsonSimpleConfigurer;
 import eu.okaeri.configs.serdes.commons.SerdesCommons;
 import eu.okaeri.injector.Injector;
@@ -62,7 +63,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                                 new File(""),
                                 ".json"
                         ),
-                        JsonSimpleConfigurer::new,
+                        JsonGsonConfigurer::new,
                         new SerdesCommons(),
                         this.dreamCliPlatform.getPluginSerdesPack()
                 );
