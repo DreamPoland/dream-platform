@@ -7,15 +7,15 @@ dependencies {
     implementation "org.slf4j:slf4j-api:2.0.6"
 
     // -- dream-utilities --
-    implementation "cc.dreamcode:utilities:1.1"
+    implementation "cc.dreamcode:utilities:1.1.1"
 
     // -- configs--
-    implementation 'eu.okaeri:okaeri-configs-yaml-snakeyaml:4.0.8'
-    implementation 'eu.okaeri:okaeri-configs-serdes-commons:4.0.8'
+    implementation 'eu.okaeri:okaeri-configs-yaml-snakeyaml:4.0.9'
+    implementation 'eu.okaeri:okaeri-configs-serdes-commons:4.0.9'
 
     // -- json configure --
-    implementation 'eu.okaeri:okaeri-configs-json-gson:4.0.8'
-    implementation 'eu.okaeri:okaeri-configs-json-simple:4.0.8'
+    implementation 'eu.okaeri:okaeri-configs-json-gson:4.0.9'
+    implementation 'eu.okaeri:okaeri-configs-json-simple:4.0.9'
 
     // -- persistence data --
     implementation 'eu.okaeri:okaeri-persistence-flat:2.0.0-beta.1'
