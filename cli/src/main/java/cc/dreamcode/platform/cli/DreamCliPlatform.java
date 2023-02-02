@@ -3,8 +3,8 @@ package cc.dreamcode.platform.cli;
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.DreamVersion;
-import cc.dreamcode.platform.component.ComponentManager;
 import cc.dreamcode.platform.cli.exception.CliPlatformException;
+import cc.dreamcode.platform.component.ComponentManager;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
@@ -20,46 +20,47 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     @Getter private DreamLogger dreamLogger;
     @Getter private ComponentManager componentManager;
 
-    public static void run(@NonNull DreamCliPlatform dreamCliPlatform) {
-        dreamCliPlatform.injector = OkaeriInjector.create();
-        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform);
+    private void initialize() {
+        this.injector = OkaeriInjector.create();
+        this.injector.registerInjectable(this);
 
-        dreamCliPlatform.dreamLogger = new DreamCliLogger(LoggerFactory.getLogger(dreamCliPlatform.getClass()));
-        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform.dreamLogger);
+        this.dreamLogger = new DreamCliLogger(LoggerFactory.getLogger(this.getClass()));
+        this.injector.registerInjectable(this.dreamLogger);
 
-        dreamCliPlatform.componentManager = new ComponentManager(dreamCliPlatform.injector);
-        dreamCliPlatform.injector.registerInjectable(dreamCliPlatform.componentManager);
+        this.componentManager = new ComponentManager(this.injector);
+        this.injector.registerInjectable(this.componentManager);
 
-        DreamVersion dreamVersion = dreamCliPlatform.getDreamVersion();
+        DreamVersion dreamVersion = this.getDreamVersion();
 
-        dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
+        this.dreamLogger.info(String.format("Active version: v%s - Author: %s",
                 dreamVersion.getVersion(),
                 dreamVersion.getAuthor()));
-        dreamCliPlatform.dreamLogger.info(String.format("Loading %s resources...",
+        this.dreamLogger.info(String.format("Loading %s resources...",
                 dreamVersion.getName()));
 
         try {
-            dreamCliPlatform.enable(dreamCliPlatform.componentManager);
+            this.enable(this.componentManager);
         }
         catch (Exception e) {
             throw new CliPlatformException("An error was caught when platform are starting...", e);
         }
 
         Thread shutdownHook = new Thread(() -> {
-            dreamCliPlatform.dreamLogger.info(String.format("Disabling %s...",
+            this.dreamLogger.info(String.format("Disabling %s...",
                     dreamVersion.getName()));
 
             try {
-                dreamCliPlatform.disable();
+                this.disable();
             }
             catch (Exception e) {
                 throw new CliPlatformException("An error was caught when plugin are stopping...", e);
             }
 
-            dreamCliPlatform.dreamLogger.info(String.format("Active version: v%s - Author: %s",
+            this.dreamLogger.info(String.format("Active version: v%s - Author: %s",
                     dreamVersion.getVersion(),
                     dreamVersion.getAuthor()));
         });
+        shutdownHook.setName("Shutdown-Worker");
 
         Runtime.getRuntime().addShutdownHook(shutdownHook);
     }
@@ -104,5 +105,9 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     @Override
     public <T> Optional<T> getInject(@NonNull Class<T> value) {
         return this.getInject("", value);
+    }
+
+    public static void run(@NonNull DreamCliPlatform dreamCliPlatform) {
+        dreamCliPlatform.initialize();
     }
 }
