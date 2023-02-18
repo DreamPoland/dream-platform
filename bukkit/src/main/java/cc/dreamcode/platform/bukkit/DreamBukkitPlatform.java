@@ -79,7 +79,8 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
     }
 
     public abstract void load(@NonNull ComponentManager componentManager);
-    public abstract OkaeriSerdesPack getPluginSerdesPack();
+    public abstract OkaeriSerdesPack getConfigurationSerdesPack();
+    public abstract OkaeriSerdesPack getPersistenceSerdesPack();
 
     @Override
     public void registerInjectable(@NonNull Object object) {

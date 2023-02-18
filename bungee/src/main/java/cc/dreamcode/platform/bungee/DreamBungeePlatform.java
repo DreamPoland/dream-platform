@@ -79,7 +79,8 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
     }
 
     public abstract void load(@NonNull ComponentManager componentManager);
-    public abstract OkaeriSerdesPack getPluginSerdesPack();
+    public abstract OkaeriSerdesPack getConfigurationSerdesPack();
+    public abstract OkaeriSerdesPack getPersistenceSerdesPack();
 
     @Override
     public void registerInjectable(@NonNull Object object) {

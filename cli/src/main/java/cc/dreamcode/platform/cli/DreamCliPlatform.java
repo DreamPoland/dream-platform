@@ -65,7 +65,8 @@ public abstract class DreamCliPlatform implements DreamPlatform {
         Runtime.getRuntime().addShutdownHook(shutdownHook);
     }
 
-    public abstract OkaeriSerdesPack getPluginSerdesPack();
+    public abstract OkaeriSerdesPack getConfigurationSerdesPack();
+    public abstract OkaeriSerdesPack getPersistenceSerdesPack();
 
     @Override
     public void registerInjectable(@NonNull Object object) {

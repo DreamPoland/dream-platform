@@ -63,7 +63,7 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
         }
 
         return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesCommons(), this.dreamCliPlatform.getPluginSerdesPack());
+            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesCommons(), this.dreamCliPlatform.getConfigurationSerdesPack());
             it.withBindFile(new File(configuration.child()));
             it.saveDefaults();
             it.load(true);

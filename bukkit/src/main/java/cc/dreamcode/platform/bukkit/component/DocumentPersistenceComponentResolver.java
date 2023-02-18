@@ -66,7 +66,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         JsonGsonConfigurer::new,
                         new SerdesBukkit(),
                         new SerdesCommons(),
-                        this.dreamBukkitPlatform.getPluginSerdesPack()
+                        this.dreamBukkitPlatform.getPersistenceSerdesPack()
                 );
             case MYSQL:
                 HikariConfig mariadbHikari = new HikariConfig();
@@ -80,7 +80,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         JsonSimpleConfigurer::new,
                         new SerdesBukkit(),
                         new SerdesCommons(),
-                        this.dreamBukkitPlatform.getPluginSerdesPack()
+                        this.dreamBukkitPlatform.getPersistenceSerdesPack()
                 );
             case H2:
                 HikariConfig jdbcHikari = new HikariConfig();
@@ -94,7 +94,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         JsonSimpleConfigurer::new,
                         new SerdesBukkit(),
                         new SerdesCommons(),
-                        this.dreamBukkitPlatform.getPluginSerdesPack()
+                        this.dreamBukkitPlatform.getPersistenceSerdesPack()
                 );
             case REDIS:
                 RedisURI redisURI = RedisURI.create(this.storageConfig.uri);
@@ -108,7 +108,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         JsonSimpleConfigurer::new,
                         new SerdesBukkit(),
                         new SerdesCommons(),
-                        this.dreamBukkitPlatform.getPluginSerdesPack()
+                        this.dreamBukkitPlatform.getPersistenceSerdesPack()
                 );
             case MONGO:
                 MongoClient mongoClient = MongoClients.create(this.storageConfig.uri);
@@ -122,7 +122,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         JsonSimpleConfigurer::new,
                         new SerdesBukkit(),
                         new SerdesCommons(),
-                        this.dreamBukkitPlatform.getPluginSerdesPack()
+                        this.dreamBukkitPlatform.getPersistenceSerdesPack()
                 );
             default:
                 throw new RuntimeException("Unknown data type: " + this.storageConfig.storageType);

@@ -64,7 +64,7 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
         }
 
         return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlBungeeConfigurer(), new SerdesBungee(), new SerdesCommons(), this.dreamBungeePlatform.getPluginSerdesPack());
+            it.withConfigurer(new YamlBungeeConfigurer(), new SerdesBungee(), new SerdesCommons(), this.dreamBungeePlatform.getConfigurationSerdesPack());
             it.withBindFile(new File(this.dreamBungeePlatform.getDataFolder(), configuration.child()));
             it.saveDefaults();
             it.load(true);
