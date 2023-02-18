@@ -28,14 +28,14 @@ public class TestApplication extends DreamCliPlatform {
     }
 
     @Override
-    public OkaeriSerdesPack getConfigurationSerdesPack() {
+    public @NonNull OkaeriSerdesPack getConfigurationSerdesPack() {
         return registry -> {
 
         };
     }
 
     @Override
-    public OkaeriSerdesPack getPersistenceSerdesPack() {
+    public @NonNull OkaeriSerdesPack getPersistenceSerdesPack() {
         return registry -> {
 
         };
