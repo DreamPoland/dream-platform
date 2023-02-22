@@ -23,7 +23,7 @@ public class TestApplication extends DreamCliPlatform {
     }
 
     @Override
-    public DreamVersion getDreamVersion() {
+    public @NonNull DreamVersion getDreamVersion() {
         return DreamVersion.create("cli-test", "1.0", "Ravis96");
     }
 
