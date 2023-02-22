@@ -5,8 +5,13 @@ import eu.okaeri.configs.annotation.Comment;
 import eu.okaeri.configs.annotation.NameModifier;
 import eu.okaeri.configs.annotation.NameStrategy;
 import eu.okaeri.configs.annotation.Names;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Names(strategy = NameStrategy.HYPHEN_CASE, modifier = NameModifier.TO_LOWER_CASE)
 public class StorageConfig extends OkaeriConfig {
 
@@ -16,7 +21,7 @@ public class StorageConfig extends OkaeriConfig {
 
     @Comment({"Jaki prefix ustawic dla danych?",
             "Dla FLAT prefix nie jest uzywany."})
-    @Setter public String prefix = "dreamtemplate";
+    public String prefix = "dreamtemplate";
 
     @Comment("FLAT   : nie jest wymagane podawanie dodatkowych informacji")
     @Comment("REDIS  : redis://{username}:{password}@{host}:{port}")
@@ -24,5 +29,9 @@ public class StorageConfig extends OkaeriConfig {
     @Comment("MYSQL  : jdbc:mysql://{host}:{port}/{database}?user={username}&password={password}")
     @Comment("H2     : jdbc:h2:file:./plugins/{data_folder}/storage;mode=mysql")
     public String uri = "";
+
+    public StorageConfig(@NonNull String prefix) {
+        this.prefix = prefix;
+    }
 
 }
