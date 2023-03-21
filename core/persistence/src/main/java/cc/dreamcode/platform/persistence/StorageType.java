@@ -1,4 +1,4 @@
-package cc.dreamcode.platform.cli.persistence;
+package cc.dreamcode.platform.persistence;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

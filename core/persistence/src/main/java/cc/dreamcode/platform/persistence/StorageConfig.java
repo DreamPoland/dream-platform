@@ -1,4 +1,4 @@
-package cc.dreamcode.platform.cli.persistence;
+package cc.dreamcode.platform.persistence;
 
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.annotation.Comment;
@@ -8,7 +8,6 @@ import eu.okaeri.configs.annotation.Names;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 
 @RequiredArgsConstructor
 @AllArgsConstructor

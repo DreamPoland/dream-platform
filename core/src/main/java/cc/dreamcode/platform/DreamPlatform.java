@@ -1,8 +1,10 @@
 package cc.dreamcode.platform;
 
 import cc.dreamcode.platform.component.ComponentManager;
+import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import lombok.NonNull;
 
+import java.io.File;
 import java.util.Optional;
 
 public interface DreamPlatform {
@@ -11,9 +13,15 @@ public interface DreamPlatform {
 
     void disable();
 
-    DreamLogger getDreamLogger();
+    File getDataFolder();
+
+    @NonNull DreamLogger getDreamLogger();
 
     @NonNull DreamVersion getDreamVersion();
+
+    @NonNull OkaeriSerdesPack getConfigurationSerdesPack();
+
+    @NonNull OkaeriSerdesPack getPersistenceSerdesPack();
 
     void registerInjectable(@NonNull String name, @NonNull Object object);
 

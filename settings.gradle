@@ -1,7 +1,9 @@
 rootProject.name = 'dream-platform'
 
-include 'core'
-include 'bukkit'
-include 'bungee'
-include 'cli'
-include 'discord4j'
+include ':core'
+include ':core:persistence'
+
+include ':bukkit'
+include ':bungee'
+include ':cli'
+include ':discord4j'

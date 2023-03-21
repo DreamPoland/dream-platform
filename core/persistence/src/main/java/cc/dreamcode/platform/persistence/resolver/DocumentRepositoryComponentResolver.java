@@ -1,7 +1,7 @@
-package cc.dreamcode.platform.discord4j.component;
+package cc.dreamcode.platform.persistence.resolver;
 
+import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.component.ComponentClassResolver;
-import cc.dreamcode.platform.discord4j.DreamDiscord4JPlatform;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import eu.okaeri.persistence.PersistenceCollection;
@@ -16,7 +16,7 @@ import java.util.Map;
 @SuppressWarnings("rawtypes")
 public class DocumentRepositoryComponentResolver extends ComponentClassResolver<Class<? extends DocumentRepository>> {
 
-    private @Inject DreamDiscord4JPlatform dreamDiscord4jPlatform;
+    private @Inject DreamPlatform platform;
     private @Inject DocumentPersistence documentPersistence;
 
     @Override
@@ -43,7 +43,7 @@ public class DocumentRepositoryComponentResolver extends ComponentClassResolver<
                 .newProxy(
                         this.documentPersistence,
                         persistenceCollection,
-                        this.dreamDiscord4jPlatform.getClass().getClassLoader()
+                        this.platform.getClass().getClassLoader()
                 );
     }
 }

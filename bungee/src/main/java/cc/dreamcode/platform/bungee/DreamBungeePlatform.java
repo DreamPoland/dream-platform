@@ -5,6 +5,7 @@ import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.bungee.exception.BungeePluginException;
 import cc.dreamcode.platform.component.ComponentManager;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
+import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBungee;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
@@ -79,8 +80,24 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
     }
 
     public abstract void load(@NonNull ComponentManager componentManager);
-    public abstract @NonNull OkaeriSerdesPack getConfigurationSerdesPack();
-    public abstract @NonNull OkaeriSerdesPack getPersistenceSerdesPack();
+    public abstract @NonNull OkaeriSerdesPack getBungeeConfigurationSerdesPack();
+    public abstract @NonNull OkaeriSerdesPack getBungeePersistenceSerdesPack();
+
+    @Override
+    public @NonNull OkaeriSerdesPack getConfigurationSerdesPack() {
+        return registry -> {
+            registry.register(new SerdesBungee());
+            registry.register(this.getBungeeConfigurationSerdesPack());
+        };
+    }
+
+    @Override
+    public @NonNull OkaeriSerdesPack getPersistenceSerdesPack() {
+        return registry -> {
+            registry.register(new SerdesBungee());
+            registry.register(this.getBungeePersistenceSerdesPack());
+        };
+    }
 
     @Override
     public void registerInjectable(@NonNull Object object) {
