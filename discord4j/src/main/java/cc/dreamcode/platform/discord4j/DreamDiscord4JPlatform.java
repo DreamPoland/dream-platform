@@ -75,7 +75,9 @@ public abstract class DreamDiscord4JPlatform implements DreamPlatform {
     public abstract Mono<GatewayDiscordClient> load(@NonNull ComponentManager componentManager);
 
     public abstract @NonNull OkaeriSerdesPack getDiscord4JConfigurationSerdesPack();
-    public abstract @NonNull OkaeriSerdesPack getDiscord4JPersistenceSerdesPack();
+    public @NonNull OkaeriSerdesPack getDiscord4JPersistenceSerdesPack() {
+        return registry -> {};
+    }
 
     @Override
     public @NonNull OkaeriSerdesPack getConfigurationSerdesPack() {

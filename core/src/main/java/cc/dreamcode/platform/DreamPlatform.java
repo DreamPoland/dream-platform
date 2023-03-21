@@ -21,7 +21,9 @@ public interface DreamPlatform {
 
     @NonNull OkaeriSerdesPack getConfigurationSerdesPack();
 
-    @NonNull OkaeriSerdesPack getPersistenceSerdesPack();
+    default @NonNull OkaeriSerdesPack getPersistenceSerdesPack() {
+        return registry -> {};
+    }
 
     void registerInjectable(@NonNull String name, @NonNull Object object);
 
