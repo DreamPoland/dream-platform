@@ -6,6 +6,8 @@ import cc.dreamcode.platform.component.ComponentManager;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import lombok.NonNull;
 
+import java.io.File;
+
 public class TestApplication extends DreamCliPlatform {
 
     public static void main(String[] args) {
@@ -20,6 +22,11 @@ public class TestApplication extends DreamCliPlatform {
     @Override
     public void disable() {
         this.getDreamLogger().info("end");
+    }
+
+    @Override
+    public File getDataFolder() {
+        return new File("."); // unknown
     }
 
     @Override
