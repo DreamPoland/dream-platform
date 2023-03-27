@@ -5,6 +5,8 @@ import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.component.ComponentManager;
 import cc.dreamcode.platform.javacord.component.ConfigurationComponentResolver;
 import cc.dreamcode.platform.javacord.component.TimerTaskComponentResolver;
+import cc.dreamcode.platform.javacord.exception.JavacordPlatformException;
+import cc.dreamcode.utilities.TimeUtil;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
@@ -13,6 +15,8 @@ import org.javacord.api.DiscordApi;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
 
 public abstract class DreamJavacordPlatform implements DreamPlatform {
@@ -25,6 +29,8 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
     @Getter private final File dataFolder = new File(".");
 
     void initialize() {
+        long start = System.currentTimeMillis();
+
         this.injector = OkaeriInjector.create();
         this.injector.registerInjectable(this);
 
@@ -34,6 +40,13 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
         this.componentManager = new ComponentManager(this.injector);
         this.injector.registerInjectable(this.componentManager);
 
+        this.dreamLogger.info(String.format("Active version: v%s - Author: %s",
+                this.getDreamVersion().getVersion(),
+                this.getDreamVersion().getAuthor()));
+
+        this.dreamLogger.info(String.format("Loading %s resources...",
+                this.getDreamVersion().getName()));
+
         componentManager.registerResolver(ConfigurationComponentResolver.class);
         componentManager.registerResolver(TimerTaskComponentResolver.class);
 
@@ -41,6 +54,9 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
         this.registerInjectable(this.discordApi);
 
         this.enable(this.componentManager);
+
+        Duration startupDuration = Duration.ofMillis(System.currentTimeMillis() - start);
+        this.dreamLogger.info("Loading complete! Done in " + TimeUtil.convertDurationMills(startupDuration) + "...");
     }
 
     public abstract @NonNull DiscordApi login(@NonNull ComponentManager componentManager);
@@ -89,7 +105,20 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
 
         platform.initialize();
 
-        Thread shutdownHook = new Thread(platform::disable);
+        Thread shutdownHook = new Thread(() -> {
+            platform.getDreamLogger().info(String.format("Disabling %s...", platform.getDreamVersion().getName()));
+
+            try {
+                platform.disable();
+            }
+            catch (Exception e) {
+                throw new JavacordPlatformException("An error was caught when plugin are stopping...", e);
+            }
+
+            platform.getDreamLogger().info(String.format("Active version: v%s - Author: %s",
+                    platform.getDreamVersion().getVersion(),
+                    platform.getDreamVersion().getAuthor()));
+        });
         Runtime.getRuntime().addShutdownHook(shutdownHook);
 
         return platform;
