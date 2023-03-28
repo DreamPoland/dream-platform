@@ -3,9 +3,11 @@ package cc.dreamcode.platform.javacord;
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.javacord.component.CommandComponentResolver;
 import cc.dreamcode.platform.javacord.component.ConfigurationComponentResolver;
 import cc.dreamcode.platform.javacord.component.ListenerComponentResolver;
 import cc.dreamcode.platform.javacord.component.TimerTaskComponentResolver;
+import cc.dreamcode.platform.javacord.component.command.JavacordCommand;
 import cc.dreamcode.platform.javacord.exception.JavacordPlatformException;
 import cc.dreamcode.utilities.TimeUtil;
 import eu.okaeri.injector.Injector;
@@ -17,8 +19,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.time.Duration;
-import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public abstract class DreamJavacordPlatform implements DreamPlatform {
 
@@ -27,6 +31,7 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
     @Getter private ComponentManager componentManager;
     @Getter private DiscordApi discordApi;
 
+    @Getter private final List<JavacordCommand> javacordCommandList = new ArrayList<>();
     @Getter private final File dataFolder = new File(".");
 
     void initialize() {
@@ -59,8 +64,15 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
                 this.discordApi.getYourself().getIdAsString()));
 
         componentManager.registerResolver(ListenerComponentResolver.class);
+        componentManager.registerResolver(CommandComponentResolver.class);
 
         this.enable(this.componentManager);
+
+        this.discordApi.bulkOverwriteGlobalApplicationCommands(this.javacordCommandList
+                .stream()
+                .map(JavacordCommand::getSlashCommandBuilder)
+                .collect(Collectors.toSet()))
+                .join();
 
         Duration startupDuration = Duration.ofMillis(System.currentTimeMillis() - start);
         this.dreamLogger.info("Loading complete! Done in " + TimeUtil.convertDurationMills(startupDuration) + "...");
@@ -134,6 +146,8 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
                     platform.getDreamVersion().getVersion(),
                     platform.getDreamVersion().getAuthor()));
         });
+
+        shutdownHook.setName("dream-shutdown");
         Runtime.getRuntime().addShutdownHook(shutdownHook);
 
         return platform;
