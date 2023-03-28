@@ -52,7 +52,11 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
         componentManager.registerResolver(TimerTaskComponentResolver.class);
 
         this.discordApi = this.login(this.componentManager);
-        this.registerInjectable(this.discordApi);
+        this.injector.registerInjectable(this.discordApi);
+
+        this.dreamLogger.info(String.format("Logged in as %s (%s)",
+                this.discordApi.getYourself().getName(),
+                this.discordApi.getYourself().getIdAsString()));
 
         componentManager.registerResolver(ListenerComponentResolver.class);
 

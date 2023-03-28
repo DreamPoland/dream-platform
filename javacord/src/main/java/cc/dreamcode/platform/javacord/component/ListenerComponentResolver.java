@@ -7,6 +7,7 @@ import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
 import org.javacord.api.DiscordApi;
+import org.javacord.api.event.Event;
 import org.javacord.api.listener.GloballyAttachableListener;
 
 import java.lang.reflect.Method;
@@ -32,9 +33,10 @@ public class ListenerComponentResolver extends ComponentClassResolver<Class<Glob
     @Override
     public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<GloballyAttachableListener> listenerClass) {
         return new MapBuilder<String, Object>()
-                .put("type", listenerClass.getSimpleName())
+                .put("type", listenerClass.getInterfaces()[0].getSimpleName())
                 .put("events", Arrays.stream(listenerClass.getDeclaredMethods())
-                        .filter(method -> method.getAnnotation(Override.class) != null)
+                        .filter(method -> method.getParameterTypes().length != 1 ||
+                                !Event.class.isAssignableFrom(method.getParameterTypes()[0]))
                         .map(Method::getName)
                         .collect(Collectors.joining(", ")))
                 .build();
@@ -44,7 +46,7 @@ public class ListenerComponentResolver extends ComponentClassResolver<Class<Glob
     public Object resolve(@NonNull Injector injector, @NonNull Class<GloballyAttachableListener> listenerClass) {
         final GloballyAttachableListener listener = injector.createInstance(listenerClass);
 
-        this.discordApi.addListener(listenerClass, listener);
+        this.discordApi.addListener(listener);
 
         return listener;
     }
