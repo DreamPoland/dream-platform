@@ -4,6 +4,7 @@ import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.component.ComponentManager;
 import cc.dreamcode.platform.javacord.component.ConfigurationComponentResolver;
+import cc.dreamcode.platform.javacord.component.ListenerComponentResolver;
 import cc.dreamcode.platform.javacord.component.TimerTaskComponentResolver;
 import cc.dreamcode.platform.javacord.exception.JavacordPlatformException;
 import cc.dreamcode.utilities.TimeUtil;
@@ -52,6 +53,8 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
 
         this.discordApi = this.login(this.componentManager);
         this.registerInjectable(this.discordApi);
+
+        componentManager.registerResolver(ListenerComponentResolver.class);
 
         this.enable(this.componentManager);
 
