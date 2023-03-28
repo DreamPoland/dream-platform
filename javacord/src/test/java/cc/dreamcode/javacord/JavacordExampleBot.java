@@ -1,5 +1,6 @@
 package cc.dreamcode.javacord;
 
+import cc.dreamcode.javacord.command.TestCommand;
 import cc.dreamcode.javacord.config.TokenConfig;
 import cc.dreamcode.platform.DreamVersion;
 import cc.dreamcode.platform.component.ComponentManager;
@@ -36,7 +37,7 @@ public class JavacordExampleBot extends DreamJavacordPlatform {
 
     @Override
     public void enable(@NonNull ComponentManager componentManager) {
-
+        componentManager.registerComponent(TestCommand.class);
     }
 
     @Override
