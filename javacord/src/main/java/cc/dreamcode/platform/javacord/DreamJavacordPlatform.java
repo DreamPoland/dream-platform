@@ -55,7 +55,7 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
         this.injector.registerInjectable(this.discordApi);
 
         this.dreamLogger.info(String.format("Logged in as %s (%s)",
-                this.discordApi.getYourself().getName(),
+                this.discordApi.getYourself().getNicknameMentionTag(),
                 this.discordApi.getYourself().getIdAsString()));
 
         componentManager.registerResolver(ListenerComponentResolver.class);
@@ -120,6 +120,14 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
             }
             catch (Exception e) {
                 throw new JavacordPlatformException("An error was caught when plugin are stopping...", e);
+            }
+
+            if (platform.getDiscordApi() != null) {
+                platform.getDreamLogger().info(String.format("Disconnecting from %s (%s)",
+                        platform.getDiscordApi().getYourself().getNicknameMentionTag(),
+                        platform.getDiscordApi().getYourself().getIdAsString()));
+
+                platform.getDiscordApi().disconnect().join();
             }
 
             platform.getDreamLogger().info(String.format("Active version: v%s - Author: %s",
