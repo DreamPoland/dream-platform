@@ -34,11 +34,6 @@ public class ListenerComponentResolver extends ComponentClassResolver<Class<Glob
     public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<GloballyAttachableListener> listenerClass) {
         return new MapBuilder<String, Object>()
                 .put("type", listenerClass.getInterfaces()[0].getSimpleName())
-                .put("events", Arrays.stream(listenerClass.getDeclaredMethods())
-                        .filter(method -> method.getParameterTypes().length != 1 ||
-                                !Event.class.isAssignableFrom(method.getParameterTypes()[0]))
-                        .map(Method::getName)
-                        .collect(Collectors.joining(", ")))
                 .build();
     }
 

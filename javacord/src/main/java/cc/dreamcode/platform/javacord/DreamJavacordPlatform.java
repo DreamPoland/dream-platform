@@ -54,9 +54,8 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
         this.discordApi = this.login(this.componentManager);
         this.injector.registerInjectable(this.discordApi);
 
-        this.dreamLogger.info(String.format("Logged in as %s %s (%s)",
+        this.dreamLogger.info(String.format("Logged in as %s (%s)",
                 this.discordApi.getYourself().getName(),
-                this.discordApi.getYourself().getMentionTag(),
                 this.discordApi.getYourself().getIdAsString()));
 
         componentManager.registerResolver(ListenerComponentResolver.class);
@@ -124,9 +123,8 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
             }
 
             if (platform.getDiscordApi() != null) {
-                platform.getDreamLogger().info(String.format("Disconnecting from %s %s (%s)",
+                platform.getDreamLogger().info(String.format("Disconnecting from %s (%s)",
                         platform.getDiscordApi().getYourself().getName(),
-                        platform.getDiscordApi().getYourself().getMentionTag(),
                         platform.getDiscordApi().getYourself().getIdAsString()));
 
                 platform.getDiscordApi().disconnect().join();
