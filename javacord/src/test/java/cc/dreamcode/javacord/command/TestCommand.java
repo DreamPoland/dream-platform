@@ -13,7 +13,7 @@ public class TestCommand extends JavacordCommand {
 
     private @Inject DiscordApi discordApi;
 
-    protected TestCommand() {
+    public TestCommand() {
         super("ping", "Ping pong!");
     }
 

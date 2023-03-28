@@ -14,12 +14,11 @@ public abstract class JavacordCommand {
     private final String description;
     private final SlashCommandBuilder slashCommandBuilder;
 
-    protected JavacordCommand(@NonNull String name, @NonNull String description) {
+    public JavacordCommand(@NonNull String name, @NonNull String description) {
         this.name = name;
         this.description = description;
         this.slashCommandBuilder = SlashCommand.with(name, description);
     }
-
 
     public abstract @NonNull SlashCommandCreateListener respond();
 
