@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.message.Messageable;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.interaction.callback.InteractionImmediateResponseBuilder;
 
 import java.util.Map;
@@ -100,7 +99,10 @@ public class Notice {
                 break;
             }
             case EMBED: {
-                responder.addEmbed((EmbedBuilder) fixedValue);
+
+                WrappedEmbedBuilder wrappedEmbedBuilder = (WrappedEmbedBuilder) fixedValue;
+
+                responder.addEmbed(wrappedEmbedBuilder.toEmbedBuilder());
                 break;
             }
             default:
