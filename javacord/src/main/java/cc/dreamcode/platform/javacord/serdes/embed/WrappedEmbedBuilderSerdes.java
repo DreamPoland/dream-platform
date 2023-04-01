@@ -71,7 +71,7 @@ public class WrappedEmbedBuilderSerdes implements ObjectSerializer<WrappedEmbedB
             data.add("embed-thumbnail", object.getThumbnailUrl());
         }
 
-        if (object.getFields().isEmpty()) {
+        if (!object.getFields().isEmpty()) {
             data.add("embed-fields", object.getFields());
         }
     }
