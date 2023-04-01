@@ -43,7 +43,7 @@ public class WrappedEmbedBuilderSerdes implements ObjectSerializer<WrappedEmbedB
         }
 
         if (object.getColor() != null) {
-            data.add("embed-color", object.getColor().getRGB());
+            data.add("embed-color", object.getColor());
         }
 
         if (object.getFooterText() != null) {
@@ -103,7 +103,7 @@ public class WrappedEmbedBuilderSerdes implements ObjectSerializer<WrappedEmbedB
         }
 
         if (data.containsKey("embed-color")) {
-            wrappedEmbedBuilder.setColor(new Color(data.get("embed-color", Integer.class)));
+            wrappedEmbedBuilder.setColor(data.get("embed-color", Color.class));
         }
 
         if (data.containsKey("embed-footer-text")) {
