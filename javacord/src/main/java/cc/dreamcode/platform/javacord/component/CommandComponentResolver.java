@@ -8,6 +8,7 @@ import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
 import org.javacord.api.DiscordApi;
+import org.javacord.api.interaction.SlashCommandInteraction;
 
 import java.util.Map;
 
@@ -40,8 +41,20 @@ public class CommandComponentResolver extends ComponentClassResolver<Class<Javac
         final JavacordCommand javacordCommand = injector.createInstance(javacordCommandClass);
 
         this.dreamJavacordPlatform.getJavacordCommandList().add(javacordCommand);
-        this.discordApi.addSlashCommandCreateListener(javacordCommand.respond());
-        this.discordApi.addAutocompleteCreateListener(javacordCommand.autocomplete());
+
+        this.discordApi.addSlashCommandCreateListener(event -> {
+            SlashCommandInteraction interaction = event.getSlashCommandInteraction();
+            if (interaction.getCommandName().equalsIgnoreCase(javacordCommand.getName())) {
+                javacordCommand.respond().onSlashCommandCreate(event);
+            }
+        });
+
+        this.discordApi.addAutocompleteCreateListener(event -> {
+            SlashCommandInteraction interaction = event.getAutocompleteInteraction();
+            if (interaction.getCommandName().equalsIgnoreCase(javacordCommand.getName())) {
+                javacordCommand.autocomplete().onAutocompleteCreate(event);
+            }
+        });
 
         return javacordCommand;
     }

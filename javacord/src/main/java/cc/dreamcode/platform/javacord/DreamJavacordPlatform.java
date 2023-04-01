@@ -66,7 +66,14 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
         componentManager.registerResolver(ListenerComponentResolver.class);
         componentManager.registerResolver(CommandComponentResolver.class);
 
-        this.enable(this.componentManager);
+        try {
+            this.enable(this.componentManager);
+        } catch (Exception e) {
+            this.getDreamLogger().error("An error was caught when plugin are starting...", e);
+
+            this.shutdownHook(false);
+            return;
+        }
 
         this.discordApi.bulkOverwriteGlobalApplicationCommands(this.javacordCommandList
                 .stream()
@@ -120,35 +127,40 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
         return this.getInject("", value);
     }
 
+    Thread shutdownHook(boolean disableMethod) {
+        Thread shutdownHook = new Thread(() -> {
+            this.getDreamLogger().info(String.format("Disabling %s...", this.getDreamVersion().getName()));
+
+            if (disableMethod) {
+                try {
+                    this.disable();
+                } catch (Exception e) {
+                    throw new JavacordPlatformException("An error was caught when plugin are stopping...", e);
+                }
+            }
+
+            if (this.getDiscordApi() != null) {
+                this.getDreamLogger().info(String.format("Disconnecting from %s (%s)",
+                        this.getDiscordApi().getYourself().getName(),
+                        this.getDiscordApi().getYourself().getIdAsString()));
+
+                this.getDiscordApi().disconnect().join();
+            }
+
+            this.getDreamLogger().info(String.format("Active version: v%s - Author: %s",
+                    this.getDreamVersion().getVersion(),
+                    this.getDreamVersion().getAuthor()));
+        });
+
+        shutdownHook.setName("dream-shutdown");
+        return shutdownHook;
+    }
+
     public static <T extends DreamJavacordPlatform> T run(@NonNull T platform, @NonNull String[] args) {
 
         platform.initialize();
 
-        Thread shutdownHook = new Thread(() -> {
-            platform.getDreamLogger().info(String.format("Disabling %s...", platform.getDreamVersion().getName()));
-
-            try {
-                platform.disable();
-            }
-            catch (Exception e) {
-                throw new JavacordPlatformException("An error was caught when plugin are stopping...", e);
-            }
-
-            if (platform.getDiscordApi() != null) {
-                platform.getDreamLogger().info(String.format("Disconnecting from %s (%s)",
-                        platform.getDiscordApi().getYourself().getName(),
-                        platform.getDiscordApi().getYourself().getIdAsString()));
-
-                platform.getDiscordApi().disconnect().join();
-            }
-
-            platform.getDreamLogger().info(String.format("Active version: v%s - Author: %s",
-                    platform.getDreamVersion().getVersion(),
-                    platform.getDreamVersion().getAuthor()));
-        });
-
-        shutdownHook.setName("dream-shutdown");
-        Runtime.getRuntime().addShutdownHook(shutdownHook);
+        Runtime.getRuntime().addShutdownHook(platform.shutdownHook(true));
 
         return platform;
     }
