@@ -1,32 +1,29 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true">
-<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-        <charset>UTF-8</charset>
-        <Pattern>[%d{HH:mm:ss.SSS}] [%thread] [%level] %msg%n</Pattern>
-    </encoder>
-</appender>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}] [%thread] [%level] %msg%n</pattern>
+        </encoder>
+    </appender>
 
-<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>/logs/application.log</file>
-    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-        <fileNamePattern>/logs/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>/srv/logs/log.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/srv/logs/%d{yyyy-MM-dd}.log</fileNamePattern>
 
-        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-            <maxFileSize>5MB</maxFileSize>
-        </timeBasedFileNamingAndTriggeringPolicy>
-        <!-- keep 30 days' worth of history -->
-        <maxHistory>30</maxHistory>
-    </rollingPolicy>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
 
-    <encoder>
-        <charset>UTF-8</charset>
-        <pattern>[%d{HH:mm:ss.SSS}] [%thread] [%level] %msg%n</pattern>
-    </encoder>
-</appender>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
 
-<root level="DEBUG">
-    <appender-ref ref="consoleAppender" />
-    <appender-ref ref="FILE"/>
-</root>
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}] [%thread] [%level] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE"/>
+    </root>
 </configuration>
