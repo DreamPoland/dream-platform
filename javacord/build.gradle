@@ -14,6 +14,9 @@ dependencies {
     implementation 'eu.okaeri:okaeri-configs-yaml-snakeyaml:4.0.9'
     implementation 'eu.okaeri:okaeri-configs-serdes-commons:4.0.9'
 
+    // -- placeholders --
+    implementation 'eu.okaeri:okaeri-placeholders-core:4.0.7'
+
     // -- injector --
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
 
