@@ -60,11 +60,8 @@ public class WrappedEmbedBuilderSerdes implements ObjectSerializer<WrappedEmbedB
 
         if (object.getAuthorName() != null) {
             data.add("embed-author-name", object.getAuthorName());
-
-            if (object.getAuthorUrl() != null && object.getAuthorIconUrl() != null) {
-                data.add("embed-author-url", object.getAuthorUrl());
-                data.add("embed-author-icon", object.getAuthorIconUrl());
-            }
+            data.add("embed-author-url", object.getAuthorUrl());
+            data.add("embed-author-icon", object.getAuthorIconUrl());
         }
 
         if (object.getThumbnailUrl() != null) {
@@ -125,16 +122,11 @@ public class WrappedEmbedBuilderSerdes implements ObjectSerializer<WrappedEmbedB
         }
 
         if (data.containsKey("embed-author-name")) {
-            if (data.containsKey("embed-author-url") && data.containsKey("embed-author-icon")) {
-                wrappedEmbedBuilder.setAuthor(
-                        data.get("embed-author-name", String.class),
-                        data.get("embed-author-url", String.class),
-                        data.get("embed-author-icon", String.class)
-                );
-            }
-            else {
-                wrappedEmbedBuilder.setAuthor(data.get("embed-author-name", String.class));
-            }
+            wrappedEmbedBuilder.setAuthor(
+                    data.get("embed-author-name", String.class),
+                    data.get("embed-author-url", String.class),
+                    data.get("embed-author-icon", String.class)
+            );
         }
 
         if (data.containsKey("embed-thumbnail")) {

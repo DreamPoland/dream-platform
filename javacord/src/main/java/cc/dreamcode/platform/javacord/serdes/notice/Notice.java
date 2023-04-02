@@ -110,7 +110,7 @@ public class Notice {
         }
     }
 
-    public static String apply(@NonNull String text, @NonNull Map<String, Object> replaceMap) {
+    public static String apply(String text, @NonNull Map<String, Object> replaceMap) {
 
         CompiledMessage compiledMessage = CompiledMessage.of(text);
         PlaceholderContext placeholderContext = PlaceholderContext.of(compiledMessage);
@@ -153,30 +153,27 @@ public class Notice {
         }
 
         if (from.getAuthorName() != null) {
-            if (from.getAuthorUrl() != null && from.getAuthorIconUrl() != null) {
-                fixedEmbedBuilder.setAuthor(
-                        Notice.apply(from.getAuthorName(), replaceMap),
-                        Notice.apply(from.getAuthorUrl(), replaceMap),
-                        Notice.apply(from.getAuthorIconUrl(), replaceMap)
-                );
-            }
-            else {
-                fixedEmbedBuilder.setAuthor(Notice.apply(from.getAuthorName(), replaceMap));
-            }
+            fixedEmbedBuilder.setAuthor(
+                    Notice.apply(from.getAuthorName(), replaceMap),
+                    Notice.apply(from.getAuthorUrl(), replaceMap),
+                    Notice.apply(from.getAuthorIconUrl(), replaceMap)
+            );
+        }
+
+        if (from.getColor() != null) {
+            fixedEmbedBuilder.setColor(from.getColor());
         }
 
         if (from.getThumbnailUrl() != null) {
             fixedEmbedBuilder.setThumbnail(Notice.apply(from.getThumbnailUrl(), replaceMap));
         }
 
-        if (from.getFields().isEmpty()) {
-            from.getFields().forEach(wrappedEmbedField -> {
-                fixedEmbedBuilder.addField(
-                        Notice.apply(wrappedEmbedField.getName(), replaceMap),
-                        Notice.apply(wrappedEmbedField.getValue(), replaceMap),
-                        wrappedEmbedField.isInline()
-                );
-            });
+        if (!from.getFields().isEmpty()) {
+            from.getFields().forEach(wrappedEmbedField -> fixedEmbedBuilder.addField(
+                    Notice.apply(wrappedEmbedField.getName(), replaceMap),
+                    Notice.apply(wrappedEmbedField.getValue(), replaceMap),
+                    wrappedEmbedField.isInline()
+            ));
         }
 
         return fixedEmbedBuilder;
