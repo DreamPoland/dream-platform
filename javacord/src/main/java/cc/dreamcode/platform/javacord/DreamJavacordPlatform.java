@@ -54,7 +54,6 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
                 this.getDreamVersion().getName()));
 
         componentManager.registerResolver(ConfigurationComponentResolver.class);
-        componentManager.registerResolver(TimerTaskComponentResolver.class);
 
         this.discordApi = this.login(this.componentManager);
         this.injector.registerInjectable(this.discordApi);
@@ -65,6 +64,7 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
 
         componentManager.registerResolver(ListenerComponentResolver.class);
         componentManager.registerResolver(CommandComponentResolver.class);
+        componentManager.registerResolver(TimerTaskComponentResolver.class);
 
         try {
             this.enable(this.componentManager);
