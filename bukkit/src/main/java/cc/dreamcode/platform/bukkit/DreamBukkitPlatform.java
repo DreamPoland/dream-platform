@@ -2,6 +2,9 @@ package cc.dreamcode.platform.bukkit;
 
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
+import cc.dreamcode.platform.bukkit.component.CommandComponentResolver;
+import cc.dreamcode.platform.bukkit.component.ListenerComponentResolver;
+import cc.dreamcode.platform.bukkit.component.RunnableComponentResolver;
 import cc.dreamcode.platform.bukkit.exception.BukkitPluginException;
 import cc.dreamcode.platform.component.ComponentManager;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
@@ -66,6 +69,10 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
         if (this.getPluginDisabled().get()) {
             return;
         }
+
+        this.componentManager.registerResolver(CommandComponentResolver.class);
+        this.componentManager.registerResolver(ListenerComponentResolver.class);
+        this.componentManager.registerResolver(RunnableComponentResolver.class);
 
         try {
             this.disable();

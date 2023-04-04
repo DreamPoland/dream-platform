@@ -2,6 +2,9 @@ package cc.dreamcode.platform.bungee;
 
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
+import cc.dreamcode.platform.bungee.component.CommandComponentResolver;
+import cc.dreamcode.platform.bungee.component.ListenerComponentResolver;
+import cc.dreamcode.platform.bungee.component.RunnableComponentResolver;
 import cc.dreamcode.platform.bungee.exception.BungeePluginException;
 import cc.dreamcode.platform.component.ComponentManager;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
@@ -47,6 +50,10 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
         if (this.getPluginDisabled().get()) {
             return;
         }
+
+        this.componentManager.registerResolver(CommandComponentResolver.class);
+        this.componentManager.registerResolver(ListenerComponentResolver.class);
+        this.componentManager.registerResolver(RunnableComponentResolver.class);
 
         try {
             this.enable(this.componentManager);
