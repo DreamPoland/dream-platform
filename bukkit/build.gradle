@@ -18,8 +18,8 @@ dependencies {
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
 
     // -- dream-utilities --
-    implementation "cc.dreamcode:utilities:1.2.10"
-    implementation "cc.dreamcode:utilities-bukkit:1.2.10"
+    implementation "cc.dreamcode:utilities:1.2.11"
+    implementation "cc.dreamcode:utilities-bukkit:1.2.11"
 
     // -- dream-command --
     implementation "cc.dreamcode.command:core:1.3"
