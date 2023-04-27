@@ -1,0 +1,23 @@
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation project(":core")
+
+    // -- minestom --
+    compileOnly 'com.github.Minestom.Minestom:Minestom:79ce9570ea'
+
+    // -- configs--
+    implementation 'eu.okaeri:okaeri-configs-yaml-snakeyaml:4.0.9'
+    implementation 'eu.okaeri:okaeri-configs-serdes-commons:4.0.9'
+
+    // -- injector --
+    implementation 'eu.okaeri:okaeri-injector:2.1.0'
+
+    // -- dream-utilities --
+    implementation "cc.dreamcode:utilities:1.2.10"
+}
