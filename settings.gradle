@@ -13,3 +13,5 @@ include ':discord4j'
 
 // -- other --
 include ':cli'
+include 'minestom'
+
