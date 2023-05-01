@@ -9,11 +9,6 @@ dependencies {
     // -- spigot api --
     compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 
-    // -- configs--
-    implementation "eu.okaeri:okaeri-configs-yaml-bukkit:4.0.9"
-    implementation 'eu.okaeri:okaeri-configs-serdes-bukkit:4.0.9'
-    implementation "eu.okaeri:okaeri-configs-serdes-commons:4.0.9"
-
     // -- injector --
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
 

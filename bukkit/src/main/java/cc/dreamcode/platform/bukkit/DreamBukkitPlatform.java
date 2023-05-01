@@ -4,8 +4,6 @@ import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.bukkit.exception.BukkitPluginException;
 import cc.dreamcode.platform.component.ComponentManager;
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
-import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
@@ -80,26 +78,6 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
     }
 
     public abstract void load(@NonNull ComponentManager componentManager);
-    public abstract @NonNull OkaeriSerdesPack getBukkitConfigurationSerdesPack();
-    public @NonNull OkaeriSerdesPack getBukkitPersistenceSerdesPack() {
-        return registry -> {};
-    }
-
-    @Override
-    public @NonNull OkaeriSerdesPack getConfigurationSerdesPack() {
-        return registry -> {
-            registry.register(new SerdesBukkit());
-            registry.register(this.getBukkitConfigurationSerdesPack());
-        };
-    }
-
-    @Override
-    public @NonNull OkaeriSerdesPack getPersistenceSerdesPack() {
-        return registry -> {
-            registry.register(new SerdesBukkit());
-            registry.register(this.getBukkitPersistenceSerdesPack());
-        };
-    }
 
     @Override
     public void registerInjectable(@NonNull Object object) {

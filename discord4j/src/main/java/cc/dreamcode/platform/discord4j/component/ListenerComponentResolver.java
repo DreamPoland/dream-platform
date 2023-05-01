@@ -4,6 +4,7 @@ import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.discord4j.component.listener.EventHandler;
 import cc.dreamcode.platform.discord4j.component.listener.Listener;
+import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.Event;
@@ -65,7 +66,7 @@ public class ListenerComponentResolver extends ComponentClassResolver<Class<List
                         try {
                             method.invoke(listener, event);
                         } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(e);
+                            throw new PlatformException(e);
                         }
                     });
                 });

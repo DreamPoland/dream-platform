@@ -1,7 +1,4 @@
 dependencies {
-    // -- configs--
-    implementation 'eu.okaeri:okaeri-configs-core:4.0.9'
-
     // -- injector --
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
 

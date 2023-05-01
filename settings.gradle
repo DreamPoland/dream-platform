@@ -1,15 +1,23 @@
 rootProject.name = 'dream-platform'
 
+// -- core --
 include ':core'
-include ':core:persistence'
+include ':persistence'
 
 // -- minecraft --
 include ':bukkit'
+include ':bukkit-config'
+
 include ':bungee'
+include ':bungee-config'
 
 // -- discord --
 include ':javacord'
+include ':javacord-config'
+
 include ':discord4j'
+include ':discord4j-config'
 
 // -- other --
 include ':cli'
+include ':cli-config'

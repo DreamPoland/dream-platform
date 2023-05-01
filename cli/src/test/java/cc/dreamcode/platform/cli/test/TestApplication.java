@@ -3,7 +3,6 @@ package cc.dreamcode.platform.cli.test;
 import cc.dreamcode.platform.DreamVersion;
 import cc.dreamcode.platform.cli.DreamCliPlatform;
 import cc.dreamcode.platform.component.ComponentManager;
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import lombok.NonNull;
 
 import java.io.File;
@@ -32,19 +31,5 @@ public class TestApplication extends DreamCliPlatform {
     @Override
     public @NonNull DreamVersion getDreamVersion() {
         return DreamVersion.create("cli-test", "1.0", "Ravis96");
-    }
-
-    @Override
-    public @NonNull OkaeriSerdesPack getConfigurationSerdesPack() {
-        return registry -> {
-
-        };
-    }
-
-    @Override
-    public @NonNull OkaeriSerdesPack getPersistenceSerdesPack() {
-        return registry -> {
-
-        };
     }
 }

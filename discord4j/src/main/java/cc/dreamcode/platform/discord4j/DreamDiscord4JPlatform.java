@@ -5,9 +5,7 @@ import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.DreamVersion;
 import cc.dreamcode.platform.component.ComponentManager;
 import cc.dreamcode.platform.discord4j.exception.Discord4JPlatformException;
-import cc.dreamcode.platform.discord4j.serdes.SerdesDiscord4J;
 import discord4j.core.GatewayDiscordClient;
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
@@ -16,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
-import java.util.Timer;
 
 public abstract class DreamDiscord4JPlatform implements DreamPlatform {
 
@@ -73,27 +70,6 @@ public abstract class DreamDiscord4JPlatform implements DreamPlatform {
     }
 
     public abstract Mono<GatewayDiscordClient> load(@NonNull ComponentManager componentManager);
-
-    public abstract @NonNull OkaeriSerdesPack getDiscord4JConfigurationSerdesPack();
-    public @NonNull OkaeriSerdesPack getDiscord4JPersistenceSerdesPack() {
-        return registry -> {};
-    }
-
-    @Override
-    public @NonNull OkaeriSerdesPack getConfigurationSerdesPack() {
-        return registry -> {
-            registry.register(new SerdesDiscord4J());
-            registry.register(this.getDiscord4JConfigurationSerdesPack());
-        };
-    }
-
-    @Override
-    public @NonNull OkaeriSerdesPack getPersistenceSerdesPack() {
-        return registry -> {
-            registry.register(new SerdesDiscord4J());
-            registry.register(this.getDiscord4JPersistenceSerdesPack());
-        };
-    }
 
     @Override
     public void registerInjectable(@NonNull Object object) {
