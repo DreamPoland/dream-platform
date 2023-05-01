@@ -1,13 +1,13 @@
 package cc.dreamcode.platform.bungee.component;
 
 import cc.dreamcode.platform.DreamPlatform;
+import cc.dreamcode.platform.bungee.DreamBungeeConfig;
 import cc.dreamcode.platform.bungee.component.configuration.Configuration;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.OkaeriConfig;
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.configs.serdes.commons.SerdesCommons;
 import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBungee;
 import eu.okaeri.configs.yaml.bungee.YamlBungeeConfigurer;
@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class ConfigurationComponentResolver extends ComponentClassResolver<Class<OkaeriConfig>> {
 
     private @Inject DreamPlatform dreamPlatform;
-    private @Inject("configuration-serdes") OkaeriSerdesPack configurationSerdesPack;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> okaeriConfigClass) {
@@ -65,8 +64,13 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
             throw new PlatformException("Config component must have an " + Configuration.class.getSimpleName() + " annotation.");
         }
 
+        if (!(this.dreamPlatform instanceof DreamBungeeConfig)) {
+            throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " class must implement DreamBungeeConfig.");
+        }
+
+        final DreamBungeeConfig dreamBungeeConfig = (DreamBungeeConfig) this.dreamPlatform;
         return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlBungeeConfigurer(), new SerdesBungee(), new SerdesCommons(), this.configurationSerdesPack);
+            it.withConfigurer(new YamlBungeeConfigurer(), new SerdesBungee(), new SerdesCommons(), dreamBungeeConfig.getConfigSerdesPack());
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
             it.saveDefaults();
             it.load(true);

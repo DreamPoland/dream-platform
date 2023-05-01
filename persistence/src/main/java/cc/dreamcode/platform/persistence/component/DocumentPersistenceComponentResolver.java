@@ -3,6 +3,7 @@ package cc.dreamcode.platform.persistence.component;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
+import cc.dreamcode.platform.persistence.DreamPersistence;
 import cc.dreamcode.platform.persistence.StorageConfig;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import com.mongodb.client.MongoClient;
@@ -10,7 +11,6 @@ import com.mongodb.client.MongoClients;
 import com.zaxxer.hikari.HikariConfig;
 import eu.okaeri.configs.json.gson.JsonGsonConfigurer;
 import eu.okaeri.configs.json.simple.JsonSimpleConfigurer;
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.configs.serdes.commons.SerdesCommons;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
@@ -29,9 +29,8 @@ import java.util.Map;
 
 public class DocumentPersistenceComponentResolver extends ComponentClassResolver<Class<DocumentPersistence>> {
 
-    private @Inject DreamPlatform platform;
+    private @Inject DreamPlatform dreamPlatform;
     private @Inject StorageConfig storageConfig;
-    private @Inject("persistence-serdes") OkaeriSerdesPack persistenceSerdesPack;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<DocumentPersistence> documentPersistenceClass) {
@@ -58,16 +57,21 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
         try { Class.forName("org.mariadb.jdbc.Driver"); } catch (ClassNotFoundException ignored) { }
         try { Class.forName("org.h2.Driver"); } catch (ClassNotFoundException ignored) { }
 
+        if (!(this.dreamPlatform instanceof DreamPersistence)) {
+            throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " class must implement DreamPersistence.");
+        }
+
+        final DreamPersistence dreamPersistence = (DreamPersistence) this.dreamPlatform;
         switch (this.storageConfig.storageType) {
             case FLAT:
                 return new DocumentPersistence(
                         new FlatPersistence(
-                                this.platform.getDataFolder(),
+                                this.dreamPlatform.getDataFolder(),
                                 ".json"
                         ),
                         JsonGsonConfigurer::new,
                         new SerdesCommons(),
-                        this.persistenceSerdesPack
+                        dreamPersistence.getPersistenceSerdesPack()
                 );
             case MYSQL:
                 HikariConfig mariadbHikari = new HikariConfig();
@@ -80,7 +84,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         ),
                         JsonSimpleConfigurer::new,
                         new SerdesCommons(),
-                        this.persistenceSerdesPack
+                        dreamPersistence.getPersistenceSerdesPack()
                 );
             case H2:
                 HikariConfig jdbcHikari = new HikariConfig();
@@ -93,7 +97,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         ),
                         JsonSimpleConfigurer::new,
                         new SerdesCommons(),
-                        this.persistenceSerdesPack
+                        dreamPersistence.getPersistenceSerdesPack()
                 );
             case REDIS:
                 RedisURI redisURI = RedisURI.create(this.storageConfig.uri);
@@ -106,7 +110,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         ),
                         JsonSimpleConfigurer::new,
                         new SerdesCommons(),
-                        this.persistenceSerdesPack
+                        dreamPersistence.getPersistenceSerdesPack()
                 );
             case MONGO:
                 MongoClient mongoClient = MongoClients.create(this.storageConfig.uri);
@@ -119,7 +123,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         ),
                         JsonSimpleConfigurer::new,
                         new SerdesCommons(),
-                        this.persistenceSerdesPack
+                        dreamPersistence.getPersistenceSerdesPack()
                 );
             default:
                 throw new PlatformException("Unknown data type: " + this.storageConfig.storageType);

@@ -1,6 +1,7 @@
 package cc.dreamcode.platform.bukkit.component;
 
 import cc.dreamcode.platform.DreamPlatform;
+import cc.dreamcode.platform.bukkit.DreamBukkitConfig;
 import cc.dreamcode.platform.bukkit.component.configuration.Configuration;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
@@ -65,8 +66,13 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
             throw new PlatformException("Config component must have an " + Configuration.class.getSimpleName() + " annotation.");
         }
 
+        if (!(this.dreamPlatform instanceof DreamBukkitConfig)) {
+            throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " class must implement DreamBukkitConfig.");
+        }
+
+        final DreamBukkitConfig dreamBukkitConfig = (DreamBukkitConfig) this.dreamPlatform;
         return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons(), this.configurationSerdesPack);
+            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons(), dreamBukkitConfig.getConfigSerdesPack());
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
             it.saveDefaults();
             it.load(true);
