@@ -7,9 +7,11 @@ include ':persistence'
 // -- minecraft --
 include ':bukkit'
 include ':bukkit-config'
+include ':bukkit-command'
 
 include ':bungee'
 include ':bungee-config'
+include ':bungee-command'
 
 // -- discord --
 include ':javacord'
