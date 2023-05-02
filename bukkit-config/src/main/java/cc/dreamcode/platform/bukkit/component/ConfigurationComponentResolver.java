@@ -8,7 +8,6 @@ import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.OkaeriConfig;
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.configs.serdes.commons.SerdesCommons;
 import eu.okaeri.configs.yaml.bukkit.YamlBukkitConfigurer;
 import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 public class ConfigurationComponentResolver extends ComponentClassResolver<Class<OkaeriConfig>> {
 
     private @Inject DreamPlatform dreamPlatform;
-    private @Inject("configuration-serdes") OkaeriSerdesPack configurationSerdesPack;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> okaeriConfigClass) {
