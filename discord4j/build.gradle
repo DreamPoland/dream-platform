@@ -10,7 +10,7 @@ dependencies {
     implementation "org.slf4j:slf4j-api:2.0.6"
 
     // -- dream-utilities --
-    implementation "cc.dreamcode:utilities:1.2.13"
+    implementation "cc.dreamcode:utilities:1.2.14"
 
     // -- injector --
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
