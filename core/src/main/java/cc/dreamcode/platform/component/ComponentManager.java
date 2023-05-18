@@ -2,6 +2,7 @@ package cc.dreamcode.platform.component;
 
 import cc.dreamcode.platform.component.resolver.ObjectComponentClassResolver;
 import eu.okaeri.injector.Injector;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public final class ComponentManager {
     private final Injector injector;
     private final List<Class<? extends ComponentClassResolver>> classResolvers = new ArrayList<>();
 
-    @Setter private boolean debug = false;
+    @Getter @Setter private boolean debug = true;
 
     /**
      * This method implement new class resolver, before component will be registered.
