@@ -5,7 +5,6 @@ import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.DreamVersion;
 import cc.dreamcode.platform.cli.exception.CliPlatformException;
 import cc.dreamcode.platform.component.ComponentManager;
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;

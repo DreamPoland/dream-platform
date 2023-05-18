@@ -15,23 +15,25 @@ public abstract class ComponentClassResolver<T extends Class> {
     public abstract Map<String, Object> getMetas(@NonNull Injector injector, @NonNull T t);
     public abstract Object resolve(@NonNull Injector injector, @NonNull T t);
 
-    public Object process(@NonNull Injector injector, @NonNull T t) {
+    public Object process(@NonNull Injector injector, @NonNull T t, boolean debug) {
         long start = System.currentTimeMillis();
 
         final Object object = this.resolve(injector, t);
         injector.registerInjectable(object);
 
         long took = System.currentTimeMillis() - start;
-        injector.getInjectable("", DreamLogger.class)
-                .map(Injectable::getObject)
-                .ifPresent(dreamLogger -> dreamLogger.info(
-                        new DreamLogger.Builder()
-                                .type("Added " + this.getComponentName() + " component")
-                                .name(t.getSimpleName())
-                                .took(took)
-                                .meta(this.getMetas(injector, t))
-                                .build()
-                ));
+        if (debug) {
+            injector.getInjectable("", DreamLogger.class)
+                    .map(Injectable::getObject)
+                    .ifPresent(dreamLogger -> dreamLogger.info(
+                            new DreamLogger.Builder()
+                                    .type("Added " + this.getComponentName() + " component")
+                                    .name(t.getSimpleName())
+                                    .took(took)
+                                    .meta(this.getMetas(injector, t))
+                                    .build()
+                    ));
+        }
 
         return object;
     }

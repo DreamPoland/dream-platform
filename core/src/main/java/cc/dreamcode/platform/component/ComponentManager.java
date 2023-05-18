@@ -4,6 +4,7 @@ import cc.dreamcode.platform.component.resolver.ObjectComponentClassResolver;
 import eu.okaeri.injector.Injector;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ public final class ComponentManager {
 
     private final Injector injector;
     private final List<Class<? extends ComponentClassResolver>> classResolvers = new ArrayList<>();
+
+    @Setter private boolean debug = false;
 
     /**
      * This method implement new class resolver, before component will be registered.
@@ -49,10 +52,10 @@ public final class ComponentManager {
 
         this.injector.injectFields(reference.get());
         if (consumer != null) {
-            consumer.accept((T) reference.get().process(this.injector, componentClass));
+            consumer.accept((T) reference.get().process(this.injector, componentClass, this.debug));
         }
         else {
-            reference.get().process(this.injector, componentClass);
+            reference.get().process(this.injector, componentClass, this.debug);
         }
     }
 
