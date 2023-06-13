@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class StorageConfig extends OkaeriConfig {
 
     @Comment({"W jakiej formie maja byc zapisywane dane o graczu?",
-            "Dostepne zapisy: (FLAT, MYSQL, MONGO, REDIS, H2)"})
+            "Dostepne zapisy: (FLAT, MYSQL, MONGO, H2)"})
     public StorageType storageType = StorageType.FLAT;
 
     @Comment({"Jaki prefix ustawic dla danych?",
@@ -23,7 +23,6 @@ public class StorageConfig extends OkaeriConfig {
     public String prefix = "dreamtemplate";
 
     @Comment("FLAT   : nie jest wymagane podawanie dodatkowych informacji")
-    @Comment("REDIS  : redis://{username}:{password}@{host}:{port}")
     @Comment("MONGO  : mongodb://{host}:{port}/?maxPoolSize=20&w=majority")
     @Comment("MYSQL  : jdbc:mysql://{host}:{port}/{database}?user={username}&password={password}")
     @Comment("H2     : jdbc:h2:file:./plugins/{data_folder}/storage;mode=mysql")

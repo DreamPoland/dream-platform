@@ -20,9 +20,6 @@ import eu.okaeri.persistence.flat.FlatPersistence;
 import eu.okaeri.persistence.jdbc.H2Persistence;
 import eu.okaeri.persistence.jdbc.MariaDbPersistence;
 import eu.okaeri.persistence.mongo.MongoPersistence;
-import eu.okaeri.persistence.redis.RedisPersistence;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
 import lombok.NonNull;
 
 import java.util.Map;
@@ -94,19 +91,6 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
                         new H2Persistence(
                                 persistencePath,
                                 jdbcHikari
-                        ),
-                        JsonSimpleConfigurer::new,
-                        new SerdesCommons(),
-                        dreamPersistence.getPersistenceSerdesPack()
-                );
-            case REDIS:
-                RedisURI redisURI = RedisURI.create(this.storageConfig.uri);
-                RedisClient redisClient = RedisClient.create(redisURI);
-
-                return new DocumentPersistence(
-                        new RedisPersistence(
-                                persistencePath,
-                                redisClient
                         ),
                         JsonSimpleConfigurer::new,
                         new SerdesCommons(),
