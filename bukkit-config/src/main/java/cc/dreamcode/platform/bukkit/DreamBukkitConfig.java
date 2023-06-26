@@ -7,10 +7,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 public interface DreamBukkitConfig {
 
-    default OkaeriSerdesPack getConfigSerdesPack() {
+    OkaeriSerdesPack getConfigSerdesPack();
+
+    default OkaeriSerdesPack getSerdesPack() {
         return registry -> {
             registry.register(new SerdesBukkit());
             registry.registerExclusive(ItemMeta.class, new ItemMetaSerializer());
+            registry.register(this.getConfigSerdesPack());
         };
     }
 }

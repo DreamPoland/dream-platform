@@ -5,7 +5,12 @@ import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 
 public interface DreamDiscord4jConfig {
 
-    default OkaeriSerdesPack getConfigSerdesPack() {
-        return registry -> registry.register(new SerdesDiscord4J());
+    OkaeriSerdesPack getConfigSerdesPack();
+
+    default OkaeriSerdesPack getSerdesPack() {
+        return registry -> {
+            registry.register(new SerdesDiscord4J());
+            registry.register(this.getConfigSerdesPack());
+        };
     }
 }

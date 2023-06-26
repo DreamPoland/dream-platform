@@ -70,7 +70,7 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
 
         final DreamBukkitConfig dreamBukkitConfig = (DreamBukkitConfig) this.dreamPlatform;
         return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons(), dreamBukkitConfig.getConfigSerdesPack());
+            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons(), dreamBukkitConfig.getSerdesPack());
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
             it.saveDefaults();
             it.load(true);

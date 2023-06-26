@@ -5,7 +5,12 @@ import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBungee;
 
 public interface DreamBungeeConfig {
 
-    default OkaeriSerdesPack getConfigSerdesPack() {
-        return registry -> registry.register(new SerdesBungee());
+    OkaeriSerdesPack getConfigSerdesPack();
+
+    default OkaeriSerdesPack getSerdesPack() {
+        return registry -> {
+            registry.register(new SerdesBungee());
+            registry.register(this.getConfigSerdesPack());
+        };
     }
 }

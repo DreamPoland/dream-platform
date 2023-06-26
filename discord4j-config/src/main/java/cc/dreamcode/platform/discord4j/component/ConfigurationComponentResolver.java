@@ -70,7 +70,7 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
 
         final DreamDiscord4jConfig dreamDiscord4jConfig = (DreamDiscord4jConfig) this.dreamPlatform;
         return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesDiscord4J(), new SerdesCommons(), dreamDiscord4jConfig.getConfigSerdesPack());
+            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesDiscord4J(), new SerdesCommons(), dreamDiscord4jConfig.getSerdesPack());
             it.withBindFile(new File(configuration.child()));
             it.saveDefaults();
             it.load(true);

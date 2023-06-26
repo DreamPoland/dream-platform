@@ -69,7 +69,7 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
 
         final DreamJavacordConfig dreamJavacordConfig = (DreamJavacordConfig) this.dreamPlatform;
         return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesCommons(), dreamJavacordConfig.getConfigSerdesPack());
+            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesCommons(), dreamJavacordConfig.getSerdesPack());
             it.withBindFile(new File(configuration.child()));
             it.saveDefaults();
             it.load(true);
