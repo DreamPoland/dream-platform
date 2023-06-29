@@ -8,6 +8,7 @@ import eu.okaeri.injector.Injector
 import java.util.Optional
 import java.util.function.Consumer
 import kotlin.reflect.KClass
+
 fun ComponentManager.registerComponent(`class`: KClass<*>) {
     this.registerComponent(`class`.java)
 }
