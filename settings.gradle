@@ -2,6 +2,7 @@ rootProject.name = 'dream-platform'
 
 // -- core --
 include ':core'
+include ':core-kt'
 include ':persistence'
 
 // -- minecraft --
