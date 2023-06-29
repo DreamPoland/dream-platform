@@ -10,7 +10,7 @@ plugins {
 
 allprojects {
     group 'cc.dreamcode.platform'
-    version '1.9-pre.12'
+    version '1.9-pre.13'
 
     apply plugin: 'java-library'
     apply plugin: 'kotlin'
