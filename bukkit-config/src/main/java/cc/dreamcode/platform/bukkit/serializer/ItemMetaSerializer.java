@@ -14,12 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
-
-    private static final char COLOR_CHAR = '\u00A7';
-    private static final char ALT_COLOR_CHAR = '&';
 
     @Override
     public boolean supports(@NonNull Class<? super ItemMeta> type) {
@@ -30,11 +26,11 @@ public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
     public void serialize(@NonNull ItemMeta itemMeta, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
 
         if (itemMeta.hasDisplayName()) {
-            data.add("display-name", this.decolor(itemMeta.getDisplayName()));
+            data.add("display-name", itemMeta.getDisplayName());
         }
 
         if (itemMeta.hasLore()) {
-            data.addCollection("lore", this.decolor(itemMeta.getLore()), String.class);
+            data.addCollection("lore", itemMeta.getLore(), String.class);
         }
 
         if (!itemMeta.getEnchants().isEmpty()) {
@@ -78,13 +74,5 @@ public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
         itemMeta.addItemFlags(itemFlags.toArray(new ItemFlag[0]));
 
         return itemMeta;
-    }
-
-    private List<String> decolor(List<String> text) {
-        return text.stream().map(this::decolor).collect(Collectors.toList());
-    }
-
-    private String decolor(String text) {
-        return text.replace(COLOR_CHAR + "", ALT_COLOR_CHAR + "");
     }
 }
