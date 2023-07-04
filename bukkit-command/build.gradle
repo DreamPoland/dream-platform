@@ -16,6 +16,6 @@ dependencies {
     implementation "cc.dreamcode:utilities:1.2.14"
 
     // -- dream-command --
-    implementation "cc.dreamcode.command:core:1.4.8"
-    implementation "cc.dreamcode.command:bukkit:1.4.8"
+    implementation "cc.dreamcode.command:core:1.4.9"
+    implementation "cc.dreamcode.command:bukkit:1.4.9"
 }
