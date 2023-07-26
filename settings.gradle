@@ -4,12 +4,13 @@ rootProject.name = 'dream-platform'
 include ':core'
 include ':core-kt'
 include ':persistence'
-include ':persistence'
+include ':hook'
 
 // -- minecraft --
 include ':bukkit'
 include ':bukkit-config'
 include ':bukkit-command'
+include ':bukkit-hook'
 
 include ':bungee'
 include ':bungee-config'
