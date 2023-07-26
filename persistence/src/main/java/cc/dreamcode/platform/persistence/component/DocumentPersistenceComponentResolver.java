@@ -21,13 +21,15 @@ import eu.okaeri.persistence.jdbc.H2Persistence;
 import eu.okaeri.persistence.jdbc.MariaDbPersistence;
 import eu.okaeri.persistence.mongo.MongoPersistence;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DocumentPersistenceComponentResolver extends ComponentClassResolver<Class<DocumentPersistence>> {
 
-    private @Inject DreamPlatform dreamPlatform;
-    private @Inject StorageConfig storageConfig;
+    private final DreamPlatform dreamPlatform;
+    private final StorageConfig storageConfig;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<DocumentPersistence> documentPersistenceClass) {

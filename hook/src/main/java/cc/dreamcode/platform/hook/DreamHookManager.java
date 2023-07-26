@@ -4,15 +4,17 @@ import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DreamHookManager {
 
-    private @Inject DreamPlatform dreamPlatform;
-    private @Inject DreamLogger dreamLogger;
+    private final DreamPlatform dreamPlatform;
+    private final DreamLogger dreamLogger;
 
     private final List<DreamHook> dreamHookList = new ArrayList<>();
 

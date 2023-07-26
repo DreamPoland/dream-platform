@@ -14,29 +14,23 @@ public class WrappedEmbedBuilder {
 
     private final EmbedBuilder embedBuilder = new EmbedBuilder();
 
-    // General embed stuff
     @Getter private String title = null;
     @Getter private String description = null;
     @Getter private String url = null;
     @Getter private Instant timestamp = null;
     @Getter private Color color = null;
 
-    // Footer
     @Getter private String footerText = null;
     @Getter private String footerIconUrl = null;
 
-    // Image
     @Getter private String imageUrl = null;
 
-    // Author
     @Getter private String authorName = null;
     @Getter private String authorUrl = null;
     @Getter private String authorIconUrl = null;
 
-    // Thumbnail
     @Getter private String thumbnailUrl = null;
 
-    // Fields
     @Getter private final List<WrappedEmbedField> fields = new ArrayList<>();
 
     /**

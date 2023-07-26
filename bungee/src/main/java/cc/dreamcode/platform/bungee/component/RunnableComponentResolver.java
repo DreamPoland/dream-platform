@@ -8,13 +8,15 @@ import com.google.common.collect.ImmutableMap;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class RunnableComponentResolver extends ComponentClassResolver<Class<? extends Runnable>> {
 
-    private @Inject DreamBungeePlatform dreamBukkitPlatform;
+    private final DreamBungeePlatform dreamBukkitPlatform;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<? extends Runnable> runnableClass) {

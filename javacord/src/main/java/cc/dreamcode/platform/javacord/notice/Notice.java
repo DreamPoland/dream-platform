@@ -6,7 +6,6 @@ import eu.okaeri.placeholders.context.PlaceholderContext;
 import eu.okaeri.placeholders.message.CompiledMessage;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageBuilder;
 import org.javacord.api.entity.message.Messageable;
@@ -17,7 +16,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 @Data
-@RequiredArgsConstructor
 public class Notice {
 
     private final NoticeType noticeType;

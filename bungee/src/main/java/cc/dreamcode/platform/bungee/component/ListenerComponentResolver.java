@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.PluginManager;
 import net.md_5.bungee.event.EventHandler;
@@ -15,9 +16,10 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ListenerComponentResolver extends ComponentClassResolver<Class<? extends Listener>> {
 
-    private @Inject DreamBungeePlatform dreamBungeePlatform;
+    private final DreamBungeePlatform dreamBungeePlatform;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<? extends Listener> listenerClass) {

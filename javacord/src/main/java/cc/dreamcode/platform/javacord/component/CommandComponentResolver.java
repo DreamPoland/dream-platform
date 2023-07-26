@@ -7,15 +7,17 @@ import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.interaction.SlashCommandInteraction;
 
 import java.util.Map;
 
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class CommandComponentResolver extends ComponentClassResolver<Class<JavacordCommand>> {
 
-    private @Inject DreamJavacordPlatform dreamJavacordPlatform;
-    private @Inject DiscordApi discordApi;
+    private final DreamJavacordPlatform dreamJavacordPlatform;
+    private final DiscordApi discordApi;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<JavacordCommand> javacordCommandClass) {

@@ -12,6 +12,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TimerTaskComponentResolver extends ComponentClassResolver<Class<TimerTask>> {
+
     @Override
     public boolean isAssignableFrom(@NonNull Class<TimerTask> timerTaskClass) {
         return TimerTask.class.isAssignableFrom(timerTaskClass);
