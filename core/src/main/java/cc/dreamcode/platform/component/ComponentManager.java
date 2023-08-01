@@ -45,13 +45,12 @@ public final class ComponentManager {
         final AtomicReference<ComponentClassResolver> reference = new AtomicReference<>(defaultObjectResolver);
 
         for (Class<? extends ComponentClassResolver> componentResolvers : this.classResolvers) {
-            final ComponentClassResolver componentClassResolver = componentResolvers.newInstance();
+            final ComponentClassResolver componentClassResolver = this.injector.createInstance(componentResolvers);
             if (componentClassResolver.isAssignableFrom(componentClass)) {
                 reference.set(componentClassResolver);
             }
         }
 
-        this.injector.injectFields(reference.get());
         if (consumer != null) {
             consumer.accept((T) reference.get().process(this.injector, componentClass, this.debug));
         }
