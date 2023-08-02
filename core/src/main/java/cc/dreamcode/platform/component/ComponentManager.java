@@ -2,6 +2,7 @@ package cc.dreamcode.platform.component;
 
 import cc.dreamcode.platform.component.resolver.ObjectComponentClassResolver;
 import eu.okaeri.injector.Injector;
+import eu.okaeri.injector.exception.InjectorException;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,14 @@ public final class ComponentManager {
         final AtomicReference<ComponentClassResolver> reference = new AtomicReference<>(defaultObjectResolver);
 
         for (Class<? extends ComponentClassResolver> componentResolvers : this.classResolvers) {
-            final ComponentClassResolver componentClassResolver = this.injector.createInstance(componentResolvers);
+            ComponentClassResolver componentClassResolver;
+
+            try {
+                componentClassResolver = this.injector.createInstance(componentResolvers);
+            } catch (InjectorException e) {
+                componentClassResolver = componentResolvers.getConstructor().newInstance();
+            }
+
             if (componentClassResolver.isAssignableFrom(componentClass)) {
                 reference.set(componentClassResolver);
             }
