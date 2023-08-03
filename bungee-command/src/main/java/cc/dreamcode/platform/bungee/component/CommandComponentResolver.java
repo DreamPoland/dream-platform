@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class CommandComponentResolver extends ComponentClassResolver<Class<BungeeCommand>> {
 
-    private final BungeeCommandProvider bungeeCommandProvider;
+    private @Inject BungeeCommandProvider bungeeCommandProvider;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<BungeeCommand> bungeeCommandClass) {

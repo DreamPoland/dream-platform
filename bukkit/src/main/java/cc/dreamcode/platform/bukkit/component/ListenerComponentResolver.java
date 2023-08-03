@@ -16,10 +16,10 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class ListenerComponentResolver extends ComponentClassResolver<Class<? extends Listener>> {
 
-    private final DreamBukkitPlatform dreamBukkitPlatform;
+    private @Inject DreamBukkitPlatform dreamBukkitPlatform;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<? extends Listener> listenerClass) {

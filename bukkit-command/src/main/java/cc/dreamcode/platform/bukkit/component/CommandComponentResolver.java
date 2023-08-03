@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class CommandComponentResolver extends ComponentClassResolver<Class<BukkitCommand>> {
 
-    private final BukkitCommandProvider bukkitCommandProvider;
+    private @Inject BukkitCommandProvider bukkitCommandProvider;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<BukkitCommand> BukkitCommandClass) {

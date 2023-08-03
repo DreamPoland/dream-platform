@@ -15,11 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("rawtypes")
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class DocumentRepositoryComponentResolver extends ComponentClassResolver<Class<? extends DocumentRepository>> {
 
-    private final DreamPlatform platform;
-    private final DocumentPersistence documentPersistence;
+    private @Inject DreamPlatform platform;
+    private @Inject DocumentPersistence documentPersistence;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<? extends DocumentRepository> documentRepositoryClass) {

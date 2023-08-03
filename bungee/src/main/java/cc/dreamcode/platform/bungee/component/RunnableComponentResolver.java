@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class RunnableComponentResolver extends ComponentClassResolver<Class<? extends Runnable>> {
 
-    private final DreamBungeePlatform dreamBukkitPlatform;
+    private @Inject DreamBungeePlatform dreamBukkitPlatform;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<? extends Runnable> runnableClass) {

@@ -21,10 +21,10 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class ConfigurationComponentResolver extends ComponentClassResolver<Class<OkaeriConfig>> {
 
-    private final DreamPlatform dreamPlatform;
+    private @Inject DreamPlatform dreamPlatform;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> okaeriConfigClass) {

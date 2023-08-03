@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class DreamHookManager {
 
-    private final DreamPlatform dreamPlatform;
-    private final DreamLogger dreamLogger;
+    private @Inject DreamPlatform dreamPlatform;
+    private @Inject DreamLogger dreamLogger;
 
     private final List<DreamHook> dreamHookList = new ArrayList<>();
 

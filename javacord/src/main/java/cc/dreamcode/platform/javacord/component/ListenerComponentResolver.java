@@ -11,10 +11,10 @@ import org.javacord.api.listener.GloballyAttachableListener;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class ListenerComponentResolver extends ComponentClassResolver<Class<GloballyAttachableListener>> {
 
-    private final DiscordApi discordApi;
+    private @Inject DiscordApi discordApi;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<GloballyAttachableListener> listenerClass) {

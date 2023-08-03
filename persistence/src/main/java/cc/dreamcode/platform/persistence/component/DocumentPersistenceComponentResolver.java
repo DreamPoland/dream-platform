@@ -25,11 +25,11 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class DocumentPersistenceComponentResolver extends ComponentClassResolver<Class<DocumentPersistence>> {
 
-    private final DreamPlatform dreamPlatform;
-    private final StorageConfig storageConfig;
+    private @Inject DreamPlatform dreamPlatform;
+    private @Inject StorageConfig storageConfig;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<DocumentPersistence> documentPersistenceClass) {

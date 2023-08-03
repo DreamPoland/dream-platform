@@ -13,11 +13,11 @@ import org.javacord.api.interaction.SlashCommandInteraction;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class CommandComponentResolver extends ComponentClassResolver<Class<JavacordCommand>> {
 
-    private final DreamJavacordPlatform dreamJavacordPlatform;
-    private final DiscordApi discordApi;
+    private @Inject DreamJavacordPlatform dreamJavacordPlatform;
+    private @Inject DiscordApi discordApi;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<JavacordCommand> javacordCommandClass) {

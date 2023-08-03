@@ -12,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
+@RequiredArgsConstructor
 public class RunnableComponentResolver extends ComponentClassResolver<Class<? extends Runnable>> {
 
-    private final DreamBukkitPlatform dreamBukkitPlatform;
+    private @Inject DreamBukkitPlatform dreamBukkitPlatform;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<? extends Runnable> runnableClass) {
