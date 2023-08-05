@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 public interface PluginHook extends DreamHook {
 
     default boolean isPresent()  {
-        return Bukkit.getPluginManager().getPlugin("Multiverse-Core") != null;
+        return Bukkit.getPluginManager().getPlugin(this.getPluginName()) != null;
     }
 
 }
