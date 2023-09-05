@@ -3,18 +3,19 @@ rootProject.name = 'dream-platform'
 // -- core --
 include ':core'
 include ':core-kt'
+
+// -- addons --
+include ':command'
 include ':persistence'
 include ':hook'
 
 // -- minecraft --
 include ':bukkit'
 include ':bukkit-config'
-include ':bukkit-command'
 include ':bukkit-hook'
 
 include ':bungee'
 include ':bungee-config'
-include ':bungee-command'
 
 // -- discord --
 include ':javacord'
