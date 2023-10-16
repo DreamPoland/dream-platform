@@ -7,7 +7,7 @@ plugins {
 
 allprojects {
     group 'cc.dreamcode.platform'
-    version '1.9.6-pre.5'
+    version '1.10.0-pre.1'
 
     apply plugin: 'java-library'
     apply plugin: 'checkstyle'
