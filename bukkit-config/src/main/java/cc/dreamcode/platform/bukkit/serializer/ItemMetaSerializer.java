@@ -5,6 +5,7 @@ import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
 import eu.okaeri.configs.serdes.SerializationData;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 // ItemMetaSerializer class copy from okaeri-config, written with changes/without bugs
+@RequiredArgsConstructor
 public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
 
     @Override

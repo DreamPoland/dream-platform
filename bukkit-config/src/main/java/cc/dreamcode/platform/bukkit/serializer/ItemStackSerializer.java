@@ -7,16 +7,14 @@ import eu.okaeri.configs.serdes.SerializationData;
 import eu.okaeri.configs.yaml.bukkit.serdes.itemstack.ItemStackFormat;
 import eu.okaeri.configs.yaml.bukkit.serdes.itemstack.ItemStackSpecData;
 import eu.okaeri.configs.yaml.bukkit.serdes.transformer.experimental.StringBase64ItemStackTransformer;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 // ItemStackSerializer class copy from okaeri-config, written with changes/without bugs
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
 
     private static final ItemMetaSerializer ITEM_META_SERIALIZER = new ItemMetaSerializer();
