@@ -17,12 +17,12 @@ maven { url "https://repo.dreamcode.cc/releases" }
 <dependency>
   <groupId>cc.dreamcode.platform</groupId>
   <artifactId>core</artifactId>
-  <version>1.9.9</version>
+  <version>1.9.10</version>
 </dependency>
 ```
 
 ```groovy
-implementation "cc.dreamcode.platform:core:1.9.9"
+implementation "cc.dreamcode.platform:core:1.9.10"
 ```
 
 ### Supported platforms:
@@ -41,11 +41,11 @@ implementation "cc.dreamcode.platform:core:1.9.9"
 <dependency>
   <groupId>cc.dreamcode.platform</groupId>
   <artifactId>{platform/common}</artifactId>
-  <version>1.9.9</version>
+  <version>1.9.10</version>
 </dependency>
 ```
 ```groovy
-implementation "cc.dreamcode.platform:{platform/common}:1.9.9"
+implementation "cc.dreamcode.platform:{platform/common}:1.9.10"
 ```
 
 For project content, open project modules and see the contents of the classes. (todo)
