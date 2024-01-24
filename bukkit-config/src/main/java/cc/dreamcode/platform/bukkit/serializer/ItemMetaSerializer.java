@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+// ItemMetaSerializer class copy from okaeri-config, written with changes/without bugs
 public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
 
     @Override
