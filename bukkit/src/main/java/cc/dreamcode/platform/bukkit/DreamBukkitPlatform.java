@@ -120,6 +120,10 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
     }
 
     public void runAsync(@NonNull Runnable runnable) {
+        if (!this.isEnabled() || this.getPluginDisabled().get()) {
+            return;
+        }
+
         this.getServer().getScheduler().runTaskAsynchronously(this, runnable);
     }
 }

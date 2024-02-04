@@ -27,7 +27,7 @@ public class TimerTaskComponentResolver extends ComponentClassResolver<Class<Tim
     public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<TimerTask> timerTaskClass) {
         Scheduler scheduler = timerTaskClass.getAnnotation(Scheduler.class);
         if (scheduler == null) {
-            throw new CliPlatformException("TimerTask are not have a Scheduler annotation.");
+            throw new CliPlatformException("Scheduler annotation not found.");
         }
 
         return new MapBuilder<String, Object>()
@@ -39,12 +39,12 @@ public class TimerTaskComponentResolver extends ComponentClassResolver<Class<Tim
 
     @Override
     public Object resolve(@NonNull Injector injector, @NonNull Class<TimerTask> timerTaskClass) {
-        final TimerTask timerTask = injector.createInstance(timerTaskClass);
-
-        Scheduler scheduler = timerTask.getClass().getAnnotation(Scheduler.class);
+        Scheduler scheduler = timerTaskClass.getAnnotation(Scheduler.class);
         if (scheduler == null) {
-            throw new CliPlatformException("TimerTask are not have a Scheduler annotation.");
+            throw new CliPlatformException("Scheduler annotation not found.");
         }
+
+        final TimerTask timerTask = injector.createInstance(timerTaskClass);
 
         Timer timer = new Timer(scheduler.timerName());
         timer.scheduleAtFixedRate(timerTask, scheduler.delay(), scheduler.interval());

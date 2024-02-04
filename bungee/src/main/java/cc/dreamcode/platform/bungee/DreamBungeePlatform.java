@@ -120,6 +120,10 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
     }
 
     public void runAsync(@NonNull Runnable runnable) {
+        if (this.getPluginDisabled().get()) {
+            return;
+        }
+
         this.getProxy().getScheduler().runAsync(this, runnable);
     }
 }
