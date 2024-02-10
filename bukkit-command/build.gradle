@@ -13,9 +13,9 @@ dependencies {
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
 
     // -- dream-utilities --
-    implementation "cc.dreamcode:utilities:1.2.23"
+    implementation "cc.dreamcode:utilities:1.2.24"
 
     // -- dream-command --
-    implementation "cc.dreamcode.command:core:1.4.18"
-    implementation "cc.dreamcode.command:bukkit:1.4.18"
+    implementation "cc.dreamcode.command:core:1.4.19"
+    implementation "cc.dreamcode.command:bukkit:1.4.19"
 }
