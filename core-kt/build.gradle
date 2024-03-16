@@ -16,13 +16,13 @@ dependencies {
     implementation project(":core")
 
     // -- configs--
-    implementation "eu.okaeri:okaeri-configs-core:5.0.0-beta.5"
+    implementation "eu.okaeri:okaeri-configs-core:5.0.1"
 
     // -- injector --
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
 
     // -- dream-utilities --
-    implementation "cc.dreamcode:utilities:1.2.24"
+    implementation "cc.dreamcode:utilities:1.2.25"
 }
 
 tasks.withType(KotlinCompile).configureEach {

@@ -11,11 +11,11 @@ dependencies {
     implementation "org.slf4j:slf4j-api:2.0.6"
 
     // -- placeholders --
-    implementation 'eu.okaeri:okaeri-placeholders-core:4.0.7'
+    implementation 'eu.okaeri:okaeri-placeholders-core:5.0.1'
 
     // -- injector --
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
 
     // -- dream-utilities --
-    implementation "cc.dreamcode:utilities:1.2.24"
+    implementation "cc.dreamcode:utilities:1.2.25"
 }
