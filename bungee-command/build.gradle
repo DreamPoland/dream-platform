@@ -16,6 +16,6 @@ dependencies {
     implementation "cc.dreamcode:utilities:1.2.25"
 
     // -- dream-command --
-    implementation "cc.dreamcode.command:core:1.4.20"
-    implementation "cc.dreamcode.command:bungee:1.4.20"
+    implementation "cc.dreamcode.command:core:1.4.21"
+    implementation "cc.dreamcode.command:bungee:1.4.21"
 }
