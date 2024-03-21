@@ -13,11 +13,11 @@ import org.javacord.api.interaction.SlashCommandInteraction;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
-public class CommandComponentResolver extends ComponentClassResolver<Class<JavacordCommand>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class CommandComponentResolver implements ComponentClassResolver<JavacordCommand> {
 
-    private @Inject DreamJavacordPlatform dreamJavacordPlatform;
-    private @Inject DiscordApi discordApi;
+    private final DreamJavacordPlatform dreamJavacordPlatform;
+    private final DiscordApi discordApi;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<JavacordCommand> javacordCommandClass) {
@@ -30,16 +30,15 @@ public class CommandComponentResolver extends ComponentClassResolver<Class<Javac
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<JavacordCommand> javacordCommandClass) {
-        final JavacordCommand javacordCommand = injector.createInstance(javacordCommandClass);
-
+    public Map<String, Object> getMetas(@NonNull JavacordCommand javacordCommand) {
         return new MapBuilder<String, Object>()
                 .put("name", javacordCommand.getName())
                 .build();
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<JavacordCommand> javacordCommandClass) {
+    public JavacordCommand resolve(@NonNull Injector injector, @NonNull Class<JavacordCommand> javacordCommandClass) {
+
         final JavacordCommand javacordCommand = injector.createInstance(javacordCommandClass);
 
         this.dreamJavacordPlatform.getJavacordCommandList().add(javacordCommand);

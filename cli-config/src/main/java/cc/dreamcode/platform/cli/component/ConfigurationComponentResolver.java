@@ -3,7 +3,6 @@ package cc.dreamcode.platform.cli.component;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.cli.DreamCliConfig;
 import cc.dreamcode.platform.cli.component.configuration.Configuration;
-import cc.dreamcode.platform.cli.exception.CliPlatformException;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
@@ -22,20 +21,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-public class ConfigurationComponentResolver extends ComponentClassResolver<Class<OkaeriConfig>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class ConfigurationComponentResolver implements ComponentClassResolver<OkaeriConfig> {
 
-    private @Inject DreamPlatform dreamPlatform;
+    private final DreamPlatform dreamPlatform;
 
     @Override
-    public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> okaeriConfigClass) {
-        if (OkaeriConfig.class.isAssignableFrom(okaeriConfigClass)) {
-            if (okaeriConfigClass.getAnnotation(Configuration.class) == null) {
-                throw new CliPlatformException(okaeriConfigClass.getSimpleName() + " does not contain " + Configuration.class.getSimpleName() + " annotation.");
-            }
-            return true;
-        }
-        return false;
+    public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> type) {
+        return OkaeriConfig.class.isAssignableFrom(type);
     }
 
     @Override
@@ -44,36 +37,37 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<OkaeriConfig> okaeriConfigClass) {
-        final Configuration configuration = okaeriConfigClass.getAnnotation(Configuration.class);
+    public Map<String, Object> getMetas(@NonNull OkaeriConfig okaeriConfig) {
+        final Configuration configuration = okaeriConfig.getClass().getAnnotation(Configuration.class);
         if (configuration == null) {
-            throw new CliPlatformException("Config component must have an " + Configuration.class.getSimpleName() + " annotation.");
+            throw new PlatformException("OkaeriConfig must have @Configuration annotation.");
         }
 
         return new MapBuilder<String, Object>()
                 .put("path", configuration.child())
-                .put("subconfigs", Arrays.stream(okaeriConfigClass.getDeclaredFields())
+                .put("sub-configs", Arrays.stream(okaeriConfig.getClass().getDeclaredFields())
+                        .filter(field -> field.getType().isAssignableFrom(OkaeriConfig.class))
                         .map(Field::getName)
-                        .filter(name -> name.contains("Config"))
                         .collect(Collectors.joining(", ")))
                 .build();
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<OkaeriConfig> okaeriConfigClass) {
-        final Configuration configuration = okaeriConfigClass.getAnnotation(Configuration.class);
+    public OkaeriConfig resolve(@NonNull Injector injector, @NonNull Class<OkaeriConfig> type) {
+
+        final Configuration configuration = type.getAnnotation(Configuration.class);
         if (configuration == null) {
-            throw new CliPlatformException("Config component must have an " + Configuration.class.getSimpleName() + " annotation.");
+            throw new PlatformException("OkaeriConfig must have @Configuration annotation.");
         }
 
-        if (!(this.dreamPlatform instanceof DreamCliConfig)) {
-            throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " class must implement DreamCliConfig.");
+        if (!this.dreamPlatform.getClass().isAssignableFrom(DreamCliConfig.class)) {
+            throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " must have DreamCliConfig implementation.");
         }
 
         final DreamCliConfig dreamCliConfig = (DreamCliConfig) this.dreamPlatform;
-        return ConfigManager.create(okaeriConfigClass, (it) -> {
+        return ConfigManager.create(type, (it) -> {
             it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesCommons(), dreamCliConfig.getConfigSerdesPack());
-            it.withBindFile(new File(configuration.child()));
+            it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
             it.saveDefaults();
             it.load(true);
         });

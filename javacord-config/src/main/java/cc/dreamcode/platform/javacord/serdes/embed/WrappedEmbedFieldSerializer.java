@@ -7,7 +7,7 @@ import eu.okaeri.configs.serdes.ObjectSerializer;
 import eu.okaeri.configs.serdes.SerializationData;
 import lombok.NonNull;
 
-public class WrappedEmbedFieldSerdes implements ObjectSerializer<WrappedEmbedField> {
+public class WrappedEmbedFieldSerializer implements ObjectSerializer<WrappedEmbedField> {
     /**
      * @param type the type checked for compatibility
      * @return {@code true} if serializer is able to process the {@code type}

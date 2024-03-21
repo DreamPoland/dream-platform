@@ -1,17 +1,20 @@
 package cc.dreamcode.platform.cli.component;
 
 import cc.dreamcode.platform.cli.component.scheduler.Scheduler;
-import cc.dreamcode.platform.cli.exception.CliPlatformException;
 import cc.dreamcode.platform.component.ComponentClassResolver;
+import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
+import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TimerTaskComponentResolver extends ComponentClassResolver<Class<TimerTask>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class TimerTaskComponentResolver implements ComponentClassResolver<TimerTask> {
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<TimerTask> timerTaskClass) {
@@ -24,10 +27,10 @@ public class TimerTaskComponentResolver extends ComponentClassResolver<Class<Tim
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<TimerTask> timerTaskClass) {
-        Scheduler scheduler = timerTaskClass.getAnnotation(Scheduler.class);
+    public Map<String, Object> getMetas(@NonNull TimerTask timerTask) {
+        Scheduler scheduler = timerTask.getClass().getAnnotation(Scheduler.class);
         if (scheduler == null) {
-            throw new CliPlatformException("Scheduler annotation not found.");
+            throw new PlatformException("TimerTask must have @Scheduler annotation.");
         }
 
         return new MapBuilder<String, Object>()
@@ -38,10 +41,11 @@ public class TimerTaskComponentResolver extends ComponentClassResolver<Class<Tim
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<TimerTask> timerTaskClass) {
+    public TimerTask resolve(@NonNull Injector injector, @NonNull Class<TimerTask> timerTaskClass) {
+
         Scheduler scheduler = timerTaskClass.getAnnotation(Scheduler.class);
         if (scheduler == null) {
-            throw new CliPlatformException("Scheduler annotation not found.");
+            throw new PlatformException("TimerTask must have @Scheduler annotation.");
         }
 
         final TimerTask timerTask = injector.createInstance(timerTaskClass);

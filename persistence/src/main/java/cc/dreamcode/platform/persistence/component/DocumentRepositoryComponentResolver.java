@@ -15,14 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("rawtypes")
-@RequiredArgsConstructor
-public class DocumentRepositoryComponentResolver extends ComponentClassResolver<Class<? extends DocumentRepository>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class DocumentRepositoryComponentResolver implements ComponentClassResolver<DocumentRepository> {
 
-    private @Inject DreamPlatform platform;
-    private @Inject DocumentPersistence documentPersistence;
+    private final DreamPlatform platform;
+    private final DocumentPersistence documentPersistence;
 
     @Override
-    public boolean isAssignableFrom(@NonNull Class<? extends DocumentRepository> documentRepositoryClass) {
+    public boolean isAssignableFrom(@NonNull Class<DocumentRepository> documentRepositoryClass) {
         return DocumentRepository.class.isAssignableFrom(documentRepositoryClass);
     }
 
@@ -32,12 +32,13 @@ public class DocumentRepositoryComponentResolver extends ComponentClassResolver<
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<? extends DocumentRepository> documentRepositoryClass) {
+    public Map<String, Object> getMetas(@NonNull DocumentRepository documentRepository) {
         return new HashMap<>();
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<? extends DocumentRepository> documentRepositoryClass) {
+    public DocumentRepository resolve(@NonNull Injector injector, @NonNull Class<DocumentRepository> documentRepositoryClass) {
+
         PersistenceCollection persistenceCollection = PersistenceCollection.of(documentRepositoryClass);
         this.documentPersistence.registerCollection(persistenceCollection);
 

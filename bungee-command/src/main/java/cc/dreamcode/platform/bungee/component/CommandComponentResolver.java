@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
-public class CommandComponentResolver extends ComponentClassResolver<Class<BungeeCommand>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class CommandComponentResolver implements ComponentClassResolver<BungeeCommand> {
 
-    private @Inject BungeeCommandProvider bungeeCommandProvider;
+    private final BungeeCommandProvider bungeeCommandProvider;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<BungeeCommand> bungeeCommandClass) {
@@ -27,9 +27,7 @@ public class CommandComponentResolver extends ComponentClassResolver<Class<Bunge
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<BungeeCommand> bungeeCommandClass) {
-        final BungeeCommand bungeeCommand = injector.createInstance(bungeeCommandClass);
-
+    public Map<String, Object> getMetas(@NonNull BungeeCommand bungeeCommand) {
         return new MapBuilder<String, Object>()
                 .put("name", bungeeCommand.getName())
                 .put("aliases", bungeeCommand.getAliases())
@@ -37,7 +35,8 @@ public class CommandComponentResolver extends ComponentClassResolver<Class<Bunge
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<BungeeCommand> bungeeCommandClass) {
+    public BungeeCommand resolve(@NonNull Injector injector, @NonNull Class<BungeeCommand> bungeeCommandClass) {
+
         final BungeeCommand bungeeCommand = injector.createInstance(bungeeCommandClass);
 
         this.bungeeCommandProvider.addCommand(bungeeCommand);

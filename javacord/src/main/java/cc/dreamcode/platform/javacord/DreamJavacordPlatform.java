@@ -3,11 +3,11 @@ package cc.dreamcode.platform.javacord;
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.platform.javacord.component.CommandComponentResolver;
 import cc.dreamcode.platform.javacord.component.ListenerComponentResolver;
 import cc.dreamcode.platform.javacord.component.TimerTaskComponentResolver;
 import cc.dreamcode.platform.javacord.component.command.JavacordCommand;
-import cc.dreamcode.platform.javacord.exception.JavacordPlatformException;
 import cc.dreamcode.utilities.TimeUtil;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
@@ -88,25 +88,29 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
     public void registerInjectable(@NonNull Object object) {
         this.injector.registerInjectable(object);
 
-        this.dreamLogger.info(
-                new DreamLogger.Builder()
-                        .type("Added injectable object")
-                        .name(object.getClass().getSimpleName())
-                        .build()
-        );
+        if (this.componentManager.isDebug()) {
+            this.dreamLogger.info(
+                    new DreamLogger.Builder()
+                            .type("Added injectable object")
+                            .name(object.getClass().getSimpleName())
+                            .build()
+            );
+        }
     }
 
     @Override
     public void registerInjectable(@NonNull String name, @NonNull Object object) {
         this.injector.registerInjectable(name, object);
 
-        this.dreamLogger.info(
-                new DreamLogger.Builder()
-                        .type("Added injectable object")
-                        .name(object.getClass().getSimpleName())
-                        .meta("name", name)
-                        .build()
-        );
+        if (this.componentManager.isDebug()) {
+            this.dreamLogger.info(
+                    new DreamLogger.Builder()
+                            .type("Added injectable object")
+                            .name(object.getClass().getSimpleName())
+                            .meta("name", name)
+                            .build()
+            );
+        }
     }
 
     @Override
@@ -132,7 +136,7 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
                 try {
                     this.disable();
                 } catch (Exception e) {
-                    throw new JavacordPlatformException("An error was caught when plugin are stopping...", e);
+                    throw new PlatformException("An error was caught when plugin are stopping...", e);
                 }
             }
 

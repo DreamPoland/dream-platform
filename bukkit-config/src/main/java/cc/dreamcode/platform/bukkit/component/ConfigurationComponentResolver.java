@@ -3,6 +3,8 @@ package cc.dreamcode.platform.bukkit.component;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.bukkit.DreamBukkitConfig;
 import cc.dreamcode.platform.bukkit.component.configuration.Configuration;
+import cc.dreamcode.platform.bukkit.serializer.ItemMetaSerializer;
+import cc.dreamcode.platform.bukkit.serializer.ItemStackSerializer;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
@@ -15,6 +17,8 @@ import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -22,20 +26,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-public class ConfigurationComponentResolver extends ComponentClassResolver<Class<OkaeriConfig>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class ConfigurationComponentResolver implements ComponentClassResolver<OkaeriConfig> {
 
-    private @Inject DreamPlatform dreamPlatform;
+    private final DreamPlatform dreamPlatform;
 
     @Override
-    public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> okaeriConfigClass) {
-        if (OkaeriConfig.class.isAssignableFrom(okaeriConfigClass)) {
-            if (okaeriConfigClass.getAnnotation(Configuration.class) == null) {
-                throw new PlatformException(okaeriConfigClass.getSimpleName() + " does not contain " + Configuration.class.getSimpleName() + " annotation.");
-            }
-            return true;
-        }
-        return false;
+    public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> type) {
+        return OkaeriConfig.class.isAssignableFrom(type);
     }
 
     @Override
@@ -44,35 +42,40 @@ public class ConfigurationComponentResolver extends ComponentClassResolver<Class
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<OkaeriConfig> okaeriConfigClass) {
-        final Configuration configuration = okaeriConfigClass.getAnnotation(Configuration.class);
+    public Map<String, Object> getMetas(@NonNull OkaeriConfig okaeriConfig) {
+        final Configuration configuration = okaeriConfig.getClass().getAnnotation(Configuration.class);
         if (configuration == null) {
-            throw new PlatformException("Config component must have an " + Configuration.class.getSimpleName() + " annotation.");
+            throw new PlatformException("OkaeriConfig must have @Configuration annotation.");
         }
 
         return new MapBuilder<String, Object>()
                 .put("path", configuration.child())
-                .put("subconfigs", Arrays.stream(okaeriConfigClass.getDeclaredFields())
+                .put("sub-configs", Arrays.stream(okaeriConfig.getClass().getDeclaredFields())
+                        .filter(field -> field.getType().isAssignableFrom(OkaeriConfig.class))
                         .map(Field::getName)
-                        .filter(name -> name.contains("Config"))
                         .collect(Collectors.joining(", ")))
                 .build();
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<OkaeriConfig> okaeriConfigClass) {
-        final Configuration configuration = okaeriConfigClass.getAnnotation(Configuration.class);
+    public OkaeriConfig resolve(@NonNull Injector injector, @NonNull Class<OkaeriConfig> type) {
+
+        final Configuration configuration = type.getAnnotation(Configuration.class);
         if (configuration == null) {
-            throw new PlatformException("Config component must have an " + Configuration.class.getSimpleName() + " annotation.");
+            throw new PlatformException("OkaeriConfig must have @Configuration annotation.");
         }
 
-        if (!(this.dreamPlatform instanceof DreamBukkitConfig)) {
-            throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " class must implement DreamBukkitConfig.");
+        if (!this.dreamPlatform.getClass().isAssignableFrom(DreamBukkitConfig.class)) {
+            throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " must have DreamBukkitConfig implementation.");
         }
 
         final DreamBukkitConfig dreamBukkitConfig = (DreamBukkitConfig) this.dreamPlatform;
-        return ConfigManager.create(okaeriConfigClass, (it) -> {
-            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons(), dreamBukkitConfig.getSerdesPack());
+        return ConfigManager.create(type, (it) -> {
+            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons(), dreamBukkitConfig.getConfigSerdesPack());
+            it.withSerdesPack(registry -> {
+                registry.registerExclusive(ItemStack.class, new ItemStackSerializer());
+                registry.registerExclusive(ItemMeta.class, new ItemMetaSerializer());
+            });
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
             it.saveDefaults();
             it.load(true);

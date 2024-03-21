@@ -1,7 +1,7 @@
 package cc.dreamcode.platform.javacord.serdes.notice;
 
+import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.platform.javacord.embed.WrappedEmbedBuilder;
-import cc.dreamcode.platform.javacord.exception.JavacordPlatformException;
 import cc.dreamcode.platform.javacord.notice.Notice;
 import cc.dreamcode.platform.javacord.notice.NoticeType;
 import eu.okaeri.configs.schema.GenericsDeclaration;
@@ -10,7 +10,7 @@ import eu.okaeri.configs.serdes.ObjectSerializer;
 import eu.okaeri.configs.serdes.SerializationData;
 import lombok.NonNull;
 
-public class NoticeSerdes implements ObjectSerializer<Notice> {
+public class NoticeSerializer implements ObjectSerializer<Notice> {
     /**
      * @param type the type checked for compatibility
      * @return {@code true} if serializer is able to process the {@code type}
@@ -55,6 +55,6 @@ public class NoticeSerdes implements ObjectSerializer<Notice> {
             );
         }
 
-        throw new JavacordPlatformException("Cannot resolve unknown notice-type: " + noticeType);
+        throw new PlatformException("Cannot resolve unknown notice-type: " + noticeType);
     }
 }

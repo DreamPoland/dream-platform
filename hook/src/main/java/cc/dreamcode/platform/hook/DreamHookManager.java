@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DreamHookManager {
 
-    private @Inject DreamPlatform dreamPlatform;
-    private @Inject DreamLogger dreamLogger;
+    private final DreamPlatform dreamPlatform;
+    private final DreamLogger dreamLogger;
 
     private final List<DreamHook> dreamHookList = new ArrayList<>();
 
@@ -31,7 +31,7 @@ public class DreamHookManager {
 
         final DreamHook dreamHook = this.dreamPlatform.createInstance(pluginHookClass);
         if (!dreamHook.isPresent()) {
-            this.dreamLogger.warning(dreamHook.getPluginName() + " not found! Install it to have full support.");
+            this.dreamLogger.warning(dreamHook.getPluginName() + " not found! Some things may be unavailable.");
             return;
         }
 

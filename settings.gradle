@@ -10,9 +10,9 @@ include ':hook'
 
 // -- minecraft --
 include ':bukkit'
+include ':bukkit-hook'
 include ':bukkit-config'
 include ':bukkit-command'
-include ':bukkit-hook'
 
 include ':bungee'
 include ':bungee-config'
@@ -25,3 +25,6 @@ include ':javacord-config'
 // -- other --
 include ':cli'
 include ':cli-config'
+
+// -- libraries --
+include ':okaeri-command'

@@ -11,7 +11,7 @@ import lombok.NonNull;
 import java.awt.*;
 import java.time.Instant;
 
-public class WrappedEmbedBuilderSerdes implements ObjectSerializer<WrappedEmbedBuilder> {
+public class WrappedEmbedBuilderSerializer implements ObjectSerializer<WrappedEmbedBuilder> {
     /**
      * @param type the type checked for compatibility
      * @return {@code true} if serializer is able to process the {@code type}

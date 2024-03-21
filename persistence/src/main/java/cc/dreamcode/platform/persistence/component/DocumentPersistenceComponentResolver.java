@@ -25,11 +25,11 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
-public class DocumentPersistenceComponentResolver extends ComponentClassResolver<Class<DocumentPersistence>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class DocumentPersistenceComponentResolver implements ComponentClassResolver<DocumentPersistence> {
 
-    private @Inject DreamPlatform dreamPlatform;
-    private @Inject StorageConfig storageConfig;
+    private final DreamPlatform dreamPlatform;
+    private final StorageConfig storageConfig;
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<DocumentPersistence> documentPersistenceClass) {
@@ -42,7 +42,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<DocumentPersistence> documentPersistenceClass) {
+    public Map<String, Object> getMetas(@NonNull DocumentPersistence documentPersistence) {
         return new MapBuilder<String, Object>()
                 .put("type", this.storageConfig.storageType.getName())
                 .put("prefix", this.storageConfig.prefix)
@@ -50,7 +50,7 @@ public class DocumentPersistenceComponentResolver extends ComponentClassResolver
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<DocumentPersistence> documentPersistenceClass) {
+    public DocumentPersistence resolve(@NonNull Injector injector, @NonNull Class<DocumentPersistence> documentPersistenceClass) {
         final PersistencePath persistencePath = PersistencePath.of(this.storageConfig.prefix);
 
         try { Class.forName("org.mariadb.jdbc.Driver"); } catch (ClassNotFoundException ignored) { }

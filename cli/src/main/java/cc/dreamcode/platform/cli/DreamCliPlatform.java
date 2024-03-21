@@ -3,8 +3,8 @@ package cc.dreamcode.platform.cli;
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.DreamVersion;
-import cc.dreamcode.platform.cli.exception.CliPlatformException;
 import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.exception.PlatformException;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
@@ -41,7 +41,7 @@ public abstract class DreamCliPlatform implements DreamPlatform {
             this.enable(this.componentManager);
         }
         catch (Exception e) {
-            throw new CliPlatformException("An error was caught when platform are starting...", e);
+            throw new PlatformException("An error was caught when platform are starting...", e);
         }
 
         Thread shutdownHook = new Thread(() -> {
@@ -52,15 +52,15 @@ public abstract class DreamCliPlatform implements DreamPlatform {
                 this.disable();
             }
             catch (Exception e) {
-                throw new CliPlatformException("An error was caught when plugin are stopping...", e);
+                throw new PlatformException("An error was caught when plugin are stopping...", e);
             }
 
             this.dreamLogger.info(String.format("Active version: v%s - Author: %s",
                     dreamVersion.getVersion(),
                     dreamVersion.getAuthor()));
         });
-        shutdownHook.setName("Shutdown-Worker");
 
+        shutdownHook.setName("Shutdown-Worker");
         Runtime.getRuntime().addShutdownHook(shutdownHook);
     }
 
@@ -68,25 +68,29 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     public void registerInjectable(@NonNull Object object) {
         this.injector.registerInjectable(object);
 
-        this.dreamLogger.info(
-                new DreamLogger.Builder()
-                        .type("Added injectable object")
-                        .name(object.getClass().getSimpleName())
-                        .build()
-        );
+        if (this.componentManager.isDebug()) {
+            this.dreamLogger.info(
+                    new DreamLogger.Builder()
+                            .type("Added injectable object")
+                            .name(object.getClass().getSimpleName())
+                            .build()
+            );
+        }
     }
 
     @Override
     public void registerInjectable(@NonNull String name, @NonNull Object object) {
         this.injector.registerInjectable(name, object);
 
-        this.dreamLogger.info(
-                new DreamLogger.Builder()
-                        .type("Added injectable object")
-                        .name(object.getClass().getSimpleName())
-                        .meta("name", name)
-                        .build()
-        );
+        if (this.componentManager.isDebug()) {
+            this.dreamLogger.info(
+                    new DreamLogger.Builder()
+                            .type("Added injectable object")
+                            .name(object.getClass().getSimpleName())
+                            .meta("name", name)
+                            .build()
+            );
+        }
     }
 
     @Override

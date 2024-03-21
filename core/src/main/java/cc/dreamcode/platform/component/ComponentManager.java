@@ -1,6 +1,5 @@
 package cc.dreamcode.platform.component;
 
-import cc.dreamcode.platform.component.resolver.ObjectComponentClassResolver;
 import eu.okaeri.injector.Injector;
 import lombok.Getter;
 import lombok.NonNull;
@@ -52,10 +51,10 @@ public final class ComponentManager {
         }
 
         if (consumer != null) {
-            consumer.accept((T) reference.get().process(this.injector, componentClass, this.debug));
+            consumer.accept((T) reference.get().register(this.injector, componentClass, this.debug));
         }
         else {
-            reference.get().process(this.injector, componentClass, this.debug);
+            reference.get().register(this.injector, componentClass, this.debug);
         }
     }
 

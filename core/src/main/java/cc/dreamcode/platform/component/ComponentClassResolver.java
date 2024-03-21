@@ -7,19 +7,21 @@ import lombok.NonNull;
 
 import java.util.Map;
 
-@SuppressWarnings("rawtypes")
-public abstract class ComponentClassResolver<T extends Class> {
+public interface ComponentClassResolver<T> {
 
-    public abstract boolean isAssignableFrom(@NonNull T t);
-    public abstract String getComponentName();
-    public abstract Map<String, Object> getMetas(@NonNull Injector injector, @NonNull T t);
-    public abstract Object resolve(@NonNull Injector injector, @NonNull T t);
+    boolean isAssignableFrom(@NonNull Class<T> type);
 
-    public Object process(@NonNull Injector injector, @NonNull T t, boolean debug) {
+    String getComponentName();
+
+    Map<String, Object> getMetas(@NonNull T t);
+
+    T resolve(@NonNull Injector injector, @NonNull Class<T> type);
+
+    default T register(@NonNull Injector injector, @NonNull Class<T> type, boolean debug) {
         long start = System.currentTimeMillis();
 
-        final Object object = this.resolve(injector, t);
-        injector.registerInjectable(object);
+        final T instance = this.resolve(injector, type);
+        injector.registerInjectable(instance);
 
         long took = System.currentTimeMillis() - start;
         if (debug) {
@@ -28,14 +30,14 @@ public abstract class ComponentClassResolver<T extends Class> {
                     .ifPresent(dreamLogger -> dreamLogger.info(
                             new DreamLogger.Builder()
                                     .type("Added " + this.getComponentName() + " component")
-                                    .name(t.getSimpleName())
+                                    .name(type.getSimpleName())
                                     .took(took)
-                                    .meta(this.getMetas(injector, t))
+                                    .meta(this.getMetas(instance))
                                     .build()
                     ));
         }
 
-        return object;
+        return instance;
     }
 
 }

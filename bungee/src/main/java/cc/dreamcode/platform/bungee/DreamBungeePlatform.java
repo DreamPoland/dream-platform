@@ -2,8 +2,8 @@ package cc.dreamcode.platform.bungee;
 
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
-import cc.dreamcode.platform.bungee.exception.BungeePluginException;
 import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.exception.PlatformException;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
@@ -36,7 +36,7 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
         }
         catch (Exception e) {
             this.getPluginDisabled().set(true);
-            throw new BungeePluginException("An error was caught when plugin are loading...", e, this);
+            throw new PlatformException("An error was caught when plugin are loading...", e);
         }
     }
 
@@ -51,7 +51,7 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
         }
         catch (Exception e) {
             this.getPluginDisabled().set(true);
-            throw new BungeePluginException("An error was caught when plugin are starting...", e, this);
+            throw new PlatformException("An error was caught when plugin are starting...", e);
         }
 
         this.dreamLogger.info(String.format("Active version: v%s - Author: %s",
@@ -69,7 +69,7 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
             this.disable();
         }
         catch (Exception e) {
-            throw new BungeePluginException("An error was caught when plugin are stopping...", e);
+            throw new PlatformException("An error was caught when plugin are stopping...", e);
         }
 
         this.dreamLogger.info(String.format("Active version: v%s - Author: %s",
@@ -83,25 +83,29 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
     public void registerInjectable(@NonNull Object object) {
         this.injector.registerInjectable(object);
 
-        this.dreamLogger.info(
-                new DreamLogger.Builder()
-                        .type("Added injectable object")
-                        .name(object.getClass().getSimpleName())
-                        .build()
-        );
+        if (this.componentManager.isDebug()) {
+            this.dreamLogger.info(
+                    new DreamLogger.Builder()
+                            .type("Added injectable object")
+                            .name(object.getClass().getSimpleName())
+                            .build()
+            );
+        }
     }
 
     @Override
     public void registerInjectable(@NonNull String name, @NonNull Object object) {
         this.injector.registerInjectable(name, object);
 
-        this.dreamLogger.info(
-                new DreamLogger.Builder()
-                        .type("Added injectable object")
-                        .name(object.getClass().getSimpleName())
-                        .meta("name", name)
-                        .build()
-        );
+        if (this.componentManager.isDebug()) {
+            this.dreamLogger.info(
+                    new DreamLogger.Builder()
+                            .type("Added injectable object")
+                            .name(object.getClass().getSimpleName())
+                            .meta("name", name)
+                            .build()
+            );
+        }
     }
 
     @Override

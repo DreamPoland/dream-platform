@@ -1,7 +1,7 @@
 package cc.dreamcode.platform.javacord.notice;
 
+import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.platform.javacord.embed.WrappedEmbedBuilder;
-import cc.dreamcode.platform.javacord.exception.JavacordPlatformException;
 import eu.okaeri.placeholders.context.PlaceholderContext;
 import eu.okaeri.placeholders.message.CompiledMessage;
 import lombok.Data;
@@ -42,7 +42,7 @@ public class Notice {
                 return this.send(messageable, Notice.applyEmbedBuilder((WrappedEmbedBuilder) this.value, replaceMap), consumer);
             }
             default:
-                throw new JavacordPlatformException("Cannot resolve unknown notice-type: " + this.noticeType);
+                throw new PlatformException("Cannot resolve unknown notice-type: " + this.noticeType);
         }
     }
 
@@ -67,7 +67,7 @@ public class Notice {
                 return messageable.sendMessage(wrappedEmbedBuilder.toEmbedBuilder());
             }
             default:
-                throw new JavacordPlatformException("Cannot resolve unknown notice-type: " + this.noticeType);
+                throw new PlatformException("Cannot resolve unknown notice-type: " + this.noticeType);
         }
     }
 
@@ -86,7 +86,7 @@ public class Notice {
                 break;
             }
             default:
-                throw new JavacordPlatformException("Cannot resolve unknown notice-type: " + this.noticeType);
+                throw new PlatformException("Cannot resolve unknown notice-type: " + this.noticeType);
         }
     }
 
@@ -104,7 +104,7 @@ public class Notice {
                 break;
             }
             default:
-                throw new JavacordPlatformException("Cannot resolve unknown notice-type: " + this.noticeType);
+                throw new PlatformException("Cannot resolve unknown notice-type: " + this.noticeType);
         }
     }
 

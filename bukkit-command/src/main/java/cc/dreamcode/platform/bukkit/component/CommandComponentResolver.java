@@ -11,14 +11,14 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
-public class CommandComponentResolver extends ComponentClassResolver<Class<BukkitCommand>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class CommandComponentResolver implements ComponentClassResolver<BukkitCommand> {
 
-    private @Inject BukkitCommandProvider bukkitCommandProvider;
+    private final BukkitCommandProvider bukkitCommandProvider;
 
     @Override
-    public boolean isAssignableFrom(@NonNull Class<BukkitCommand> BukkitCommandClass) {
-        return BukkitCommand.class.isAssignableFrom(BukkitCommandClass);
+    public boolean isAssignableFrom(@NonNull Class<BukkitCommand> type) {
+        return BukkitCommand.class.isAssignableFrom(type);
     }
 
     @Override
@@ -27,9 +27,7 @@ public class CommandComponentResolver extends ComponentClassResolver<Class<Bukki
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<BukkitCommand> bukkitCommandClass) {
-        final BukkitCommand bukkitCommand = injector.createInstance(bukkitCommandClass);
-
+    public Map<String, Object> getMetas(@NonNull BukkitCommand bukkitCommand) {
         return new MapBuilder<String, Object>()
                 .put("name", bukkitCommand.getName())
                 .put("aliases", bukkitCommand.getAliases())
@@ -37,8 +35,9 @@ public class CommandComponentResolver extends ComponentClassResolver<Class<Bukki
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<BukkitCommand> bukkitCommandClass) {
-        final BukkitCommand bukkitCommand = injector.createInstance(bukkitCommandClass);
+    public BukkitCommand resolve(@NonNull Injector injector, @NonNull Class<BukkitCommand> type) {
+
+        final BukkitCommand bukkitCommand = injector.createInstance(type);
 
         this.bukkitCommandProvider.addCommand(bukkitCommand);
         return bukkitCommand;

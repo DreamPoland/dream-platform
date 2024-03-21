@@ -13,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-// ItemStackSerializer class copy from okaeri-config, written with changes/without bugs
 @RequiredArgsConstructor
 public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
 

@@ -2,7 +2,7 @@ package cc.dreamcode.platform.bukkit.component;
 
 import cc.dreamcode.platform.bukkit.DreamBukkitPlatform;
 import cc.dreamcode.platform.component.ComponentClassResolver;
-import com.google.common.collect.ImmutableMap;
+import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
@@ -16,25 +16,25 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor
-public class ListenerComponentResolver extends ComponentClassResolver<Class<? extends Listener>> {
+@RequiredArgsConstructor(onConstructor_ = @Inject)
+public class ListenerComponentResolver implements ComponentClassResolver<Listener> {
 
-    private @Inject DreamBukkitPlatform dreamBukkitPlatform;
+    private final DreamBukkitPlatform dreamBukkitPlatform;
 
     @Override
-    public boolean isAssignableFrom(@NonNull Class<? extends Listener> listenerClass) {
-        return Listener.class.isAssignableFrom(listenerClass);
+    public boolean isAssignableFrom(@NonNull Class<Listener> type) {
+        return Listener.class.isAssignableFrom(type);
     }
 
     @Override
     public String getComponentName() {
-        return "listener (event)";
+        return "listener (events)";
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Injector injector, @NonNull Class<? extends Listener> listenerClass) {
-        return new ImmutableMap.Builder<String, Object>()
-                .put("events", Arrays.stream(listenerClass.getDeclaredMethods())
+    public Map<String, Object> getMetas(@NonNull Listener listener) {
+        return new MapBuilder<String, Object>()
+                .put("handlers", Arrays.stream(listener.getClass().getDeclaredMethods())
                         .filter(method -> method.getAnnotation(EventHandler.class) != null)
                         .map(Method::getName)
                         .collect(Collectors.joining(", ")))
@@ -42,11 +42,12 @@ public class ListenerComponentResolver extends ComponentClassResolver<Class<? ex
     }
 
     @Override
-    public Object resolve(@NonNull Injector injector, @NonNull Class<? extends Listener> listenerClass) {
-        final Listener listener = injector.createInstance(listenerClass);
+    public Listener resolve(@NonNull Injector injector, @NonNull Class<Listener> type) {
 
-        final PluginManager pm = this.dreamBukkitPlatform.getServer().getPluginManager();
-        pm.registerEvents(listener, this.dreamBukkitPlatform);
+        final Listener listener = injector.createInstance(type);
+
+        final PluginManager pluginManager = this.dreamBukkitPlatform.getServer().getPluginManager();
+        pluginManager.registerEvents(listener, this.dreamBukkitPlatform);
 
         return listener;
     }
