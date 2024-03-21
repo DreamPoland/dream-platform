@@ -18,9 +18,13 @@ public interface DreamPlatform {
 
     @NonNull DreamVersion getDreamVersion();
 
-    void registerInjectable(@NonNull String name, @NonNull Object object);
+    <T> T registerInjectable(@NonNull String name, @NonNull T t);
 
-    void registerInjectable(@NonNull Object object);
+    <T> T registerInjectable(@NonNull String name, Class<T> type);
+
+    <T> T registerInjectable(@NonNull T t);
+
+    <T> T registerInjectable(Class<T> type);
 
     <T> T createInstance(@NonNull Class<T> type);
 

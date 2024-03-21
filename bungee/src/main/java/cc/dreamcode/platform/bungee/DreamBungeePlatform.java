@@ -80,32 +80,50 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
     public abstract void load(@NonNull ComponentManager componentManager);
 
     @Override
-    public void registerInjectable(@NonNull Object object) {
-        this.injector.registerInjectable(object);
+    public <T> T registerInjectable(Class<T> type) {
 
-        if (this.componentManager.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added injectable object")
-                            .name(object.getClass().getSimpleName())
-                            .build()
-            );
-        }
+        final T t = this.createInstance(type);
+        return this.registerInjectable(t);
     }
 
     @Override
-    public void registerInjectable(@NonNull String name, @NonNull Object object) {
-        this.injector.registerInjectable(name, object);
+    public <T> T registerInjectable(@NonNull String name, Class<T> type) {
+
+        final T t = this.createInstance(type);
+        return this.registerInjectable(name, t);
+    }
+
+    @Override
+    public <T> T registerInjectable(@NonNull T t) {
+        this.injector.registerInjectable(t);
 
         if (this.componentManager.isDebug()) {
             this.dreamLogger.info(
                     new DreamLogger.Builder()
-                            .type("Added injectable object")
-                            .name(object.getClass().getSimpleName())
+                            .type("Added object instance")
+                            .name(t.getClass().getSimpleName())
+                            .build()
+            );
+        }
+
+        return t;
+    }
+
+    @Override
+    public <T> T registerInjectable(@NonNull String name, @NonNull T t) {
+        this.injector.registerInjectable(name, t);
+
+        if (this.componentManager.isDebug()) {
+            this.dreamLogger.info(
+                    new DreamLogger.Builder()
+                            .type("Added object instance")
+                            .name(t.getClass().getSimpleName())
                             .meta("name", name)
                             .build()
             );
         }
+
+        return t;
     }
 
     @Override
