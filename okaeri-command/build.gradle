@@ -1,13 +1,5 @@
-repositories {
-    maven { url "https://repo.codemc.io/repository/nms" }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-}
-
 dependencies {
     implementation project(":core")
-
-    // -- spigot api --
-    compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 
     // -- injector --
     implementation 'eu.okaeri:okaeri-injector:2.1.0'
@@ -16,6 +8,5 @@ dependencies {
     implementation "cc.dreamcode:utilities:1.2.26"
 
     // -- okaeri-command --
-    implementation "eu.okaeri:okaeri-commands-bukkit:0.9.4"
-    implementation "eu.okaeri:okaeri-commands-brigadier:0.9.4"
+    implementation "eu.okaeri:okaeri-commands-core:0.9.4"
 }

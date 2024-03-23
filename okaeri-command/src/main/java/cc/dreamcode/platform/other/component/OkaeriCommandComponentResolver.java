@@ -1,4 +1,4 @@
-package cc.dreamcode.platform.component.other;
+package cc.dreamcode.platform.other.component;
 
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.utilities.builder.MapBuilder;
