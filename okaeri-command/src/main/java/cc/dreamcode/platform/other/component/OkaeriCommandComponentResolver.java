@@ -1,6 +1,7 @@
 package cc.dreamcode.platform.other.component;
 
 import cc.dreamcode.platform.component.ComponentClassResolver;
+import cc.dreamcode.utilities.StringUtil;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.commands.OkaeriCommands;
 import eu.okaeri.commands.annotation.Command;
@@ -37,7 +38,7 @@ public class OkaeriCommandComponentResolver implements ComponentClassResolver<Co
 
         return new MapBuilder<String, Object>()
                 .put("name", command.label())
-                .put("aliases", command.aliases())
+                .put("aliases", StringUtil.join(command.aliases(), ", "))
                 .build();
     }
 
