@@ -51,7 +51,7 @@ public class ConfigurationComponentResolver implements ComponentClassResolver<Ok
         return new MapBuilder<String, Object>()
                 .put("path", configuration.child())
                 .put("sub-configs", Arrays.stream(okaeriConfig.getClass().getDeclaredFields())
-                        .filter(field -> field.getType().isAssignableFrom(OkaeriConfig.class))
+                        .filter(field -> OkaeriConfig.class.isAssignableFrom(field.getType()))
                         .map(Field::getName)
                         .collect(Collectors.joining(", ")))
                 .build();
@@ -65,7 +65,7 @@ public class ConfigurationComponentResolver implements ComponentClassResolver<Ok
             throw new PlatformException("OkaeriConfig must have @Configuration annotation.");
         }
 
-        if (!this.dreamPlatform.getClass().isAssignableFrom(DreamBukkitConfig.class)) {
+        if (!DreamBukkitConfig.class.isAssignableFrom(this.dreamPlatform.getClass())) {
             throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " must have DreamBukkitConfig implementation.");
         }
 
