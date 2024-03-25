@@ -9,17 +9,21 @@ import eu.okaeri.persistence.document.DocumentPersistence;
 import eu.okaeri.persistence.repository.DocumentRepository;
 import eu.okaeri.persistence.repository.RepositoryDeclaration;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("rawtypes")
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DocumentRepositoryComponentResolver implements ComponentClassResolver<DocumentRepository> {
 
     private final DreamPlatform platform;
     private final DocumentPersistence documentPersistence;
+
+    @Inject
+    public DocumentRepositoryComponentResolver(DreamPlatform platform, DocumentPersistence documentPersistence) {
+        this.platform = platform;
+        this.documentPersistence = documentPersistence;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<DocumentRepository> documentRepositoryClass) {

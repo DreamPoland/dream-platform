@@ -6,7 +6,6 @@ import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -16,10 +15,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ListenerComponentResolver implements ComponentClassResolver<Listener> {
 
     private final DreamBukkitPlatform dreamBukkitPlatform;
+
+    @Inject
+    public ListenerComponentResolver(DreamBukkitPlatform dreamBukkitPlatform) {
+        this.dreamBukkitPlatform = dreamBukkitPlatform;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<Listener> type) {

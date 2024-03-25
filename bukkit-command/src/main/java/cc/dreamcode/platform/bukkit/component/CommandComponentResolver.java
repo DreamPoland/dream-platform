@@ -7,14 +7,17 @@ import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class CommandComponentResolver implements ComponentClassResolver<BukkitCommand> {
 
     private final BukkitCommandProvider bukkitCommandProvider;
+
+    @Inject
+    public CommandComponentResolver(BukkitCommandProvider bukkitCommandProvider) {
+        this.bukkitCommandProvider = bukkitCommandProvider;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<BukkitCommand> type) {

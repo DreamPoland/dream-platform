@@ -5,15 +5,12 @@ import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
-import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class TimerTaskComponentResolver implements ComponentClassResolver<TimerTask> {
 
     @Override

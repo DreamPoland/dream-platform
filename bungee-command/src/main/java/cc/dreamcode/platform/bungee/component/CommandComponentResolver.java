@@ -7,14 +7,17 @@ import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class CommandComponentResolver implements ComponentClassResolver<BungeeCommand> {
 
     private final BungeeCommandProvider bungeeCommandProvider;
+
+    @Inject
+    public CommandComponentResolver(BungeeCommandProvider bungeeCommandProvider) {
+        this.bungeeCommandProvider = bungeeCommandProvider;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<BungeeCommand> bungeeCommandClass) {

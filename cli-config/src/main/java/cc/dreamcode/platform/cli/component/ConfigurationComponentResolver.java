@@ -13,7 +13,6 @@ import eu.okaeri.configs.yaml.snakeyaml.YamlSnakeYamlConfigurer;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -21,10 +20,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigurationComponentResolver implements ComponentClassResolver<OkaeriConfig> {
 
     private final DreamPlatform dreamPlatform;
+
+    @Inject
+    public ConfigurationComponentResolver(DreamPlatform dreamPlatform) {
+        this.dreamPlatform = dreamPlatform;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> type) {

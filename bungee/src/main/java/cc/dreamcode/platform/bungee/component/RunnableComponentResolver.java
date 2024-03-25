@@ -8,15 +8,18 @@ import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class RunnableComponentResolver implements ComponentClassResolver<Runnable> {
 
     private final DreamBungeePlatform dreamBukkitPlatform;
+
+    @Inject
+    public RunnableComponentResolver(DreamBungeePlatform dreamBukkitPlatform) {
+        this.dreamBukkitPlatform = dreamBukkitPlatform;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<Runnable> type) {

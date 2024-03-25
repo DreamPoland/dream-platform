@@ -16,7 +16,6 @@ import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -26,10 +25,14 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ConfigurationComponentResolver implements ComponentClassResolver<OkaeriConfig> {
 
     private final DreamPlatform dreamPlatform;
+
+    @Inject
+    public ConfigurationComponentResolver(DreamPlatform dreamPlatform) {
+        this.dreamPlatform = dreamPlatform;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<OkaeriConfig> type) {

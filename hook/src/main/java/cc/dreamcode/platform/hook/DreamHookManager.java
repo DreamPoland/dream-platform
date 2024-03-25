@@ -4,19 +4,23 @@ import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class DreamHookManager {
 
     private final DreamPlatform dreamPlatform;
     private final DreamLogger dreamLogger;
 
     private final List<DreamHook> dreamHookList = new ArrayList<>();
+
+    @Inject
+    public DreamHookManager(DreamPlatform dreamPlatform, DreamLogger dreamLogger) {
+        this.dreamPlatform = dreamPlatform;
+        this.dreamLogger = dreamLogger;
+    }
 
     @SuppressWarnings("unchecked")
     public <T extends DreamHook> Optional<T> get(@NonNull Class<T> pluginHookClass) {

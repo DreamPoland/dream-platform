@@ -9,15 +9,18 @@ import eu.okaeri.commands.service.CommandService;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class OkaeriCommandComponentResolver implements ComponentClassResolver<CommandService> {
 
     private final OkaeriCommands okaeriCommands;
+
+    @Inject
+    public OkaeriCommandComponentResolver(OkaeriCommands okaeriCommands) {
+        this.okaeriCommands = okaeriCommands;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<CommandService> type) {

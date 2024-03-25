@@ -5,16 +5,19 @@ import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.listener.GloballyAttachableListener;
 
 import java.util.Map;
 
-@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class ListenerComponentResolver implements ComponentClassResolver<GloballyAttachableListener> {
 
     private final DiscordApi discordApi;
+
+    @Inject
+    public ListenerComponentResolver(DiscordApi discordApi) {
+        this.discordApi = discordApi;
+    }
 
     @Override
     public boolean isAssignableFrom(@NonNull Class<GloballyAttachableListener> listenerClass) {
