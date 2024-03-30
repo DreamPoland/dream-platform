@@ -47,7 +47,7 @@ public class DreamCommandComponentResolver implements ComponentClassResolver<Com
     @Override
     public CommandBase resolve(@NonNull Injector injector, @NonNull Class<CommandBase> type) {
 
-        final CommandBase commandBase = injector.createInstance(CommandBase.class);
+        final CommandBase commandBase = injector.createInstance(type);
 
         this.commandProvider.register(commandBase);
         return commandBase;
