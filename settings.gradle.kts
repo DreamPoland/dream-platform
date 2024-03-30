@@ -12,11 +12,9 @@ include(":hook")
 include(":bukkit")
 include(":bukkit-hook")
 include(":bukkit-config")
-include(":bukkit-command")
 
 include(":bungee")
 include(":bungee-config")
-include(":bungee-command")
 
 // -- discord --
 include(":javacord")
@@ -27,4 +25,5 @@ include(":cli")
 include(":cli-config")
 
 // -- libraries --
+include(":dream-command")
 include(":okaeri-command")

@@ -34,7 +34,7 @@ public final class ComponentManager {
      * When class is undefined, object will be bound for injection only.
      * Class with constructor can only be register with RegisterObject method.
      *
-     * @param componentClass class to register & bind
+     * @param componentClass class to register and bind
      * @param consumer       apply changes after register.
      */
     @SuppressWarnings("ALL")
@@ -63,7 +63,7 @@ public final class ComponentManager {
      * When class is undefined, object will be bound for injection only.
      * Class with constructor can only be register with RegisterObject method.
      *
-     * @param componentClass class to register & bind
+     * @param componentClass class to register and bind
      */
     public void registerComponent(@NonNull Class<?> componentClass) {
         this.registerComponent(componentClass, null);
