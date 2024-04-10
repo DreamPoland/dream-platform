@@ -1,15 +1,12 @@
 package cc.dreamcode.platform.other.component;
 
-import cc.dreamcode.platform.DreamPlatform;
-import cc.dreamcode.platform.PlatformExtension;
+import cc.dreamcode.platform.component.ComponentExtension;
 import cc.dreamcode.platform.component.ComponentManager;
 import lombok.NonNull;
 
-public class DreamCommandExtension implements PlatformExtension {
+public class DreamCommandExtension implements ComponentExtension {
     @Override
-    public void register(@NonNull DreamPlatform dreamPlatform) {
-        final ComponentManager componentManager = dreamPlatform.getComponentManager();
-
+    public void register(@NonNull ComponentManager componentManager) {
         componentManager.registerResolver(CommandBaseResolver.class);
         componentManager.registerResolver(CommandExtensionResolver.class);
 

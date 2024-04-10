@@ -1,6 +1,7 @@
 package cc.dreamcode.platform;
 
 import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.component.ComponentExtension;
 import lombok.NonNull;
 
 import java.io.File;
@@ -28,8 +29,12 @@ public interface DreamPlatform {
 
     <T> T registerInjectable(Class<T> type);
 
-    default void registerExtension(@NonNull PlatformExtension extension) {
-        extension.register(this);
+    default void registerExtension(@NonNull ComponentExtension extension) {
+        extension.register(this.getComponentManager());
+    }
+
+    default void registerExtension(@NonNull Class<? extends ComponentExtension> extensionClass) {
+        this.createInstance(extensionClass).register(this.getComponentManager());
     }
 
     <T> T createInstance(@NonNull Class<T> type);
