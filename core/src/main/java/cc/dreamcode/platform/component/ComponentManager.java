@@ -69,4 +69,12 @@ public final class ComponentManager {
         this.registerComponent(componentClass, null);
     }
 
+    public void registerExtension(@NonNull ComponentExtension componentExtension) {
+        componentExtension.register(this);
+    }
+
+    public void registerExtension(@NonNull Class<? extends ComponentExtension> extensionClass) {
+        ComponentExtension componentExtension = this.injector.createInstance(extensionClass);
+        this.registerExtension(componentExtension);
+    }
 }

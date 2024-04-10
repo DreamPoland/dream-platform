@@ -30,11 +30,11 @@ public interface DreamPlatform {
     <T> T registerInjectable(Class<T> type);
 
     default void registerExtension(@NonNull ComponentExtension extension) {
-        extension.register(this.getComponentManager());
+        this.getComponentManager().registerExtension(extension);
     }
 
     default void registerExtension(@NonNull Class<? extends ComponentExtension> extensionClass) {
-        this.createInstance(extensionClass).register(this.getComponentManager());
+        this.getComponentManager().registerExtension(extensionClass);
     }
 
     <T> T createInstance(@NonNull Class<T> type);
