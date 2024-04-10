@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("rawtypes")
-public class ObjectComponentClassResolver implements ComponentClassResolver {
+public class RawObjectResolver implements ComponentClassResolver {
     @Override
     public boolean isAssignableFrom(@NonNull Class type) {
         return true;

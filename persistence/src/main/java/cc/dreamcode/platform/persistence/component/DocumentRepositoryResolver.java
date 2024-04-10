@@ -14,13 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("rawtypes")
-public class DocumentRepositoryComponentResolver implements ComponentClassResolver<DocumentRepository> {
+public class DocumentRepositoryResolver implements ComponentClassResolver<DocumentRepository> {
 
     private final DreamPlatform platform;
     private final DocumentPersistence documentPersistence;
 
     @Inject
-    public DocumentRepositoryComponentResolver(DreamPlatform platform, DocumentPersistence documentPersistence) {
+    public DocumentRepositoryResolver(DreamPlatform platform, DocumentPersistence documentPersistence) {
         this.platform = platform;
         this.documentPersistence = documentPersistence;
     }

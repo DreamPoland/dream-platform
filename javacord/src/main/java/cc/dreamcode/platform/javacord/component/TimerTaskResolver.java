@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TimerTaskComponentResolver implements ComponentClassResolver<TimerTask> {
+public class TimerTaskResolver implements ComponentClassResolver<TimerTask> {
     @Override
     public boolean isAssignableFrom(@NonNull Class<TimerTask> timerTaskClass) {
         return TimerTask.class.isAssignableFrom(timerTaskClass);

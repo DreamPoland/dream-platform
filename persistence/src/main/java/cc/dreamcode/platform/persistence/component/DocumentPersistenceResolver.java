@@ -24,13 +24,13 @@ import lombok.NonNull;
 
 import java.util.Map;
 
-public class DocumentPersistenceComponentResolver implements ComponentClassResolver<DocumentPersistence> {
+public class DocumentPersistenceResolver implements ComponentClassResolver<DocumentPersistence> {
 
     private final DreamPlatform dreamPlatform;
     private final StorageConfig storageConfig;
 
     @Inject
-    public DocumentPersistenceComponentResolver(DreamPlatform dreamPlatform, StorageConfig storageConfig) {
+    public DocumentPersistenceResolver(DreamPlatform dreamPlatform, StorageConfig storageConfig) {
         this.dreamPlatform = dreamPlatform;
         this.storageConfig = storageConfig;
     }

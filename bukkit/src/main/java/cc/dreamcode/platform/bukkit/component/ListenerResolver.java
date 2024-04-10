@@ -15,12 +15,12 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ListenerComponentResolver implements ComponentClassResolver<Listener> {
+public class ListenerResolver implements ComponentClassResolver<Listener> {
 
     private final DreamBukkitPlatform dreamBukkitPlatform;
 
     @Inject
-    public ListenerComponentResolver(DreamBukkitPlatform dreamBukkitPlatform) {
+    public ListenerResolver(DreamBukkitPlatform dreamBukkitPlatform) {
         this.dreamBukkitPlatform = dreamBukkitPlatform;
     }
 

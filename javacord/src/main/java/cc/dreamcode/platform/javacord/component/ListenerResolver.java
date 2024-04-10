@@ -10,12 +10,12 @@ import org.javacord.api.listener.GloballyAttachableListener;
 
 import java.util.Map;
 
-public class ListenerComponentResolver implements ComponentClassResolver<GloballyAttachableListener> {
+public class ListenerResolver implements ComponentClassResolver<GloballyAttachableListener> {
 
     private final DiscordApi discordApi;
 
     @Inject
-    public ListenerComponentResolver(DiscordApi discordApi) {
+    public ListenerResolver(DiscordApi discordApi) {
         this.discordApi = discordApi;
     }
 

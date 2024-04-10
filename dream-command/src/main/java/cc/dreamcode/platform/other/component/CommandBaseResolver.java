@@ -12,12 +12,12 @@ import lombok.NonNull;
 
 import java.util.Map;
 
-public class DreamCommandComponentResolver implements ComponentClassResolver<CommandBase> {
+public class CommandBaseResolver implements ComponentClassResolver<CommandBase> {
 
     private final CommandProvider commandProvider;
 
     @Inject
-    public DreamCommandComponentResolver(CommandProvider commandProvider) {
+    public CommandBaseResolver(CommandProvider commandProvider) {
         this.commandProvider = commandProvider;
     }
 

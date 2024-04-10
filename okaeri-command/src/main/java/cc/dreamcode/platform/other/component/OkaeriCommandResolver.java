@@ -13,12 +13,12 @@ import lombok.NonNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OkaeriCommandComponentResolver implements ComponentClassResolver<CommandService> {
+public class OkaeriCommandResolver implements ComponentClassResolver<CommandService> {
 
     private final OkaeriCommands okaeriCommands;
 
     @Inject
-    public OkaeriCommandComponentResolver(OkaeriCommands okaeriCommands) {
+    public OkaeriCommandResolver(OkaeriCommands okaeriCommands) {
         this.okaeriCommands = okaeriCommands;
     }
 

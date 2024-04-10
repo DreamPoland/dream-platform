@@ -12,12 +12,12 @@ import lombok.NonNull;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class RunnableComponentResolver implements ComponentClassResolver<Runnable> {
+public class RunnableResolver implements ComponentClassResolver<Runnable> {
 
     private final DreamBungeePlatform dreamBukkitPlatform;
 
     @Inject
-    public RunnableComponentResolver(DreamBungeePlatform dreamBukkitPlatform) {
+    public RunnableResolver(DreamBungeePlatform dreamBukkitPlatform) {
         this.dreamBukkitPlatform = dreamBukkitPlatform;
     }
 

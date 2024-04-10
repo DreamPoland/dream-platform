@@ -12,13 +12,13 @@ import org.javacord.api.interaction.SlashCommandInteraction;
 
 import java.util.Map;
 
-public class CommandComponentResolver implements ComponentClassResolver<JavacordCommand> {
+public class CommandResolver implements ComponentClassResolver<JavacordCommand> {
 
     private final DreamJavacordPlatform dreamJavacordPlatform;
     private final DiscordApi discordApi;
 
     @Inject
-    public CommandComponentResolver(DreamJavacordPlatform dreamJavacordPlatform, DiscordApi discordApi) {
+    public CommandResolver(DreamJavacordPlatform dreamJavacordPlatform, DiscordApi discordApi) {
         this.dreamJavacordPlatform = dreamJavacordPlatform;
         this.discordApi = discordApi;
     }

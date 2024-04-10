@@ -25,12 +25,12 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ConfigurationComponentResolver implements ComponentClassResolver<OkaeriConfig> {
+public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfig> {
 
     private final DreamPlatform dreamPlatform;
 
     @Inject
-    public ConfigurationComponentResolver(DreamPlatform dreamPlatform) {
+    public ConfigurationResolver(DreamPlatform dreamPlatform) {
         this.dreamPlatform = dreamPlatform;
     }
 

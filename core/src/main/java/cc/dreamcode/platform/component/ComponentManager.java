@@ -40,7 +40,7 @@ public final class ComponentManager {
     @SuppressWarnings("ALL")
     @SneakyThrows
     public <T> void registerComponent(@NonNull Class<T> componentClass, Consumer<T> consumer) {
-        final ComponentClassResolver defaultObjectResolver = this.injector.createInstance(ObjectComponentClassResolver.class);
+        final ComponentClassResolver defaultObjectResolver = this.injector.createInstance(RawObjectResolver.class);
         final AtomicReference<ComponentClassResolver> reference = new AtomicReference<>(defaultObjectResolver);
 
         for (Class<? extends ComponentClassResolver> componentResolvers : this.classResolvers) {

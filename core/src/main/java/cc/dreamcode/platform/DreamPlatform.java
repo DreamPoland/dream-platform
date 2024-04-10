@@ -18,6 +18,8 @@ public interface DreamPlatform {
 
     @NonNull DreamVersion getDreamVersion();
 
+    @NonNull ComponentManager getComponentManager();
+
     <T> T registerInjectable(@NonNull String name, @NonNull T t);
 
     <T> T registerInjectable(@NonNull String name, Class<T> type);
@@ -25,6 +27,10 @@ public interface DreamPlatform {
     <T> T registerInjectable(@NonNull T t);
 
     <T> T registerInjectable(Class<T> type);
+
+    default void registerExtension(@NonNull PlatformExtension extension) {
+        extension.register(this);
+    }
 
     <T> T createInstance(@NonNull Class<T> type);
 

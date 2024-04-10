@@ -11,12 +11,12 @@ import lombok.NonNull;
 
 import java.util.Map;
 
-public class RunnableComponentResolver implements ComponentClassResolver<Runnable> {
+public class RunnableResolver implements ComponentClassResolver<Runnable> {
 
     private final DreamBukkitPlatform dreamBukkitPlatform;
 
     @Inject
-    public RunnableComponentResolver(DreamBukkitPlatform dreamBukkitPlatform) {
+    public RunnableResolver(DreamBukkitPlatform dreamBukkitPlatform) {
         this.dreamBukkitPlatform = dreamBukkitPlatform;
     }
 
