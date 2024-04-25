@@ -27,7 +27,7 @@ public class DreamHookManager {
         return (Optional<T>) this.dreamHookList
                 .stream()
                 .filter(hook -> hook.getClass().isAssignableFrom(pluginHookClass))
-                .findFirst();
+                .findAny();
     }
 
     public void registerHook(@NonNull Class<? extends DreamHook> pluginHookClass) {
@@ -37,6 +37,10 @@ public class DreamHookManager {
         if (!dreamHook.isPresent()) {
             this.dreamLogger.warning(dreamHook.getPluginName() + " not found! Some things may be unavailable.");
             return;
+        }
+
+        if (dreamHook instanceof DreamHook.Initializer) {
+            ((DreamHook.Initializer) dreamHook).onInit();
         }
 
         this.dreamHookList.add(dreamHook);

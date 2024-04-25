@@ -6,4 +6,7 @@ public interface DreamHook {
 
     boolean isPresent();
 
+    interface Initializer {
+        void onInit();
+    }
 }

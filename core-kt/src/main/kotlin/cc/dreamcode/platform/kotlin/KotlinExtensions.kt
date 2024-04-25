@@ -2,6 +2,7 @@ package cc.dreamcode.platform.kotlin
 
 import cc.dreamcode.platform.DreamPlatform
 import cc.dreamcode.platform.component.ComponentClassResolver
+import cc.dreamcode.platform.component.ComponentExtension
 import cc.dreamcode.platform.component.ComponentManager
 import eu.okaeri.configs.serdes.DeserializationData
 import eu.okaeri.injector.Injector
@@ -17,7 +18,11 @@ fun <T : Any> ComponentManager.registerComponent(`class`: KClass<T>, consumer: C
     this.registerComponent(`class`.java, consumer)
 }
 
-fun ComponentManager.registerResolver(`class`: KClass<out ComponentClassResolver<out Class<*>>>) {
+fun ComponentManager.registerExtension(`class`: KClass<out ComponentExtension>) {
+    this.registerExtension(`class`.java)
+}
+
+fun ComponentManager.registerResolver(`class`: KClass<out ComponentClassResolver<*>>) {
     this.registerResolver(`class`.java)
 }
 
