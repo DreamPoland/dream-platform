@@ -1,6 +1,7 @@
 package cc.dreamcode.platform.bukkit.serializer;
 
-import cc.dreamcode.platform.bukkit.DreamBukkitPlatform;
+import cc.dreamcode.platform.bukkit.serializer.nbt.NbtData;
+import cc.dreamcode.utilities.bukkit.VersionUtil;
 import cc.dreamcode.utilities.bukkit.nbt.ItemNbtUtil;
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
@@ -9,27 +10,20 @@ import eu.okaeri.configs.serdes.SerializationData;
 import eu.okaeri.configs.yaml.bukkit.serdes.itemstack.ItemStackFormat;
 import eu.okaeri.configs.yaml.bukkit.serdes.itemstack.ItemStackSpecData;
 import eu.okaeri.configs.yaml.bukkit.serdes.transformer.experimental.StringBase64ItemStackTransformer;
-import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
 
-    private final DreamBukkitPlatform dreamPlatform;
-
     private static final ItemMetaSerializer ITEM_META_SERIALIZER = new ItemMetaSerializer();
     private static final StringBase64ItemStackTransformer ITEM_STACK_TRANSFORMER = new StringBase64ItemStackTransformer();
-
-    @Inject
-    public ItemStackSerializer(DreamBukkitPlatform dreamPlatform) {
-        this.dreamPlatform = dreamPlatform;
-    }
 
     @Override
     public boolean supports(@NonNull Class<? super ItemStack> type) {
@@ -49,18 +43,25 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
             data.add("durability", itemStack.getDurability());
         }
 
-        Map<String, String> nbtMap = ItemNbtUtil.getValuesByPlugin(this.dreamPlatform, itemStack);
-        if (!nbtMap.isEmpty()) {
-            data.addAsMap("nbt", nbtMap, String.class, String.class);
+        if (!VersionUtil.isSupported(14)) {
+            List<NbtData> nbtDatas = ItemNbtUtil.getValues(itemStack)
+                    .entrySet()
+                    .stream()
+                    .map(entry -> new NbtData("legacy-nbt", entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList());
+
+            if (!nbtDatas.isEmpty()) {
+                data.addCollection("nbt-data", nbtDatas, NbtData.class);
+            }
+        }
+
+        if (!itemStack.hasItemMeta()) {
+            return;
         }
 
         ItemStackFormat format = data.getContext().getAttachment(ItemStackSpecData.class)
                 .map(ItemStackSpecData::getFormat)
                 .orElse(ItemStackFormat.NATURAL);
-
-        if (!itemStack.hasItemMeta()) {
-            return;
-        }
 
         switch (format) {
             case NATURAL:
@@ -109,9 +110,9 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
                 ? data.get("durability", Short.class)
                 : 0;
 
-        Map<String, String> nbt = data.containsKey("nbt")
-                ? data.getAsMap("nbt", String.class, String.class)
-                : new HashMap<>();
+        List<NbtData> nbtDatas = data.containsKey("nbt-data")
+                ? data.getAsList("nbt-data", NbtData.class)
+                : new ArrayList<>();
 
         ItemStackFormat format = data.getContext().getAttachment(ItemStackSpecData.class)
                 .map(ItemStackSpecData::getFormat)
@@ -147,15 +148,17 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
 
         // create ItemStack base
         AtomicReference<ItemStack> itemStack = new AtomicReference<>(new ItemStack(material, amount));
+
+        if (!VersionUtil.isSupported(14)) {
+            nbtDatas.forEach(nbtData -> itemStack.set(ItemNbtUtil.setValue(itemStack.get(), nbtData.getKey(), nbtData.getValue())));
+        }
+
         // set ItemMeta FIRST due to 1.16+ server
         // ItemStacks storing more and more data
         // here, in the attributes of ItemMeta
         itemStack.get().setItemMeta(itemMeta);
         // then override durability with setter
         itemStack.get().setDurability(durability);
-
-        nbt.forEach((key, value) ->
-                itemStack.set(ItemNbtUtil.setValue(this.dreamPlatform, itemStack.get(), key, value)));
 
         // woah, it works
         return itemStack.get();
