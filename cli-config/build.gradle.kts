@@ -10,5 +10,5 @@ dependencies {
     implementation("eu.okaeri:okaeri-injector:2.1.0")
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.3.2")
+    implementation("cc.dreamcode:utilities:1.3.3")
 }

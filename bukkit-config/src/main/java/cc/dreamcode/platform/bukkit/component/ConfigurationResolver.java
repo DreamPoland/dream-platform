@@ -2,6 +2,7 @@ package cc.dreamcode.platform.bukkit.component;
 
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.bukkit.DreamBukkitConfig;
+import cc.dreamcode.platform.bukkit.DreamBukkitPlatform;
 import cc.dreamcode.platform.bukkit.component.configuration.Configuration;
 import cc.dreamcode.platform.bukkit.serializer.ItemMetaSerializer;
 import cc.dreamcode.platform.bukkit.serializer.ItemStackSerializer;
@@ -76,7 +77,7 @@ public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfi
         return ConfigManager.create(type, (it) -> {
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons(), dreamBukkitConfig.getConfigSerdesPack());
             it.withSerdesPack(registry -> {
-                registry.registerExclusive(ItemStack.class, new ItemStackSerializer());
+                registry.registerExclusive(ItemStack.class, new ItemStackSerializer((DreamBukkitPlatform) this.dreamPlatform));
                 registry.registerExclusive(ItemMeta.class, new ItemMetaSerializer());
             });
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
