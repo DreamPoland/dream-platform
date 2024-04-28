@@ -28,7 +28,6 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
         this.injector.registerInjectable(this.getServer());
         this.injector.registerInjectable(this.getServer().getScheduler());
         this.injector.registerInjectable(this.getServer().getPluginManager());
-        this.injector.registerInjectable(this.getServer().getScoreboardManager());
 
         this.dreamLogger = new DreamBukkitLogger(this.getLogger());
         this.injector.registerInjectable(this.dreamLogger);
