@@ -1,29 +1,23 @@
 package cc.dreamcode.platform.bukkit.serializer;
 
-import cc.dreamcode.platform.bukkit.serializer.nbt.NbtData;
-import cc.dreamcode.utilities.bukkit.VersionUtil;
-import cc.dreamcode.utilities.bukkit.nbt.ItemNbtUtil;
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
 import eu.okaeri.configs.serdes.SerializationData;
 import eu.okaeri.configs.yaml.bukkit.serdes.itemstack.ItemStackFormat;
 import eu.okaeri.configs.yaml.bukkit.serdes.itemstack.ItemStackSpecData;
-import eu.okaeri.configs.yaml.bukkit.serdes.transformer.experimental.StringBase64ItemStackTransformer;
+import eu.okaeri.configs.yaml.bukkit.serdes.serializer.experimental.CraftItemStackSerializer;
 import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
 
     private static final ItemMetaSerializer ITEM_META_SERIALIZER = new ItemMetaSerializer();
-    private static final StringBase64ItemStackTransformer ITEM_STACK_TRANSFORMER = new StringBase64ItemStackTransformer();
+    private static final CraftItemStackSerializer CRAFT_ITEM_STACK_SERIALIZER = new CraftItemStackSerializer();
 
     @Override
     public boolean supports(@NonNull Class<? super ItemStack> type) {
@@ -41,18 +35,6 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
 
         if (itemStack.getDurability() != 0) {
             data.add("durability", itemStack.getDurability());
-        }
-
-        if (!VersionUtil.isSupported(14)) {
-            List<NbtData> nbtDatas = ItemNbtUtil.getValues(itemStack)
-                    .entrySet()
-                    .stream()
-                    .map(entry -> new NbtData("legacy-nbt", entry.getKey(), entry.getValue()))
-                    .collect(Collectors.toList());
-
-            if (!nbtDatas.isEmpty()) {
-                data.addCollection("nbt-data", nbtDatas, NbtData.class);
-            }
         }
 
         if (!itemStack.hasItemMeta()) {
@@ -78,27 +60,25 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
         DeserializationData deserializationData = new DeserializationData(data.asMap(), data.getConfigurer(), data.getContext());
         ItemStack deserializedStack = this.deserialize(deserializationData, generics);
 
-        // human-friendly form is most likely complete
+        // normal form is most likely complete
         if (deserializedStack.equals(itemStack)) {
             return;
         }
 
-        // human-friendly failed, use base64 instead
+        // use legacy instead
         data.clear();
-        String base64Stack = ITEM_STACK_TRANSFORMER.leftToRight(itemStack, data.getContext());
-        data.add("base64", base64Stack);
+        data.add("legacy", true);
+        CRAFT_ITEM_STACK_SERIALIZER.serialize(itemStack, data, generics);
     }
 
     @Override
     public ItemStack deserialize(@NonNull DeserializationData data, @NonNull GenericsDeclaration generics) {
 
-        // base64
-        if (data.containsKey("base64")) {
-            String base64Stack = data.get("base64", String.class);
-            return ITEM_STACK_TRANSFORMER.rightToLeft(base64Stack, data.getContext());
+        // legacy
+        if (data.containsKey("legacy")) {
+            return CRAFT_ITEM_STACK_SERIALIZER.deserialize(data, generics);
         }
 
-        // human-friendly
         String materialName = data.get("material", String.class);
         Material material = Material.valueOf(materialName);
 
@@ -109,10 +89,6 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
         short durability = data.containsKey("durability")
                 ? data.get("durability", Short.class)
                 : 0;
-
-        List<NbtData> nbtDatas = data.containsKey("nbt-data")
-                ? data.getAsList("nbt-data", NbtData.class)
-                : new ArrayList<>();
 
         ItemStackFormat format = data.getContext().getAttachment(ItemStackSpecData.class)
                 .map(ItemStackSpecData::getFormat)
@@ -148,11 +124,6 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
 
         // create ItemStack base
         AtomicReference<ItemStack> itemStack = new AtomicReference<>(new ItemStack(material, amount));
-
-        if (!VersionUtil.isSupported(14)) {
-            nbtDatas.forEach(nbtData -> itemStack.set(ItemNbtUtil.setValue(itemStack.get(), nbtData.getKey(), nbtData.getValue())));
-        }
-
         // set ItemMeta FIRST due to 1.16+ server
         // ItemStacks storing more and more data
         // here, in the attributes of ItemMeta
