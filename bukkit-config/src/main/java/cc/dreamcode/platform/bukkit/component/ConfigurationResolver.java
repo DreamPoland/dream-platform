@@ -75,11 +75,13 @@ public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfi
 
         final DreamBukkitConfig dreamBukkitConfig = (DreamBukkitConfig) this.dreamPlatform;
         return ConfigManager.create(type, (it) -> {
-            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons(), dreamBukkitConfig.getConfigSerdesPack());
+            it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons());
             it.withSerdesPack(registry -> {
                 registry.register(new NbtDataSerializer());
                 registry.registerExclusive(ItemStack.class, new ItemStackSerializer());
                 registry.registerExclusive(ItemMeta.class, new ItemMetaSerializer());
+
+                registry.register(dreamBukkitConfig.getConfigSerdesPack());
             });
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
             it.saveDefaults();
