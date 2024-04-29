@@ -5,7 +5,6 @@ import cc.dreamcode.platform.bukkit.DreamBukkitConfig;
 import cc.dreamcode.platform.bukkit.component.configuration.Configuration;
 import cc.dreamcode.platform.bukkit.serializer.ItemMetaSerializer;
 import cc.dreamcode.platform.bukkit.serializer.ItemStackSerializer;
-import cc.dreamcode.platform.bukkit.serializer.nbt.NbtDataSerializer;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
@@ -77,7 +76,6 @@ public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfi
         return ConfigManager.create(type, (it) -> {
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons());
             it.withSerdesPack(registry -> {
-                registry.register(new NbtDataSerializer());
                 registry.registerExclusive(ItemStack.class, new ItemStackSerializer());
                 registry.registerExclusive(ItemMeta.class, new ItemMetaSerializer());
 
