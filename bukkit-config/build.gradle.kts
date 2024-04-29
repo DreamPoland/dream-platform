@@ -8,7 +8,7 @@ dependencies {
     implementation(project(":bukkit"))
 
     // -- spigot api (base) --
-    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT")
 
     // -- configs--
     implementation("eu.okaeri:okaeri-configs-yaml-bukkit:5.0.1")
