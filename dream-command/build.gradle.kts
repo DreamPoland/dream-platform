@@ -13,5 +13,5 @@ dependencies {
     implementation("cc.dreamcode:utilities:1.3.3")
 
     // -- dream-command --
-    implementation("cc.dreamcode.command:core:2.0.5")
+    implementation("cc.dreamcode.command:core:2.0.6")
 }
