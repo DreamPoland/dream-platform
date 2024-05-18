@@ -20,7 +20,7 @@ public class SchedulerMethodResolver implements ComponentMethodResolver<Schedule
 
     @Override
     public String getComponentName() {
-        return "scheduler-method";
+        return "scheduler";
     }
 
     @Override
