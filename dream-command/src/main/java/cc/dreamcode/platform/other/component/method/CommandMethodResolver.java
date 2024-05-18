@@ -47,7 +47,7 @@ public class CommandMethodResolver implements ComponentMethodResolver<SingleComm
     }
 
     @Override
-    public void register(@NonNull Injector injector, @NonNull SingleCommand singleCommand, @NonNull Method method, @NonNull Object instance) {
+    public void apply(@NonNull Injector injector, @NonNull SingleCommand singleCommand, @NonNull Method method, @NonNull Object instance) {
 
         final CommandBase commandBase = new CommandBase() {
             @Override

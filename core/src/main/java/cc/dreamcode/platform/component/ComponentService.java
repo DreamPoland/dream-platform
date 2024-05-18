@@ -82,7 +82,7 @@ public final class ComponentService {
                 final Class<? extends Annotation> annotationClass = annotation.getClass();
                 this.methodResolvers.stream()
                         .filter(resolver -> resolver.isAssignableFrom(annotationClass))
-                        .forEach(resolver -> resolver.register(this.injector, annotation, declaredMethod, t));
+                        .forEach(resolver -> resolver.register(this.injector, annotation, declaredMethod, t, this.debug));
             }
         }
     }
