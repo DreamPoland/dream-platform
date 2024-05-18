@@ -2,7 +2,7 @@ package cc.dreamcode.javacord;
 
 import cc.dreamcode.javacord.command.TestCommand;
 import cc.dreamcode.platform.DreamVersion;
-import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.component.ComponentService;
 import cc.dreamcode.platform.javacord.DreamJavacordPlatform;
 import lombok.NonNull;
 import org.javacord.api.DiscordApi;
@@ -19,7 +19,7 @@ public class JavacordExampleBot extends DreamJavacordPlatform {
     }
 
     @Override
-    public @NonNull DiscordApi login(@NonNull ComponentManager componentManager) {
+    public @NonNull DiscordApi login(@NonNull ComponentService componentService) {
         return new DiscordApiBuilder()
                 .setToken("token")
                 .addIntents(Intent.MESSAGE_CONTENT)
@@ -27,8 +27,8 @@ public class JavacordExampleBot extends DreamJavacordPlatform {
     }
 
     @Override
-    public void enable(@NonNull ComponentManager componentManager) {
-        componentManager.registerComponent(TestCommand.class);
+    public void enable(@NonNull ComponentService componentService) {
+        componentService.registerComponent(TestCommand.class);
     }
 
     @Override

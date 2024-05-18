@@ -1,28 +1,28 @@
 package cc.dreamcode.platform.other.component;
 
 import cc.dreamcode.platform.component.ComponentExtension;
-import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.component.ComponentService;
 import cc.dreamcode.platform.other.component.method.CommandMethodResolver;
 import lombok.NonNull;
 
 public class DreamCommandExtension implements ComponentExtension {
     @Override
-    public void register(@NonNull ComponentManager componentManager) {
-        componentManager.registerResolver(CommandBaseResolver.class);
-        componentManager.registerResolver(CommandExtensionResolver.class);
+    public void register(@NonNull ComponentService componentService) {
+        componentService.registerResolver(CommandBaseResolver.class);
+        componentService.registerResolver(CommandExtensionResolver.class);
 
-        componentManager.registerResolver(InvalidInputHandlerResolver.class);
-        componentManager.registerResolver(InvalidPermissionHandlerResolver.class);
-        componentManager.registerResolver(InvalidSenderHandlerResolver.class);
-        componentManager.registerResolver(InvalidUsageHandlerResolver.class);
+        componentService.registerResolver(InvalidInputHandlerResolver.class);
+        componentService.registerResolver(InvalidPermissionHandlerResolver.class);
+        componentService.registerResolver(InvalidSenderHandlerResolver.class);
+        componentService.registerResolver(InvalidUsageHandlerResolver.class);
 
-        componentManager.registerResolver(ObjectTransformerResolver.class);
-        componentManager.registerResolver(ArrayTransformerResolver.class);
+        componentService.registerResolver(ObjectTransformerResolver.class);
+        componentService.registerResolver(ArrayTransformerResolver.class);
 
-        componentManager.registerResolver(CommandBindResolver.class);
-        componentManager.registerResolver(CommandSuggestionResolver.class);
-        componentManager.registerResolver(CommandSuggestionFilterResolver.class);
+        componentService.registerResolver(CommandBindResolver.class);
+        componentService.registerResolver(CommandSuggestionResolver.class);
+        componentService.registerResolver(CommandSuggestionFilterResolver.class);
 
-        componentManager.registerMethodResolver(CommandMethodResolver.class);
+        componentService.registerMethodResolver(CommandMethodResolver.class);
     }
 }

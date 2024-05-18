@@ -5,7 +5,7 @@ import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.DreamVersion;
 import cc.dreamcode.platform.cli.component.TimerTaskResolver;
 import cc.dreamcode.platform.cli.component.method.SchedulerMethodResolver;
-import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.component.ComponentService;
 import cc.dreamcode.platform.exception.PlatformException;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
@@ -19,7 +19,7 @@ public abstract class DreamCliPlatform implements DreamPlatform {
 
     @Getter private Injector injector;
     @Getter private DreamLogger dreamLogger;
-    @Getter private ComponentManager componentManager;
+    @Getter private ComponentService componentService;
 
     private void initialize() {
         this.injector = OkaeriInjector.create();
@@ -28,8 +28,8 @@ public abstract class DreamCliPlatform implements DreamPlatform {
         this.dreamLogger = new DreamCliLogger(LoggerFactory.getLogger(this.getClass()));
         this.injector.registerInjectable(this.dreamLogger);
 
-        this.componentManager = new ComponentManager(this.injector);
-        this.injector.registerInjectable(this.componentManager);
+        this.componentService = new ComponentService(this.injector);
+        this.injector.registerInjectable(this.componentService);
 
         DreamVersion dreamVersion = this.getDreamVersion();
 
@@ -39,11 +39,11 @@ public abstract class DreamCliPlatform implements DreamPlatform {
         this.dreamLogger.info(String.format("Loading %s resources...",
                 dreamVersion.getName()));
 
-        this.componentManager.registerResolver(TimerTaskResolver.class);
-        this.componentManager.registerMethodResolver(SchedulerMethodResolver.class);
+        this.componentService.registerResolver(TimerTaskResolver.class);
+        this.componentService.registerMethodResolver(SchedulerMethodResolver.class);
 
         try {
-            this.enable(this.componentManager);
+            this.enable(this.componentService);
         }
         catch (Exception e) {
             throw new PlatformException("An error was caught when platform are starting...", e);
@@ -87,7 +87,7 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     public <T> T registerInjectable(@NonNull T t) {
         this.injector.registerInjectable(t);
 
-        if (this.componentManager.isDebug()) {
+        if (this.componentService.isDebug()) {
             this.dreamLogger.info(
                     new DreamLogger.Builder()
                             .type("Added object instance")
@@ -103,7 +103,7 @@ public abstract class DreamCliPlatform implements DreamPlatform {
     public <T> T registerInjectable(@NonNull String name, @NonNull T t) {
         this.injector.registerInjectable(name, t);
 
-        if (this.componentManager.isDebug()) {
+        if (this.componentService.isDebug()) {
             this.dreamLogger.info(
                     new DreamLogger.Builder()
                             .type("Added object instance")

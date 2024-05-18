@@ -4,5 +4,5 @@ import lombok.NonNull;
 
 public interface ComponentExtension {
 
-    void register(@NonNull ComponentManager componentManager);
+    void register(@NonNull ComponentService componentService);
 }

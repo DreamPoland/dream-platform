@@ -1,6 +1,6 @@
 package cc.dreamcode.platform;
 
-import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.component.ComponentService;
 import cc.dreamcode.platform.component.ComponentExtension;
 import lombok.NonNull;
 
@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface DreamPlatform {
 
-    void enable(@NonNull ComponentManager componentManager);
+    void enable(@NonNull ComponentService componentService);
 
     void disable();
 
@@ -19,7 +19,7 @@ public interface DreamPlatform {
 
     @NonNull DreamVersion getDreamVersion();
 
-    @NonNull ComponentManager getComponentManager();
+    @NonNull ComponentService getComponentService();
 
     <T> T registerInjectable(@NonNull String name, @NonNull T t);
 
@@ -30,11 +30,11 @@ public interface DreamPlatform {
     <T> T registerInjectable(Class<T> type);
 
     default void registerExtension(@NonNull ComponentExtension extension) {
-        this.getComponentManager().registerExtension(extension);
+        this.getComponentService().registerExtension(extension);
     }
 
     default void registerExtension(@NonNull Class<? extends ComponentExtension> extensionClass) {
-        this.getComponentManager().registerExtension(extensionClass);
+        this.getComponentService().registerExtension(extensionClass);
     }
 
     <T> T createInstance(@NonNull Class<T> type);

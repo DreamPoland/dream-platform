@@ -2,7 +2,7 @@ package cc.dreamcode.platform.cli.test;
 
 import cc.dreamcode.platform.DreamVersion;
 import cc.dreamcode.platform.cli.DreamCliPlatform;
-import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.component.ComponentService;
 import lombok.NonNull;
 
 import java.io.File;
@@ -14,7 +14,7 @@ public class TestApplication extends DreamCliPlatform {
     }
 
     @Override
-    public void enable(@NonNull ComponentManager componentManager) {
+    public void enable(@NonNull ComponentService componentService) {
         this.getDreamLogger().info("test");
     }
 

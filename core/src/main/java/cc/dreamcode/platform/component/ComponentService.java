@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @SuppressWarnings("rawtypes")
-public final class ComponentManager {
+public final class ComponentService {
 
     private final Injector injector;
 
@@ -25,7 +25,7 @@ public final class ComponentManager {
 
     @Getter @Setter private boolean debug = true;
 
-    public ComponentManager(Injector injector) {
+    public ComponentService(Injector injector) {
         this.injector = injector;
 
         this.defaultClassResolver = injector.createInstance(RawObjectResolver.class);
@@ -36,6 +36,8 @@ public final class ComponentManager {
      * @param classResolver resolver class.
      */
     public void registerResolver(@NonNull Class<? extends ComponentClassResolver> classResolver) {
+        this.classResolvers.removeIf(componentClassResolver -> classResolver.isAssignableFrom(componentClassResolver.getClass()));
+
         final ComponentClassResolver componentClassResolver = this.injector.createInstance(classResolver);
         this.classResolvers.add(componentClassResolver);
     }
@@ -45,6 +47,8 @@ public final class ComponentManager {
      * @param methodResolver resolver class.
      */
     public void registerMethodResolver(@NonNull Class<? extends ComponentMethodResolver> methodResolver) {
+        this.methodResolvers.removeIf(componentMethodResolver -> methodResolver.isAssignableFrom(componentMethodResolver.getClass()));
+
         final ComponentMethodResolver componentMethodResolver = this.injector.createInstance(methodResolver);
         this.methodResolvers.add(componentMethodResolver);
     }

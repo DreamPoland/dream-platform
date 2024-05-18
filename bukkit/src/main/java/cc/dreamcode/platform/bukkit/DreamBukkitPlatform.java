@@ -5,7 +5,7 @@ import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.bukkit.component.ListenerResolver;
 import cc.dreamcode.platform.bukkit.component.RunnableResolver;
 import cc.dreamcode.platform.bukkit.component.method.SchedulerMethodResolver;
-import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.component.ComponentService;
 import cc.dreamcode.platform.exception.PlatformException;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
@@ -20,7 +20,7 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
 
     @Getter private Injector injector;
     @Getter private DreamLogger dreamLogger;
-    @Getter private ComponentManager componentManager;
+    @Getter private ComponentService componentService;
     @Getter private final AtomicBoolean pluginDisabled = new AtomicBoolean(false);
 
     @Override
@@ -35,11 +35,11 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
         this.dreamLogger = new DreamBukkitLogger(this.getLogger());
         this.injector.registerInjectable(this.dreamLogger);
 
-        this.componentManager = new ComponentManager(this.injector);
-        this.injector.registerInjectable(this.componentManager);
+        this.componentService = new ComponentService(this.injector);
+        this.injector.registerInjectable(this.componentService);
 
         try {
-            this.load(this.componentManager);
+            this.load(this.componentService);
         }
         catch (Exception e) {
             this.getPluginDisabled().set(true);
@@ -53,12 +53,12 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
             return;
         }
 
-        this.componentManager.registerResolver(ListenerResolver.class);
-        this.componentManager.registerResolver(RunnableResolver.class);
-        this.componentManager.registerMethodResolver(SchedulerMethodResolver.class);
+        this.componentService.registerResolver(ListenerResolver.class);
+        this.componentService.registerResolver(RunnableResolver.class);
+        this.componentService.registerMethodResolver(SchedulerMethodResolver.class);
 
         try {
-            this.enable(this.componentManager);
+            this.enable(this.componentService);
         }
         catch (Exception e) {
             this.getPluginDisabled().set(true);
@@ -88,7 +88,7 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
                 getDescription().getAuthors()));
     }
 
-    public abstract void load(@NonNull ComponentManager componentManager);
+    public abstract void load(@NonNull ComponentService componentService);
 
     @Override
     public <T> T registerInjectable(Class<T> type) {
@@ -108,7 +108,7 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
     public <T> T registerInjectable(@NonNull T t) {
         this.injector.registerInjectable(t);
 
-        if (this.componentManager.isDebug()) {
+        if (this.componentService.isDebug()) {
             this.dreamLogger.info(
                     new DreamLogger.Builder()
                             .type("Added object instance")
@@ -124,7 +124,7 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
     public <T> T registerInjectable(@NonNull String name, @NonNull T t) {
         this.injector.registerInjectable(name, t);
 
-        if (this.componentManager.isDebug()) {
+        if (this.componentService.isDebug()) {
             this.dreamLogger.info(
                     new DreamLogger.Builder()
                             .type("Added object instance")
