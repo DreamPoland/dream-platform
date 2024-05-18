@@ -1,43 +1,39 @@
-package cc.dreamcode.platform.bungee.component;
+package cc.dreamcode.platform.bungee.component.method;
 
 import cc.dreamcode.platform.bungee.DreamBungeePlatform;
 import cc.dreamcode.platform.bungee.component.scheduler.Scheduler;
-import cc.dreamcode.platform.component.ComponentClassResolver;
-import cc.dreamcode.platform.exception.PlatformException;
+import cc.dreamcode.platform.component.ComponentMethodResolver;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class RunnableResolver implements ComponentClassResolver<Runnable> {
+public class SchedulerMethodResolver implements ComponentMethodResolver<Scheduler> {
 
     private final DreamBungeePlatform dreamBungeePlatform;
 
     @Inject
-    public RunnableResolver(DreamBungeePlatform dreamBungeePlatform) {
+    public SchedulerMethodResolver(DreamBungeePlatform dreamBungeePlatform) {
         this.dreamBungeePlatform = dreamBungeePlatform;
     }
 
     @Override
-    public boolean isAssignableFrom(@NonNull Class<Runnable> type) {
-        return Runnable.class.isAssignableFrom(type);
+    public boolean isAssignableFrom(@NonNull Class<Scheduler> type) {
+        return Scheduler.class.isAssignableFrom(type);
     }
 
     @Override
     public String getComponentName() {
-        return "task";
+        return "scheduler-method";
     }
 
     @Override
-    public Map<String, Object> getMetas(@NonNull Runnable runnable) {
-        Scheduler scheduler = runnable.getClass().getAnnotation(Scheduler.class);
-        if (scheduler == null) {
-            throw new PlatformException("Runnable must have @Scheduler annotation.");
-        }
-
+    public Map<String, Object> getMetas(@NonNull Scheduler scheduler) {
         return new MapBuilder<String, Object>()
                 .put("async", scheduler.async())
                 .put("start-time", scheduler.delay())
@@ -46,14 +42,14 @@ public class RunnableResolver implements ComponentClassResolver<Runnable> {
     }
 
     @Override
-    public Runnable resolve(@NonNull Injector injector, @NonNull Class<Runnable> type) {
-
-        final Runnable runnable = injector.createInstance(type);
-
-        Scheduler scheduler = runnable.getClass().getAnnotation(Scheduler.class);
-        if (scheduler == null) {
-            throw new PlatformException("Runnable must have @Scheduler annotation.");
-        }
+    public void register(@NonNull Injector injector, @NonNull Scheduler scheduler, @NonNull Method method, @NonNull Object instance) {
+        final Runnable runnable = () -> {
+            try {
+                method.invoke(instance);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException("Cannot invoke scheduler method", e);
+            }
+        };
 
         if (scheduler.async()) {
             this.dreamBungeePlatform.getProxy().getScheduler().schedule(
@@ -73,7 +69,5 @@ public class RunnableResolver implements ComponentClassResolver<Runnable> {
                     TimeUnit.MILLISECONDS
             );
         }
-
-        return runnable;
     }
 }

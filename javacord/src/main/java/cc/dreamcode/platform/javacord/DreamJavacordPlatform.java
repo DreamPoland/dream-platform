@@ -8,6 +8,7 @@ import cc.dreamcode.platform.javacord.component.CommandResolver;
 import cc.dreamcode.platform.javacord.component.ListenerResolver;
 import cc.dreamcode.platform.javacord.component.TimerTaskResolver;
 import cc.dreamcode.platform.javacord.component.command.JavacordCommand;
+import cc.dreamcode.platform.javacord.component.method.SchedulerMethodResolver;
 import cc.dreamcode.utilities.Formatter;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
@@ -59,9 +60,10 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
                 this.discordApi.getYourself().getName(),
                 this.discordApi.getYourself().getIdAsString()));
 
-        componentManager.registerResolver(ListenerResolver.class);
-        componentManager.registerResolver(CommandResolver.class);
-        componentManager.registerResolver(TimerTaskResolver.class);
+        this.componentManager.registerResolver(ListenerResolver.class);
+        this.componentManager.registerResolver(CommandResolver.class);
+        this.componentManager.registerResolver(TimerTaskResolver.class);
+        this.componentManager.registerMethodResolver(SchedulerMethodResolver.class);
 
         try {
             this.enable(this.componentManager);

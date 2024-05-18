@@ -3,34 +3,54 @@ package cc.dreamcode.platform.component;
 import eu.okaeri.injector.Injector;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 @SuppressWarnings("rawtypes")
-@RequiredArgsConstructor
 public final class ComponentManager {
 
     private final Injector injector;
-    private final List<Class<? extends ComponentClassResolver>> classResolvers = new ArrayList<>();
+
+    private final List<ComponentClassResolver> classResolvers = new ArrayList<>();
+    private final List<ComponentMethodResolver> methodResolvers = new ArrayList<>();
+
+    private final ComponentClassResolver defaultClassResolver;
 
     @Getter @Setter private boolean debug = true;
 
-    /**
-     * This method implement new class resolver, before component will be registered.
-     * @param classResolver resolver class.
-     */
-    public void registerResolver(@NonNull Class<? extends ComponentClassResolver> classResolver) {
-        this.classResolvers.add(classResolver);
+    public ComponentManager(Injector injector) {
+        this.injector = injector;
+
+        this.defaultClassResolver = injector.createInstance(RawObjectResolver.class);
     }
 
     /**
-     * This method can register all content of this plugin.
+     * Implement component-class-resolver to future class components.
+     * @param classResolver resolver class.
+     */
+    public void registerResolver(@NonNull Class<? extends ComponentClassResolver> classResolver) {
+        final ComponentClassResolver componentClassResolver = this.injector.createInstance(classResolver);
+        this.classResolvers.add(componentClassResolver);
+    }
+
+    /**
+     * Implement component-method-resolver to future class components.
+     * @param methodResolver resolver class.
+     */
+    public void registerMethodResolver(@NonNull Class<? extends ComponentMethodResolver> methodResolver) {
+        final ComponentMethodResolver componentMethodResolver = this.injector.createInstance(methodResolver);
+        this.methodResolvers.add(componentMethodResolver);
+    }
+
+    /**
+     * This method resolves class and register it into injector.
      * When class is undefined, object will be bound for injection only.
      * Class with constructor can only be register with RegisterObject method.
      *
@@ -40,26 +60,31 @@ public final class ComponentManager {
     @SuppressWarnings("ALL")
     @SneakyThrows
     public <T> void registerComponent(@NonNull Class<T> componentClass, Consumer<T> consumer) {
-        final ComponentClassResolver defaultObjectResolver = this.injector.createInstance(RawObjectResolver.class);
-        final AtomicReference<ComponentClassResolver> reference = new AtomicReference<>(defaultObjectResolver);
-
-        for (Class<? extends ComponentClassResolver> componentResolvers : this.classResolvers) {
-            final ComponentClassResolver componentClassResolver = this.injector.createInstance(componentResolvers);
-            if (componentClassResolver.isAssignableFrom(componentClass)) {
-                reference.set(componentClassResolver);
+        final AtomicReference<ComponentClassResolver> reference = new AtomicReference<>(this.defaultClassResolver);
+        for (ComponentClassResolver classResolver : this.classResolvers) {
+            if (classResolver.isAssignableFrom(componentClass)) {
+                reference.set(classResolver);
             }
         }
 
+        final T t = (T) reference.get().register(this.injector, componentClass, this.debug);
         if (consumer != null) {
-            consumer.accept((T) reference.get().register(this.injector, componentClass, this.debug));
+            consumer.accept(t);
         }
-        else {
-            reference.get().register(this.injector, componentClass, this.debug);
+
+        for (Method declaredMethod : componentClass.getDeclaredMethods()) {
+            for (Annotation annotation : declaredMethod.getAnnotations()) {
+
+                final Class<? extends Annotation> annotationClass = annotation.getClass();
+                this.methodResolvers.stream()
+                        .filter(resolver -> resolver.isAssignableFrom(annotationClass))
+                        .forEach(resolver -> resolver.register(this.injector, annotation, declaredMethod, t));
+            }
         }
     }
 
     /**
-     * This method can register all content of this plugin.
+     * This method resolves class and register it into injector.
      * When class is undefined, object will be bound for injection only.
      * Class with constructor can only be register with RegisterObject method.
      *

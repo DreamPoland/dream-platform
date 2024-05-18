@@ -2,6 +2,9 @@ package cc.dreamcode.platform.bukkit;
 
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
+import cc.dreamcode.platform.bukkit.component.ListenerResolver;
+import cc.dreamcode.platform.bukkit.component.RunnableResolver;
+import cc.dreamcode.platform.bukkit.component.method.SchedulerMethodResolver;
 import cc.dreamcode.platform.component.ComponentManager;
 import cc.dreamcode.platform.exception.PlatformException;
 import eu.okaeri.injector.Injector;
@@ -49,6 +52,10 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
         if (this.getPluginDisabled().get()) {
             return;
         }
+
+        this.componentManager.registerResolver(ListenerResolver.class);
+        this.componentManager.registerResolver(RunnableResolver.class);
+        this.componentManager.registerMethodResolver(SchedulerMethodResolver.class);
 
         try {
             this.enable(this.componentManager);

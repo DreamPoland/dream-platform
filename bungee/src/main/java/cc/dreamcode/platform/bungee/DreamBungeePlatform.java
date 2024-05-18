@@ -2,6 +2,9 @@ package cc.dreamcode.platform.bungee;
 
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
+import cc.dreamcode.platform.bungee.component.ListenerResolver;
+import cc.dreamcode.platform.bungee.component.RunnableResolver;
+import cc.dreamcode.platform.bungee.component.method.SchedulerMethodResolver;
 import cc.dreamcode.platform.component.ComponentManager;
 import cc.dreamcode.platform.exception.PlatformException;
 import eu.okaeri.injector.Injector;
@@ -45,6 +48,10 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
         if (this.getPluginDisabled().get()) {
             return;
         }
+
+        this.componentManager.registerResolver(ListenerResolver.class);
+        this.componentManager.registerResolver(RunnableResolver.class);
+        this.componentManager.registerMethodResolver(SchedulerMethodResolver.class);
 
         try {
             this.enable(this.componentManager);

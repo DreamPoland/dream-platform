@@ -3,6 +3,8 @@ package cc.dreamcode.platform.cli;
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.DreamVersion;
+import cc.dreamcode.platform.cli.component.TimerTaskResolver;
+import cc.dreamcode.platform.cli.component.method.SchedulerMethodResolver;
 import cc.dreamcode.platform.component.ComponentManager;
 import cc.dreamcode.platform.exception.PlatformException;
 import eu.okaeri.injector.Injector;
@@ -36,6 +38,9 @@ public abstract class DreamCliPlatform implements DreamPlatform {
                 dreamVersion.getAuthor()));
         this.dreamLogger.info(String.format("Loading %s resources...",
                 dreamVersion.getName()));
+
+        this.componentManager.registerResolver(TimerTaskResolver.class);
+        this.componentManager.registerMethodResolver(SchedulerMethodResolver.class);
 
         try {
             this.enable(this.componentManager);
