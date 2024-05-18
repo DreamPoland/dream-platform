@@ -72,6 +72,7 @@ public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfi
         return ConfigManager.create(type, (it) -> {
             it.withConfigurer(new YamlBungeeConfigurer(), new SerdesBungee(), new SerdesCommons(), dreamBungeeConfig.getConfigSerdesPack());
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
+            it.withRemoveOrphans(configuration.removeOrphans());
             it.saveDefaults();
             it.load(true);
         });

@@ -1,4 +1,4 @@
-package cc.dreamcode.platform.javacord.serdes.embed;
+package cc.dreamcode.platform.javacord.serializer.embed;
 
 import cc.dreamcode.platform.javacord.embed.WrappedEmbedBuilder;
 import cc.dreamcode.platform.javacord.embed.WrappedEmbedField;

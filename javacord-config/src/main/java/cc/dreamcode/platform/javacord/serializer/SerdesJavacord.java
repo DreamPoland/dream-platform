@@ -1,8 +1,8 @@
-package cc.dreamcode.platform.javacord.serdes;
+package cc.dreamcode.platform.javacord.serializer;
 
-import cc.dreamcode.platform.javacord.serdes.embed.WrappedEmbedBuilderSerializer;
-import cc.dreamcode.platform.javacord.serdes.embed.WrappedEmbedFieldSerializer;
-import cc.dreamcode.platform.javacord.serdes.notice.NoticeSerializer;
+import cc.dreamcode.platform.javacord.serializer.embed.WrappedEmbedBuilderSerializer;
+import cc.dreamcode.platform.javacord.serializer.embed.WrappedEmbedFieldSerializer;
+import cc.dreamcode.platform.javacord.serializer.notice.NoticeSerializer;
 import eu.okaeri.configs.serdes.OkaeriSerdesPack;
 import eu.okaeri.configs.serdes.SerdesRegistry;
 import lombok.NonNull;

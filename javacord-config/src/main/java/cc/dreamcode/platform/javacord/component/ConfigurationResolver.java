@@ -5,7 +5,7 @@ import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.platform.javacord.DreamJavacordConfig;
 import cc.dreamcode.platform.javacord.component.configuration.Configuration;
-import cc.dreamcode.platform.javacord.serdes.SerdesJavacord;
+import cc.dreamcode.platform.javacord.serializer.SerdesJavacord;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.OkaeriConfig;
@@ -72,6 +72,7 @@ public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfi
         return ConfigManager.create(type, (it) -> {
             it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesJavacord(), new SerdesCommons(), dreamJavacordConfig.getConfigSerdesPack());
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
+            it.withRemoveOrphans(configuration.removeOrphans());
             it.saveDefaults();
             it.load(true);
         });

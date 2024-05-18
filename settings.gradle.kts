@@ -6,7 +6,6 @@ include(":core-kt")
 
 // -- addons --
 include(":persistence")
-include(":hook")
 
 // -- minecraft --
 include(":bukkit")

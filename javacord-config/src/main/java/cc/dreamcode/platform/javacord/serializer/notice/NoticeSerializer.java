@@ -1,4 +1,4 @@
-package cc.dreamcode.platform.javacord.serdes.notice;
+package cc.dreamcode.platform.javacord.serializer.notice;
 
 import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.platform.javacord.embed.WrappedEmbedBuilder;

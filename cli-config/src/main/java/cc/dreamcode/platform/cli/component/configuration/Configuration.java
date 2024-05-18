@@ -9,4 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Configuration {
     String child();
+
+    boolean removeOrphans() default false;
 }

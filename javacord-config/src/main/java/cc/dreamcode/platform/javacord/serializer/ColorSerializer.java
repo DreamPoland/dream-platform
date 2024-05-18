@@ -1,4 +1,4 @@
-package cc.dreamcode.platform.javacord.serdes;
+package cc.dreamcode.platform.javacord.serializer;
 
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
