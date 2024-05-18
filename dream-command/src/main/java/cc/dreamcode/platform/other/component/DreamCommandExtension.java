@@ -2,6 +2,7 @@ package cc.dreamcode.platform.other.component;
 
 import cc.dreamcode.platform.component.ComponentExtension;
 import cc.dreamcode.platform.component.ComponentManager;
+import cc.dreamcode.platform.other.component.method.CommandMethodResolver;
 import lombok.NonNull;
 
 public class DreamCommandExtension implements ComponentExtension {
@@ -21,5 +22,7 @@ public class DreamCommandExtension implements ComponentExtension {
         componentManager.registerResolver(CommandBindResolver.class);
         componentManager.registerResolver(CommandSuggestionResolver.class);
         componentManager.registerResolver(CommandSuggestionFilterResolver.class);
+
+        componentManager.registerMethodResolver(CommandMethodResolver.class);
     }
 }
