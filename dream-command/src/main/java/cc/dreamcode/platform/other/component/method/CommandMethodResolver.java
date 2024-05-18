@@ -64,6 +64,6 @@ public class CommandMethodResolver implements ComponentMethodResolver<SingleComm
         };
 
         final CommandContext commandContext = new CommandContext(singleCommand.name(), singleCommand.aliases(), singleCommand.description());
-        this.commandProvider.register(commandContext, commandBase);
+        this.commandProvider.register(commandContext, commandBase, instance);
     }
 }
