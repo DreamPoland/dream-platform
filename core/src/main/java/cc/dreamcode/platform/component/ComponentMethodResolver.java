@@ -30,7 +30,7 @@ public interface ComponentMethodResolver<T extends Annotation> {
                     .ifPresent(dreamLogger -> dreamLogger.info(
                             new DreamLogger.Builder()
                                     .type("Added " + this.getComponentName() + " method component")
-                                    .name(t.getClass().getSimpleName())
+                                    .name(instance.getClass().getSimpleName())
                                     .took(took)
                                     .meta(this.getMetas(t))
                                     .build()
