@@ -20,6 +20,7 @@ public class DreamCommandExtension implements ComponentExtension {
         componentService.registerResolver(ArrayTransformerResolver.class);
 
         componentService.registerResolver(CommandBindResolver.class);
+        componentService.registerResolver(CommandResultResolver.class);
         componentService.registerResolver(CommandSuggestionResolver.class);
         componentService.registerResolver(CommandSuggestionFilterResolver.class);
 
