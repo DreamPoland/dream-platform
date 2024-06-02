@@ -1,4 +1,6 @@
-# dream-platform
+# Dream-Platform
+[![Build](https://github.com/DreamPoland/dream-platform/actions/workflows/gradle.yml/badge.svg)](https://github.com/DreamPoland/dream-platform/actions/workflows/gradle.yml)
+
 Simple project that will create an application platform for you.
 
 ```xml
