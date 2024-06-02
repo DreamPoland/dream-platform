@@ -7,7 +7,7 @@ dependencies {
     implementation(project(":core"))
 
     // -- bungee-cord (base) --
-    compileOnly("net.md-5:bungeecord-api:1.20-R0.1-SNAPSHOT")
+    compileOnly("net.md-5:bungeecord-api:1.20-R0.2")
 
     // -- injector --
     implementation("eu.okaeri:okaeri-injector:2.1.0")
