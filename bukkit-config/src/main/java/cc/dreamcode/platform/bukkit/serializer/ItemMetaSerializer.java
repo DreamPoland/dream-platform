@@ -1,5 +1,6 @@
 package cc.dreamcode.platform.bukkit.serializer;
 
+import cc.dreamcode.utilities.bukkit.VersionUtil;
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
@@ -40,6 +41,12 @@ public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
         if (!itemMeta.getItemFlags().isEmpty()) {
             data.addCollection("item-flags", itemMeta.getItemFlags(), ItemFlag.class);
         }
+
+        if (VersionUtil.isSupported(14)) {
+            if (itemMeta.hasCustomModelData()) {
+                data.add("model-id", itemMeta.getCustomModelData(), Integer.class);
+            }
+        }
     }
 
     @Override
@@ -72,6 +79,11 @@ public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
 
         enchantments.forEach((enchantment, level) -> itemMeta.addEnchant(enchantment, level, true));
         itemMeta.addItemFlags(itemFlags.toArray(new ItemFlag[0]));
+
+        if (VersionUtil.isSupported(14) && data.containsKey("model-id")) {
+            int customModelData = data.get("model-id", Integer.class);
+            itemMeta.setCustomModelData(customModelData);
+        }
 
         return itemMeta;
     }
