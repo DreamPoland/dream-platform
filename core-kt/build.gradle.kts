@@ -16,7 +16,7 @@ dependencies {
     implementation(project(":core"))
 
     // -- configs--
-    implementation("eu.okaeri:okaeri-configs-core:5.0.1")
+    implementation("eu.okaeri:okaeri-configs-core:5.0.2")
 
     // -- injector --
     implementation("eu.okaeri:okaeri-injector:2.1.0")

@@ -3,9 +3,9 @@ dependencies {
     implementation(project(":bungee"))
 
     // -- configs--
-    implementation("eu.okaeri:okaeri-configs-yaml-bungee:5.0.1")
-    implementation("eu.okaeri:okaeri-configs-serdes-bungee:5.0.1")
-    implementation("eu.okaeri:okaeri-configs-serdes-commons:5.0.1")
+    implementation("eu.okaeri:okaeri-configs-yaml-bungee:5.0.2")
+    implementation("eu.okaeri:okaeri-configs-serdes-bungee:5.0.2")
+    implementation("eu.okaeri:okaeri-configs-serdes-commons:5.0.2")
 
     // -- injector --
     implementation("eu.okaeri:okaeri-injector:2.1.0")
