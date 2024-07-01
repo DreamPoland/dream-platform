@@ -3,7 +3,7 @@ dependencies {
 
     // -- javacord --
     implementation("org.javacord:javacord:3.8.0")
-    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.17.0")
+    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.23.1")
 
     // -- logger --
     implementation("ch.qos.logback:logback-core:1.5.6")
