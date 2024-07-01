@@ -9,7 +9,7 @@ import cc.dreamcode.platform.javacord.component.ListenerResolver;
 import cc.dreamcode.platform.javacord.component.TimerTaskResolver;
 import cc.dreamcode.platform.javacord.component.command.JavacordCommand;
 import cc.dreamcode.platform.javacord.component.method.SchedulerMethodResolver;
-import cc.dreamcode.utilities.Formatter;
+import cc.dreamcode.utilities.TimeUtil;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
@@ -81,7 +81,7 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
                 .join();
 
         Duration startupDuration = Duration.ofMillis(System.currentTimeMillis() - start);
-        this.dreamLogger.info("Loading complete! Done in " + Formatter.format(startupDuration) + "...");
+        this.dreamLogger.info("Loading complete! Done in " + TimeUtil.format(startupDuration) + "...");
     }
 
     public abstract @NonNull DiscordApi login(@NonNull ComponentService componentService);
