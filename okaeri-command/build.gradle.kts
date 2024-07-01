@@ -8,5 +8,5 @@ dependencies {
     implementation("cc.dreamcode:utilities:1.4.2")
 
     // -- okaeri-command --
-    implementation("eu.okaeri:okaeri-commands-core:0.9.5")
+    implementation("eu.okaeri:okaeri-commands-core:0.9.8")
 }
