@@ -1,6 +1,5 @@
 package cc.dreamcode.platform.bukkit.serializer;
 
-import cc.dreamcode.utilities.bukkit.VersionUtil;
 import eu.okaeri.configs.schema.GenericsDeclaration;
 import eu.okaeri.configs.serdes.DeserializationData;
 import eu.okaeri.configs.serdes.ObjectSerializer;
@@ -12,6 +11,8 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -42,11 +43,16 @@ public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
             data.addCollection("item-flags", itemMeta.getItemFlags(), ItemFlag.class);
         }
 
-        if (VersionUtil.isSupported(14)) {
-            if (itemMeta.hasCustomModelData()) {
-                data.add("model-id", itemMeta.getCustomModelData(), Integer.class);
+        try {
+            Method methodHasCustomModelData = ItemMeta.class.getMethod("hasCustomModelData");
+            boolean hasCustomModelData = (boolean) methodHasCustomModelData.invoke(itemMeta);
+            if (hasCustomModelData) {
+                Method methodGetCustomModelData =  ItemMeta.class.getMethod("getCustomModelData");
+                int getCustomModelData = (int) methodGetCustomModelData.invoke(itemMeta);
+                data.add("model-id", getCustomModelData, Integer.class);
             }
         }
+        catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
     }
 
     @Override
@@ -80,9 +86,13 @@ public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
         enchantments.forEach((enchantment, level) -> itemMeta.addEnchant(enchantment, level, true));
         itemMeta.addItemFlags(itemFlags.toArray(new ItemFlag[0]));
 
-        if (VersionUtil.isSupported(14) && data.containsKey("model-id")) {
-            int customModelData = data.get("model-id", Integer.class);
-            itemMeta.setCustomModelData(customModelData);
+        if (data.containsKey("model-id")) {
+            try {
+                int customModelData = data.get("model-id", Integer.class);
+                Method method = ItemMeta.class.getMethod("setCustomModelData", Integer.class);
+                method.invoke(itemMeta, customModelData);
+            }
+            catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
         }
 
         return itemMeta;

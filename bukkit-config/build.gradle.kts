@@ -20,5 +20,4 @@ dependencies {
 
     // -- dream-utilities --
     implementation("cc.dreamcode:utilities:1.4.2")
-    implementation("cc.dreamcode:utilities-bukkit:1.4.2")
 }
