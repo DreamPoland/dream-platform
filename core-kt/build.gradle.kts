@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     // -- kotlin --
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.10")
 
     implementation(project(":core"))
 
