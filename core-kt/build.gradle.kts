@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
+    id("org.jetbrains.kotlin.jvm") version "2.0.20"
 }
 
 repositories {
@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     // -- kotlin --
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.20")
 
     implementation(project(":core"))
 
@@ -22,7 +22,7 @@ dependencies {
     implementation("eu.okaeri:okaeri-injector:2.1.0")
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.4.5")
+    implementation("cc.dreamcode:utilities:1.5.1")
 }
 
 tasks.withType<KotlinCompile> {
