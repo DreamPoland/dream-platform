@@ -1,0 +1,6 @@
+[versions]
+lombok = "1.18.34"
+dream-platform = "2.0-inDEV.1"
+
+[libraries]
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }

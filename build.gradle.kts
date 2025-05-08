@@ -1,17 +1,13 @@
 plugins {
-    `java-library`
-    `maven-publish`
+    id("java-library")
+    id("maven-publish")
 }
 
 allprojects {
     group = "cc.dreamcode.platform"
-    version = "1.12.9"
-
-    apply(plugin = "java-library")
-    apply(plugin = "maven-publish")
+    version = libs.versions.dream.platform.get()
 
     repositories {
-        /* Libraries */
         mavenCentral()
         maven("https://repo.dreamcode.cc/releases")
         maven("https://storehouse.okaeri.eu/repository/maven-public")
@@ -34,11 +30,10 @@ subprojects {
 
     dependencies {
         /* General */
-        val lombok = "1.18.34"
-        compileOnly("org.projectlombok:lombok:$lombok")
-        annotationProcessor("org.projectlombok:lombok:$lombok")
-        testCompileOnly("org.projectlombok:lombok:$lombok")
-        testAnnotationProcessor("org.projectlombok:lombok:$lombok")
+        compileOnly(libs.lombok)
+        annotationProcessor(libs.lombok)
+        testCompileOnly(libs.lombok)
+        testAnnotationProcessor(libs.lombok)
     }
 
     publishing {
