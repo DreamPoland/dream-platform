@@ -10,19 +10,19 @@ repositories {
 }
 
 dependencies {
-    // -- kotlin --
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.0.20")
+    api(project(":core"))
 
-    implementation(project(":core"))
+    // -- kotlin --
+    api(libs.kotlin.stdlib.jdk8)
 
     // -- configs--
-    implementation("eu.okaeri:okaeri-configs-core:5.0.2")
+    api(libs.okaeri.configs.core)
 
-    // -- injector --
-    implementation("eu.okaeri:okaeri-injector:2.1.0")
+    // -- injector
+    api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.5.1")
+    api(libs.dream.utilties)
 }
 
 tasks.withType<KotlinCompile> {

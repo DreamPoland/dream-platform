@@ -1,14 +1,14 @@
 dependencies {
-    implementation(project(":core"))
+    api(project(":core"))
 
     // -- logging --
-    implementation("ch.qos.logback:logback-core:1.5.6")
-    implementation("ch.qos.logback:logback-classic:1.5.6")
-    implementation("org.slf4j:slf4j-api:2.0.16")
+    api(libs.logback.core)
+    api(libs.logback.classic)
+    api(libs.slf4j.api)
 
     // -- injector --
-    implementation("eu.okaeri:okaeri-injector:2.1.0")
+    api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.5.1")
+    api(libs.dream.utilties)
 }

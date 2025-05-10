@@ -1,21 +1,21 @@
 dependencies {
-    implementation(project(":core"))
+    api(project(":core"))
 
     // -- javacord --
-    implementation("org.javacord:javacord:3.8.0")
-    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.23.1")
+    api(libs.javacord)
 
     // -- logger --
-    implementation("ch.qos.logback:logback-core:1.5.6")
-    implementation("ch.qos.logback:logback-classic:1.5.6")
-    implementation("org.slf4j:slf4j-api:2.0.16")
+    api(libs.logback.core)
+    api(libs.logback.classic)
+    api(libs.slf4j.api)
+    api(libs.log4j.slf4j)
 
     // -- placeholders --
-    implementation("eu.okaeri:okaeri-placeholders-core:5.0.1")
+    api(libs.okaeri.placeholders)
 
     // -- injector --
-    implementation("eu.okaeri:okaeri-injector:2.1.0")
+    api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.5.1")
+    api(libs.dream.utilties)
 }

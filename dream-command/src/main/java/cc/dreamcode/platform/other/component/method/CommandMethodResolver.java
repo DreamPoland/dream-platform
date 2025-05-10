@@ -1,7 +1,7 @@
 package cc.dreamcode.platform.other.component.method;
 
 import cc.dreamcode.command.CommandBase;
-import cc.dreamcode.command.CommandContext;
+import cc.dreamcode.command.CommandEntry;
 import cc.dreamcode.command.CommandMeta;
 import cc.dreamcode.command.CommandPathMeta;
 import cc.dreamcode.command.CommandProvider;
@@ -9,13 +9,13 @@ import cc.dreamcode.command.annotation.Executor;
 import cc.dreamcode.platform.component.ComponentMethodResolver;
 import cc.dreamcode.platform.other.component.annotation.SingleCommand;
 import cc.dreamcode.utilities.StringUtil;
-import cc.dreamcode.utilities.builder.ListBuilder;
 import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -59,11 +59,16 @@ public class CommandMethodResolver implements ComponentMethodResolver<SingleComm
                     throw new RuntimeException("Executor annotation not found");
                 }
 
-                return ListBuilder.of(new CommandPathMeta(commandMeta, method, executor));
+                final List<CommandPathMeta> commandPathMetas = new ArrayList<>();
+                for (String path : executor.path()) {
+                    commandPathMetas.add(new CommandPathMeta(commandMeta, method, path, executor.description()));
+                }
+
+                return commandPathMetas;
             }
         };
 
-        final CommandContext commandContext = new CommandContext(singleCommand.name(), singleCommand.aliases(), singleCommand.description());
-        this.commandProvider.register(commandContext, commandBase, instance);
+        final CommandEntry commandEntry = new CommandEntry(singleCommand.name(), singleCommand.aliases(), singleCommand.description());
+        this.commandProvider.register(commandEntry, commandBase, instance);
     }
 }

@@ -1,14 +1,14 @@
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":cli"))
+    api(project(":core"))
+    api(project(":cli"))
 
     // -- configs--
-    implementation("eu.okaeri:okaeri-configs-yaml-snakeyaml:5.0.2")
-    implementation("eu.okaeri:okaeri-configs-serdes-commons:5.0.2")
+    api(libs.okaeri.configs.yaml.snakeyaml)
+    api(libs.okaeri.configs.serdes.commons)
 
     // -- injector --
-    implementation("eu.okaeri:okaeri-injector:2.1.0")
+    api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.5.1")
+    api(libs.dream.utilties)
 }

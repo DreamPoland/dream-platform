@@ -4,20 +4,20 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":bukkit"))
+    api(project(":core"))
+    api(project(":bukkit"))
 
     // -- spigot api (base) --
-    compileOnly("org.spigotmc:spigot-api:1.14-R0.1-SNAPSHOT")
+    compileOnly(libs.spigot16.api)
 
     // -- configs--
-    implementation("eu.okaeri:okaeri-configs-yaml-bukkit:5.0.2")
-    implementation("eu.okaeri:okaeri-configs-serdes-bukkit:5.0.2")
-    implementation("eu.okaeri:okaeri-configs-serdes-commons:5.0.2")
+    api(libs.okaeri.configs.yaml.bukkit)
+    api(libs.okaeri.configs.serdes.bukkit)
+    api(libs.okaeri.configs.serdes.commons)
 
     // -- injector --
-    implementation("eu.okaeri:okaeri-injector:2.1.0")
+    api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.5.1")
+    api(libs.dream.utilties)
 }

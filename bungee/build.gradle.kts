@@ -5,14 +5,14 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":core"))
+    api(project(":core"))
 
     // -- bungee-cord (base) --
-    compileOnly("net.md-5:bungeecord-api:1.20-R0.1-SNAPSHOT")
+    compileOnly(libs.bungeecord.api)
 
     // -- injector --
-    implementation("eu.okaeri:okaeri-injector:2.1.0")
+    api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.5.1")
+    api(libs.dream.utilties)
 }

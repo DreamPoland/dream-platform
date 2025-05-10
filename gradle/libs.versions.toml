@@ -1,0 +1,44 @@
+[versions]
+lombok = "1.18.38"
+kotlin-stdlib = "2.1.20"
+spigot8-api = "1.8.8-R0.1-SNAPSHOT"
+spigot16-api = "1.16.5-R0.1-SNAPSHOT"
+bungeecord-api = "1.20-R0.1-SNAPSHOT"
+dream-utilties = "1.5.2"
+dream-command = "2.1.5"
+okaeri-placeholders = "5.1.1"
+okaeri-configs = "5.0.8"
+okaeri-persistence = "3.0.1-beta.2"
+okaeri-injector = "2.1.0"
+javacord = "3.8.0"
+log4j-slf4j = "2.24.3"
+slf4j-api = "2.0.17"
+logback = "1.5.18"
+
+[libraries]
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-stdlib" }
+spigot8-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot8-api" }
+spigot16-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot16-api" }
+bungeecord-api = { module = "net.md-5:bungeecord-api", version.ref = "bungeecord-api" }
+dream-utilties = { module = "cc.dreamcode:utilities", version.ref = "dream-utilties" }
+dream-command-core = { module = "cc.dreamcode.command:core", version.ref = "dream-command" }
+okaeri-placeholders = { module = "eu.okaeri:okaeri-placeholders-core", version.ref = "okaeri-placeholders" }
+okaeri-configs-core = { module = "eu.okaeri:okaeri-configs-core", version.ref = "okaeri-configs" }
+okaeri-configs-yaml-snakeyaml = { module = "eu.okaeri:okaeri-configs-yaml-snakeyaml", version.ref = "okaeri-configs" }
+okaeri-configs-yaml-bukkit = { module = "eu.okaeri:okaeri-configs-yaml-bukkit", version.ref = "okaeri-configs" }
+okaeri-configs-yaml-bungee = { module = "eu.okaeri:okaeri-configs-yaml-bungee", version.ref = "okaeri-configs" }
+okaeri-configs-serdes-bukkit = { module = "eu.okaeri:okaeri-configs-serdes-bukkit", version.ref = "okaeri-configs" }
+okaeri-configs-serdes-bungee = { module = "eu.okaeri:okaeri-configs-serdes-bungee", version.ref = "okaeri-configs" }
+okaeri-configs-serdes-commons = { module = "eu.okaeri:okaeri-configs-serdes-commons", version.ref = "okaeri-configs" }
+okaeri-configs-json-gson = { module = "eu.okaeri:okaeri-configs-json-gson", version.ref = "okaeri-configs" }
+okaeri-configs-json-simple = { module = "eu.okaeri:okaeri-configs-json-simple", version.ref = "okaeri-configs" }
+okaeri-persistence-flat = { module = "eu.okaeri:okaeri-persistence-flat", version.ref = "okaeri-persistence" }
+okaeri-persistence-jdbc = { module = "eu.okaeri:okaeri-persistence-jdbc", version.ref = "okaeri-persistence" }
+okaeri-persistence-mongo = { module = "eu.okaeri:okaeri-persistence-mongo", version.ref = "okaeri-persistence" }
+okaeri-injector = { module = "eu.okaeri:okaeri-injector", version.ref = "okaeri-injector" }
+javacord = { module = "org.javacord:javacord", version.ref = "javacord" }
+log4j-slf4j = { module = "org.apache.logging.log4j:log4j-to-slf4j", version.ref = "log4j-slf4j" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
+logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }

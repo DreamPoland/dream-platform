@@ -4,14 +4,14 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":core"))
+    api(project(":core"))
 
     // -- injector --
-    implementation("eu.okaeri:okaeri-injector:2.1.0")
+    api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    implementation("cc.dreamcode:utilities:1.5.1")
+    api(libs.dream.utilties)
 
     // -- dream-command --
-    implementation("cc.dreamcode.command:core:2.1.3")
+    api(libs.dream.command.core)
 }
