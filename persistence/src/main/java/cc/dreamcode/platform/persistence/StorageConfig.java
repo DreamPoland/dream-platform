@@ -17,12 +17,12 @@ public class StorageConfig extends OkaeriConfig {
     public StorageType storageType = StorageType.FLAT;
 
     @Comment({"Jaki prefix ustawic dla danych?",
-            "Dla FLAT prefix nie jest uzywany."})
+            "Nie uzupelniaj prefixu dla zapisu typu FLAT."})
     @CustomKey("prefix")
     public String prefix = "dreamtemplate";
 
-    @Comment("FLAT   : nie jest wymagane podawanie dodatkowych informacji")
-    @Comment("MONGO  : mongodb://{host}:{port}/?maxPoolSize=20&w=majority")
+    @Comment("FLAT   : not applicable")
+    @Comment("MONGO  : mongodb://{host}:{port}/{database}")
     @Comment("MYSQL  : jdbc:mysql://{host}:{port}/{database}?user={username}&password={password}")
     @Comment("H2     : jdbc:h2:file:./plugins/{data_folder}/storage;mode=mysql")
     @Comment("uri")
