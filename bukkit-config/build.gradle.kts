@@ -11,6 +11,6 @@ dependencies {
 
     // -- configs--
     api(libs.okaeri.configs.yaml.bukkit)
-    implementation(libs.okaeri.configs.serdes.bukkit)
+    api(libs.okaeri.configs.serdes.bukkit)
     implementation(libs.okaeri.configs.serdes.commons)
 }

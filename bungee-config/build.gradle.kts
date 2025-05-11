@@ -3,6 +3,6 @@ dependencies {
 
     // -- configs--
     api(libs.okaeri.configs.yaml.bungee)
-    implementation(libs.okaeri.configs.serdes.bungee)
+    api(libs.okaeri.configs.serdes.bungee)
     implementation(libs.okaeri.configs.serdes.commons)
 }
