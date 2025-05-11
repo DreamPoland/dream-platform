@@ -3,13 +3,13 @@ dependencies {
     api(project(":bungee"))
 
     // -- configs--
-    api(libs.okaeri.configs.yaml.bungee)
-    api(libs.okaeri.configs.serdes.bungee)
-    api(libs.okaeri.configs.serdes.commons)
+    implementation(libs.okaeri.configs.yaml.bungee)
+    implementation(libs.okaeri.configs.serdes.bungee)
+    implementation(libs.okaeri.configs.serdes.commons)
 
     // -- injector --
     api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    api(libs.dream.utilties)
+    implementation(libs.dream.utilties)
 }

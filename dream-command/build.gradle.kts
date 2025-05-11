@@ -10,7 +10,7 @@ dependencies {
     api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    api(libs.dream.utilties)
+    implementation(libs.dream.utilties)
 
     // -- dream-command --
     api(libs.dream.command.core)

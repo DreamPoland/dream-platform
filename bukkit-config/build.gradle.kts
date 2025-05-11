@@ -11,13 +11,13 @@ dependencies {
     compileOnly(libs.spigot16.api)
 
     // -- configs--
-    api(libs.okaeri.configs.yaml.bukkit)
-    api(libs.okaeri.configs.serdes.bukkit)
-    api(libs.okaeri.configs.serdes.commons)
+    implementation(libs.okaeri.configs.yaml.bukkit)
+    implementation(libs.okaeri.configs.serdes.bukkit)
+    implementation(libs.okaeri.configs.serdes.commons)
 
     // -- injector --
     api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    api(libs.dream.utilties)
+    implementation(libs.dream.utilties)
 }

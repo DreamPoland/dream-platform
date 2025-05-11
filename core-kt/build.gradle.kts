@@ -13,16 +13,16 @@ dependencies {
     api(project(":core"))
 
     // -- kotlin --
-    api(libs.kotlin.stdlib.jdk8)
+    implementation(libs.kotlin.stdlib.jdk8)
 
     // -- configs--
-    api(libs.okaeri.configs.core)
+    implementation(libs.okaeri.configs.core)
 
     // -- injector
     api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    api(libs.dream.utilties)
+    implementation(libs.dream.utilties)
 }
 
 tasks.withType<KotlinCompile> {
