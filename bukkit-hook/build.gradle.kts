@@ -8,10 +8,4 @@ dependencies {
 
     // -- spigot api (base) --
     compileOnly(libs.spigot8.api)
-
-    // -- injector --
-    api(libs.okaeri.injector)
-
-    // -- dream-utilities --
-    implementation(libs.dream.utilties)
 }

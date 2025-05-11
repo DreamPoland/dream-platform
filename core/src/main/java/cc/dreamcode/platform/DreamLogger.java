@@ -18,7 +18,6 @@ public interface DreamLogger {
 
     void error(String text, Throwable throwable);
 
-
     // Logging builder from okaeri-platform with features
     class Builder {
 

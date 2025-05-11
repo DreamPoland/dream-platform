@@ -9,10 +9,4 @@ dependencies {
 
     // -- bungee-cord (base) --
     compileOnly(libs.bungeecord.api)
-
-    // -- injector --
-    api(libs.okaeri.injector)
-
-    // -- dream-utilities --
-    implementation(libs.dream.utilties)
 }

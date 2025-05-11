@@ -14,15 +14,6 @@ dependencies {
 
     // -- kotlin --
     implementation(libs.kotlin.stdlib.jdk8)
-
-    // -- configs--
-    implementation(libs.okaeri.configs.core)
-
-    // -- injector
-    api(libs.okaeri.injector)
-
-    // -- dream-utilities --
-    implementation(libs.dream.utilties)
 }
 
 tasks.withType<KotlinCompile> {

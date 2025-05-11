@@ -3,5 +3,5 @@ dependencies {
     api(libs.okaeri.injector)
 
     // -- dream-utilities --
-    implementation(libs.dream.utilties)
+    api(libs.dream.utilties)
 }

@@ -4,7 +4,6 @@ import cc.dreamcode.platform.DreamPlatform
 import cc.dreamcode.platform.component.ComponentClassResolver
 import cc.dreamcode.platform.component.ComponentExtension
 import cc.dreamcode.platform.component.ComponentService
-import eu.okaeri.configs.serdes.DeserializationData
 import eu.okaeri.injector.Injector
 import java.util.Optional
 import java.util.function.Consumer
@@ -29,10 +28,6 @@ fun ComponentService.registerResolver(`class`: KClass<out ComponentClassResolver
 fun <T : Any> DreamPlatform.getInject(`class`: KClass<T>) = this.getInject(`class`.java)
 
 fun <T : Any> Injector.streamOf(type: KClass<T>) = this.streamOf(type.java)
-
-fun <T : Any> DeserializationData.get(key: String, valueType: KClass<T>): T? = this.get(key, valueType.java)
-
-fun <T : Any> DeserializationData.getAsList(key: String, valueType: KClass<T>): List<T> = this.getAsList(key, valueType.java)
 
 fun <T: Any> Injector.get(name: String, type: KClass<T>): Optional<T> = this.get(name, type.java)
 

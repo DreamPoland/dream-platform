@@ -6,12 +6,6 @@ repositories {
 dependencies {
     api(project(":core"))
 
-    // -- injector --
-    api(libs.okaeri.injector)
-
-    // -- dream-utilities --
-    implementation(libs.dream.utilties)
-
     // -- dream-command --
-    api(libs.dream.command.core)
+    compileOnly(libs.dream.command.core)
 }
