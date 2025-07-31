@@ -7,6 +7,7 @@ import eu.okaeri.configs.serdes.SerializationData;
 import eu.okaeri.configs.yaml.bukkit.serdes.itemstack.ItemStackFormat;
 import eu.okaeri.configs.yaml.bukkit.serdes.itemstack.ItemStackSpecData;
 import eu.okaeri.configs.yaml.bukkit.serdes.serializer.experimental.CraftItemStackSerializer;
+import eu.okaeri.configs.yaml.bukkit.serdes.transformer.experimental.StringBase64ItemStackTransformer;
 import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +18,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
 
     private static final ItemMetaSerializer ITEM_META_SERIALIZER = new ItemMetaSerializer();
-    private static final CraftItemStackSerializer CRAFT_ITEM_STACK_SERIALIZER = new CraftItemStackSerializer();
+    private static final StringBase64ItemStackTransformer ITEM_STACK_TRANSFORMER = new StringBase64ItemStackTransformer();
+    private static final CraftItemStackSerializer CRAFT_ITEM_STACK_SERIALIZER = new CraftItemStackSerializer(true);
 
     @Override
     public boolean supports(@NonNull Class<? super ItemStack> type) {
@@ -65,18 +67,47 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
             return;
         }
 
-        // use legacy instead
+        try {
+            ItemStack deserializedCraftStack = CRAFT_ITEM_STACK_SERIALIZER.deserialize(deserializationData, generics);
+            if (deserializedCraftStack.equals(itemStack)) {
+                data.clear();
+
+                CRAFT_ITEM_STACK_SERIALIZER.serialize(itemStack, data, generics);
+                return;
+            }
+        }
+        catch (Exception e) {
+            // ignore, we will use base64 serializer
+        }
+
         data.clear();
-        data.add("legacy", true);
-        CRAFT_ITEM_STACK_SERIALIZER.serialize(itemStack, data, generics);
+
+        String base64Stack = ITEM_STACK_TRANSFORMER.leftToRight(itemStack, data.getContext());
+        data.add("base64", base64Stack);
     }
 
     @Override
     public ItemStack deserialize(@NonNull DeserializationData data, @NonNull GenericsDeclaration generics) {
 
+        if (data.getValueRaw() instanceof ItemStack) {
+            return (ItemStack) data.getValueRaw();
+        }
+
         // legacy
-        if (data.containsKey("legacy")) {
+        if (data.containsKey("legacy") ||
+                "org.bukkit.inventory.ItemStack".equals(data.get("==", String.class)) ||
+                (data.containsKey("v") && data.containsKey("type"))) {
             return CRAFT_ITEM_STACK_SERIALIZER.deserialize(data, generics);
+        }
+
+        // base64
+        if (data.containsKey("base64")) {
+            String base64Stack = data.get("base64", String.class);
+            return ITEM_STACK_TRANSFORMER.rightToLeft(base64Stack, data.getContext());
+        }
+
+        if (!data.containsKey("material")) {
+            throw new IllegalArgumentException("invalid stack: " + data.asMap());
         }
 
         String materialName = data.get("material", String.class);
