@@ -58,27 +58,26 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
                 throw new IllegalArgumentException("Unknown format: " + format);
         }
 
-        // check if serialized stack is deserializable
         DeserializationData deserializationData = new DeserializationData(data.asMap(), data.getConfigurer(), data.getContext());
         ItemStack deserializedStack = this.deserialize(deserializationData, generics);
 
-        // normal form is most likely complete
-        if (deserializedStack.equals(itemStack)) {
+        if (deserializedStack.equals(itemStack) || CraftItemStackSerializer.compareDeep(deserializedStack, itemStack)) {
             return;
         }
 
-        try {
-            ItemStack deserializedCraftStack = CRAFT_ITEM_STACK_SERIALIZER.deserialize(deserializationData, generics);
-            if (deserializedCraftStack.equals(itemStack)) {
-                data.clear();
+        data.clear();
 
-                CRAFT_ITEM_STACK_SERIALIZER.serialize(itemStack, data, generics);
+        try {
+            CRAFT_ITEM_STACK_SERIALIZER.serialize(itemStack, data, generics);
+
+            DeserializationData deserializationCraftData = new DeserializationData(data.asMap(), data.getConfigurer(), data.getContext());
+            ItemStack deserializedCraftStack = CRAFT_ITEM_STACK_SERIALIZER.deserialize(deserializationCraftData, generics);
+
+            if (deserializedCraftStack.equals(itemStack) || CraftItemStackSerializer.compareDeep(deserializedCraftStack, itemStack)) {
                 return;
             }
         }
-        catch (Exception e) {
-            // ignore, we will use base64 serializer
-        }
+        catch (Throwable ignored) {}
 
         data.clear();
 
@@ -93,14 +92,12 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
             return (ItemStack) data.getValueRaw();
         }
 
-        // legacy
         if (data.containsKey("legacy") ||
                 "org.bukkit.inventory.ItemStack".equals(data.get("==", String.class)) ||
                 (data.containsKey("v") && data.containsKey("type"))) {
             return CRAFT_ITEM_STACK_SERIALIZER.deserialize(data, generics);
         }
 
-        // base64
         if (data.containsKey("base64")) {
             String base64Stack = data.get("base64", String.class);
             return ITEM_STACK_TRANSFORMER.rightToLeft(base64Stack, data.getContext());
@@ -128,11 +125,9 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
         ItemMeta itemMeta;
         switch (format) {
             case NATURAL:
-                // support conversion COMPACT->NATURAL
                 if (data.containsKey("display-name")) {
                     itemMeta = ITEM_META_SERIALIZER.deserialize(data, generics);
                 }
-                // standard deserialize
                 else {
                     itemMeta = data.containsKey("item-meta")
                             ? data.get("item-meta", ItemMeta.class)
@@ -140,11 +135,9 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
                 }
                 break;
             case COMPACT:
-                // support conversion NATURAL->COMPACT
                 if (data.containsKey("item-meta")) {
                     itemMeta = data.get("item-meta", ItemMeta.class);
                 }
-                // standard deserialize
                 else {
                     itemMeta = ITEM_META_SERIALIZER.deserialize(data, generics);
                 }
@@ -153,16 +146,10 @@ public class ItemStackSerializer implements ObjectSerializer<ItemStack> {
                 throw new IllegalArgumentException("Unknown format: " + format);
         }
 
-        // create ItemStack base
         AtomicReference<ItemStack> itemStack = new AtomicReference<>(new ItemStack(material, amount));
-        // set ItemMeta FIRST due to 1.16+ server
-        // ItemStacks storing more and more data
-        // here, in the attributes of ItemMeta
         itemStack.get().setItemMeta(itemMeta);
-        // then override durability with setter
         itemStack.get().setDurability(durability);
 
-        // woah, it works
         return itemStack.get();
     }
 }
