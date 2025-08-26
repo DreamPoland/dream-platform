@@ -3,8 +3,6 @@ package cc.dreamcode.platform.bukkit.component;
 import cc.dreamcode.platform.DreamPlatform;
 import cc.dreamcode.platform.bukkit.DreamBukkitConfig;
 import cc.dreamcode.platform.bukkit.component.configuration.Configuration;
-import cc.dreamcode.platform.bukkit.serializer.ItemMetaSerializer;
-import cc.dreamcode.platform.bukkit.serializer.ItemStackSerializer;
 import cc.dreamcode.platform.component.ComponentClassResolver;
 import cc.dreamcode.platform.exception.PlatformException;
 import cc.dreamcode.utilities.builder.MapBuilder;
@@ -16,8 +14,6 @@ import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBukkit;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -77,12 +73,7 @@ public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfi
             it.withConfigurer(new YamlBukkitConfigurer(), new SerdesBukkit(), new SerdesCommons());
             it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
             it.withRemoveOrphans(configuration.removeOrphans());
-            it.withSerdesPack(registry -> {
-                registry.registerExclusive(ItemStack.class, new ItemStackSerializer());
-                registry.registerExclusive(ItemMeta.class, new ItemMetaSerializer());
-
-                registry.register(dreamBukkitConfig.getConfigSerdesPack());
-            });
+            it.withSerdesPack(registry -> registry.register(dreamBukkitConfig.getConfigSerdesPack()));
             it.saveDefaults();
             it.load(true);
         });
