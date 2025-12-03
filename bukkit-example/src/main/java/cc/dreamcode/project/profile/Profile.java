@@ -1,0 +1,23 @@
+package cc.dreamcode.project.profile;
+
+import eu.okaeri.configs.annotation.CustomKey;
+import eu.okaeri.persistence.document.Document;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.UUID;
+
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class Profile extends Document {
+
+    @CustomKey("name")
+    private String name;
+    @CustomKey("points")
+    private int points;
+
+    public UUID getUniqueId() {
+        return this.getPath().toUUID();
+    }
+
+}
