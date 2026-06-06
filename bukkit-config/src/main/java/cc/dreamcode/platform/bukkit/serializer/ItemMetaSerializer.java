@@ -20,7 +20,7 @@ import java.util.Map;
 public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
 
     @Override
-    public boolean supports(@NonNull Class<? super ItemMeta> type) {
+    public boolean supports(@NonNull Class<?> type) {
         return ItemMeta.class.isAssignableFrom(type);
     }
 
@@ -28,19 +28,19 @@ public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
     public void serialize(@NonNull ItemMeta itemMeta, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
 
         if (itemMeta.hasDisplayName()) {
-            data.add("display-name", itemMeta.getDisplayName());
+            data.set("display-name", itemMeta.getDisplayName());
         }
 
         if (itemMeta.hasLore()) {
-            data.addCollection("lore", itemMeta.getLore(), String.class);
+            data.setCollection("lore", itemMeta.getLore(), String.class);
         }
 
         if (!itemMeta.getEnchants().isEmpty()) {
-            data.addAsMap("enchantments", itemMeta.getEnchants(), Enchantment.class, Integer.class);
+            data.setMap("enchantments", itemMeta.getEnchants(), Enchantment.class, Integer.class);
         }
 
         if (!itemMeta.getItemFlags().isEmpty()) {
-            data.addCollection("item-flags", itemMeta.getItemFlags(), ItemFlag.class);
+            data.setCollection("item-flags", itemMeta.getItemFlags(), ItemFlag.class);
         }
 
         try {
@@ -49,7 +49,7 @@ public class ItemMetaSerializer implements ObjectSerializer<ItemMeta> {
             if (hasCustomModelData) {
                 Method methodGetCustomModelData =  ItemMeta.class.getMethod("getCustomModelData");
                 int getCustomModelData = (int) methodGetCustomModelData.invoke(itemMeta);
-                data.add("model-id", getCustomModelData, Integer.class);
+                data.set("model-id", getCustomModelData, Integer.class);
             }
         }
         catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}

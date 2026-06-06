@@ -16,7 +16,7 @@ public class NoticeSerializer implements ObjectSerializer<Notice> {
      * @return {@code true} if serializer is able to process the {@code type}
      */
     @Override
-    public boolean supports(@NonNull Class<? super Notice> type) {
+    public boolean supports(@NonNull Class<?> type) {
         return Notice.class.isAssignableFrom(type);
     }
 
@@ -27,8 +27,8 @@ public class NoticeSerializer implements ObjectSerializer<Notice> {
      */
     @Override
     public void serialize(@NonNull Notice object, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
-        data.add("type", object.getNoticeType());
-        data.add("value", object.getValue());
+        data.set("type", object.getNoticeType());
+        data.set("value", object.getValue());
     }
 
     /**

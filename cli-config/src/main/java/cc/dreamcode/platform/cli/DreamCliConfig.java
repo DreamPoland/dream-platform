@@ -1,10 +1,10 @@
 package cc.dreamcode.platform.cli;
 
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
+import eu.okaeri.configs.serdes.OkaeriSerdes;
 
 public interface DreamCliConfig {
 
-    default OkaeriSerdesPack getConfigSerdesPack() {
+    default OkaeriSerdes getConfigSerdesPack() {
         return registry -> {};
     }
 }

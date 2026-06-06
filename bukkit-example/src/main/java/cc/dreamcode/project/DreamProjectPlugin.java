@@ -26,7 +26,7 @@ import cc.dreamcode.project.profile.ProfileCache;
 import cc.dreamcode.project.profile.ProfileRepository;
 import cc.dreamcode.project.profile.ProfileService;
 import cc.dreamcode.project.task.AnnouncerTask;
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
+import eu.okaeri.configs.serdes.OkaeriSerdes;
 import eu.okaeri.persistence.document.DocumentPersistence;
 import lombok.NonNull;
 
@@ -107,7 +107,7 @@ public final class DreamProjectPlugin extends DreamBukkitPlatform implements Dre
 
     // Override this method to register custom serializers
     @Override
-    public OkaeriSerdesPack getConfigSerdesPack() {
+    public OkaeriSerdes getConfigSerdesPack() {
         return it -> {
             it.register(new MenuItemSerializer());
         };

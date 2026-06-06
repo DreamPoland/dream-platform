@@ -17,7 +17,7 @@ public class WrappedEmbedBuilderSerializer implements ObjectSerializer<WrappedEm
      * @return {@code true} if serializer is able to process the {@code type}
      */
     @Override
-    public boolean supports(@NonNull Class<? super WrappedEmbedBuilder> type) {
+    public boolean supports(@NonNull Class<?> type) {
         return WrappedEmbedBuilder.class.isAssignableFrom(type);
     }
 
@@ -29,49 +29,49 @@ public class WrappedEmbedBuilderSerializer implements ObjectSerializer<WrappedEm
     @Override
     public void serialize(@NonNull WrappedEmbedBuilder object, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
         if (object.getTitle() != null) {
-            data.add("embed-title", object.getTitle());
+            data.set("embed-title", object.getTitle());
         }
 
         if (object.getDescription() != null) {
-            data.add("embed-description", object.getDescription());
+            data.set("embed-description", object.getDescription());
         }
 
         if (object.getUrl() != null) {
-            data.add("embed-url", object.getUrl());
+            data.set("embed-url", object.getUrl());
         }
 
         if (object.getTimestamp() != null) {
-            data.add("embed-timestamp", object.getTimestamp());
+            data.set("embed-timestamp", object.getTimestamp());
         }
 
         if (object.getColor() != null) {
-            data.add("embed-color", object.getColor());
+            data.set("embed-color", object.getColor());
         }
 
         if (object.getFooterText() != null) {
-            data.add("embed-footer-text", object.getFooterText());
+            data.set("embed-footer-text", object.getFooterText());
 
             if (object.getFooterIconUrl() != null) {
-                data.add("embed-footer-icon", object.getFooterIconUrl());
+                data.set("embed-footer-icon", object.getFooterIconUrl());
             }
         }
 
         if (object.getImageUrl() != null) {
-            data.add("embed-image", object.getImageUrl());
+            data.set("embed-image", object.getImageUrl());
         }
 
         if (object.getAuthorName() != null) {
-            data.add("embed-author-name", object.getAuthorName());
-            data.add("embed-author-url", object.getAuthorUrl());
-            data.add("embed-author-icon", object.getAuthorIconUrl());
+            data.set("embed-author-name", object.getAuthorName());
+            data.set("embed-author-url", object.getAuthorUrl());
+            data.set("embed-author-icon", object.getAuthorIconUrl());
         }
 
         if (object.getThumbnailUrl() != null) {
-            data.add("embed-thumbnail", object.getThumbnailUrl());
+            data.set("embed-thumbnail", object.getThumbnailUrl());
         }
 
         if (!object.getFields().isEmpty()) {
-            data.add("embed-fields", object.getFields());
+            data.set("embed-fields", object.getFields());
         }
     }
 

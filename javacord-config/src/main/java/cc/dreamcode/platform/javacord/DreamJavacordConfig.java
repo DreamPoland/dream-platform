@@ -1,8 +1,8 @@
 package cc.dreamcode.platform.javacord;
 
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
+import eu.okaeri.configs.serdes.OkaeriSerdes;
 
 public interface DreamJavacordConfig {
 
-    OkaeriSerdesPack getConfigSerdesPack();
+    OkaeriSerdes getConfigSerdesPack();
 }

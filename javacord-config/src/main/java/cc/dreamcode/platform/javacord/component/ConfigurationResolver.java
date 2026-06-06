@@ -70,9 +70,11 @@ public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfi
 
         final DreamJavacordConfig dreamJavacordConfig = (DreamJavacordConfig) this.dreamPlatform;
         return ConfigManager.create(type, (it) -> {
-            it.withConfigurer(new YamlSnakeYamlConfigurer(), new SerdesJavacord(), new SerdesCommons(), dreamJavacordConfig.getConfigSerdesPack());
-            it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
-            it.withRemoveOrphans(configuration.removeOrphans());
+            it.configure(opt -> {
+                opt.configurer(new YamlSnakeYamlConfigurer(), new SerdesJavacord(), new SerdesCommons(), dreamJavacordConfig.getConfigSerdesPack());
+                opt.bindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
+                opt.removeOrphans(configuration.removeOrphans());
+            });
             it.saveDefaults();
             it.load(true);
         });

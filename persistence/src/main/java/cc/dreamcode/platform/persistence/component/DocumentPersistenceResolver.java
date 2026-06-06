@@ -14,7 +14,6 @@ import eu.okaeri.configs.json.simple.JsonSimpleConfigurer;
 import eu.okaeri.configs.serdes.commons.SerdesCommons;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
-import eu.okaeri.persistence.PersistencePath;
 import eu.okaeri.persistence.document.DocumentPersistence;
 import eu.okaeri.persistence.flat.FlatPersistence;
 import eu.okaeri.persistence.jdbc.H2Persistence;
@@ -55,8 +54,6 @@ public class DocumentPersistenceResolver implements ComponentClassResolver<Docum
 
     @Override
     public DocumentPersistence resolve(@NonNull Injector injector, @NonNull Class<DocumentPersistence> documentPersistenceClass) {
-        final PersistencePath persistencePath = PersistencePath.of(this.storageConfig.prefix);
-
         try { Class.forName("org.mariadb.jdbc.Driver"); } catch (ClassNotFoundException ignored) { }
         try { Class.forName("org.h2.Driver"); } catch (ClassNotFoundException ignored) { }
 
@@ -70,11 +67,10 @@ public class DocumentPersistenceResolver implements ComponentClassResolver<Docum
                 return new DocumentPersistence(
                         new FlatPersistence(
                                 this.dreamPlatform.getDataFolder(),
-                                ".json"
-                        ),
-                        JsonGsonConfigurer::new,
-                        new SerdesCommons(),
-                        dreamPersistence.getPersistenceSerdesPack()
+                                new JsonGsonConfigurer(),
+                                new SerdesCommons(),
+                                dreamPersistence.getPersistenceSerdesPack()
+                        )
                 );
             case MYSQL:
                 HikariConfig mariadbHikari = new HikariConfig();
@@ -82,12 +78,11 @@ public class DocumentPersistenceResolver implements ComponentClassResolver<Docum
 
                 return new DocumentPersistence(
                         new MariaDbPersistence(
-                                persistencePath,
-                                mariadbHikari
-                        ),
-                        JsonSimpleConfigurer::new,
-                        new SerdesCommons(),
-                        dreamPersistence.getPersistenceSerdesPack()
+                                mariadbHikari,
+                                new JsonSimpleConfigurer(),
+                                new SerdesCommons(),
+                                dreamPersistence.getPersistenceSerdesPack()
+                        )
                 );
             case H2:
                 HikariConfig jdbcHikari = new HikariConfig();
@@ -95,25 +90,23 @@ public class DocumentPersistenceResolver implements ComponentClassResolver<Docum
 
                 return new DocumentPersistence(
                         new H2Persistence(
-                                persistencePath,
-                                jdbcHikari
-                        ),
-                        JsonSimpleConfigurer::new,
-                        new SerdesCommons(),
-                        dreamPersistence.getPersistenceSerdesPack()
+                                jdbcHikari,
+                                new JsonSimpleConfigurer(),
+                                new SerdesCommons(),
+                                dreamPersistence.getPersistenceSerdesPack()
+                        )
                 );
             case MONGO:
                 MongoClient mongoClient = MongoClients.create(this.storageConfig.uri);
 
                 return new DocumentPersistence(
                         new MongoPersistence(
-                                persistencePath,
                                 mongoClient,
-                                this.storageConfig.prefix
-                        ),
-                        JsonSimpleConfigurer::new,
-                        new SerdesCommons(),
-                        dreamPersistence.getPersistenceSerdesPack()
+                                this.storageConfig.prefix,
+                                new JsonSimpleConfigurer(),
+                                new SerdesCommons(),
+                                dreamPersistence.getPersistenceSerdesPack()
+                        )
                 );
             default:
                 throw new PlatformException("Unknown data type: " + this.storageConfig.storageType);

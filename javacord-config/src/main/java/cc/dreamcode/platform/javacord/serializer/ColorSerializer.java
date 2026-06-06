@@ -14,7 +14,7 @@ public class ColorSerializer implements ObjectSerializer<Color> {
      * @return {@code true} if serializer is able to process the {@code type}
      */
     @Override
-    public boolean supports(@NonNull Class<? super Color> type) {
+    public boolean supports(@NonNull Class<?> type) {
         return Color.class.isAssignableFrom(type);
     }
 
@@ -25,9 +25,9 @@ public class ColorSerializer implements ObjectSerializer<Color> {
      */
     @Override
     public void serialize(@NonNull Color object, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
-        data.add("r", object.getRed());
-        data.add("g", object.getGreen());
-        data.add("b", object.getBlue());
+        data.set("r", object.getRed());
+        data.set("g", object.getGreen());
+        data.set("b", object.getBlue());
     }
 
     /**

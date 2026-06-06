@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PluginHookManager {
+public class PluginHookService {
 
     private final DreamPlatform dreamPlatform;
     private final DreamLogger dreamLogger;
@@ -19,7 +19,7 @@ public class PluginHookManager {
     private final List<PluginHook> pluginHooks = new ArrayList<>();
 
     @Inject
-    public PluginHookManager(DreamPlatform dreamPlatform, DreamLogger dreamLogger) {
+    public PluginHookService(DreamPlatform dreamPlatform, DreamLogger dreamLogger) {
         this.dreamPlatform = dreamPlatform;
         this.dreamLogger = dreamLogger;
     }

@@ -49,6 +49,11 @@ public abstract class DreamCliPlatform implements DreamPlatform {
             throw new PlatformException("An error was caught when platform are starting...", e);
         }
 
+        Thread shutdownHook = this.getShutdownHook(dreamVersion);
+        Runtime.getRuntime().addShutdownHook(shutdownHook);
+    }
+
+    private Thread getShutdownHook(DreamVersion dreamVersion) {
         Thread shutdownHook = new Thread(() -> {
             this.dreamLogger.info(String.format("Disabling %s...",
                     dreamVersion.getName()));
@@ -66,7 +71,7 @@ public abstract class DreamCliPlatform implements DreamPlatform {
         });
 
         shutdownHook.setName("Shutdown-Worker");
-        Runtime.getRuntime().addShutdownHook(shutdownHook);
+        return shutdownHook;
     }
 
     @Override

@@ -31,6 +31,11 @@ subprojects {
         options.compilerArgs.add("-parameters")
     }
 
+    tasks.withType<Javadoc> {
+        options.encoding = "UTF-8"
+        isFailOnError = false
+    }
+
     dependencies {
         compileOnly(rootProject.libs.lombok)
         annotationProcessor(rootProject.libs.lombok)

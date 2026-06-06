@@ -9,8 +9,8 @@ import cc.dreamcode.utilities.builder.MapBuilder;
 import eu.okaeri.configs.ConfigManager;
 import eu.okaeri.configs.OkaeriConfig;
 import eu.okaeri.configs.serdes.commons.SerdesCommons;
-import eu.okaeri.configs.yaml.bukkit.serdes.SerdesBungee;
 import eu.okaeri.configs.yaml.bungee.YamlBungeeConfigurer;
+import eu.okaeri.configs.yaml.bungee.serdes.SerdesBungee;
 import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.annotation.Inject;
 import lombok.NonNull;
@@ -70,9 +70,11 @@ public class ConfigurationResolver implements ComponentClassResolver<OkaeriConfi
 
         final DreamBungeeConfig dreamBungeeConfig = (DreamBungeeConfig) this.dreamPlatform;
         return ConfigManager.create(type, (it) -> {
-            it.withConfigurer(new YamlBungeeConfigurer(), new SerdesBungee(), new SerdesCommons(), dreamBungeeConfig.getConfigSerdesPack());
-            it.withBindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
-            it.withRemoveOrphans(configuration.removeOrphans());
+            it.configure(opt -> {
+                opt.configurer(new YamlBungeeConfigurer(), new SerdesBungee(), new SerdesCommons(), dreamBungeeConfig.getConfigSerdesPack());
+                opt.bindFile(new File(this.dreamPlatform.getDataFolder(), configuration.child()));
+                opt.removeOrphans(configuration.removeOrphans());
+            });
             it.saveDefaults();
             it.load(true);
         });

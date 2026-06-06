@@ -1,8 +1,8 @@
 package cc.dreamcode.platform.bungee;
 
-import eu.okaeri.configs.serdes.OkaeriSerdesPack;
+import eu.okaeri.configs.serdes.OkaeriSerdes;
 
 public interface DreamBungeeConfig {
 
-    OkaeriSerdesPack getConfigSerdesPack();
+    OkaeriSerdes getConfigSerdesPack();
 }

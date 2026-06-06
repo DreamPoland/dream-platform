@@ -13,7 +13,7 @@ public class WrappedEmbedFieldSerializer implements ObjectSerializer<WrappedEmbe
      * @return {@code true} if serializer is able to process the {@code type}
      */
     @Override
-    public boolean supports(@NonNull Class<? super WrappedEmbedField> type) {
+    public boolean supports(@NonNull Class<?> type) {
         return WrappedEmbedField.class.isAssignableFrom(type);
     }
 
@@ -24,9 +24,9 @@ public class WrappedEmbedFieldSerializer implements ObjectSerializer<WrappedEmbe
      */
     @Override
     public void serialize(@NonNull WrappedEmbedField object, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
-        data.add("field-name", object.getName());
-        data.add("field-value", object.getValue());
-        data.add("field-inline", object.isInline());
+        data.set("field-name", object.getName());
+        data.set("field-value", object.getValue());
+        data.set("field-inline", object.isInline());
     }
 
     /**
