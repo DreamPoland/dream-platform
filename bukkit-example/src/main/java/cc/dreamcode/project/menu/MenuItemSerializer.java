@@ -9,15 +9,15 @@ import org.bukkit.inventory.ItemStack;
 
 public class MenuItemSerializer implements ObjectSerializer<MenuItem> {
     @Override
-    public boolean supports(@NonNull Class<? super MenuItem> type) {
+    public boolean supports(@NonNull Class<?> type) {
         return MenuItem.class.isAssignableFrom(type);
     }
 
     @Override
     public void serialize(@NonNull MenuItem object, @NonNull SerializationData data, @NonNull GenericsDeclaration generics) {
-        data.add("display-name", object.getDisplayName());
-        data.add("item", object.getItemStack());
-        data.add("slot-in-menu", object.getSlotInMenu());
+        data.set("display-name", object.getDisplayName());
+        data.set("item", object.getItemStack());
+        data.set("slot-in-menu", object.getSlotInMenu());
     }
 
     @Override
