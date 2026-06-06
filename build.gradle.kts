@@ -1,3 +1,5 @@
+import org.gradle.internal.impldep.com.amazonaws.util.XpathUtils.asNode
+
 plugins {
     id("java-library")
     id("maven-publish")
@@ -34,6 +36,10 @@ subprojects {
     tasks.withType<Javadoc> {
         options.encoding = "UTF-8"
         isFailOnError = false
+    }
+
+    tasks.withType<Test> {
+        failOnNoDiscoveredTests = false
     }
 
     dependencies {
