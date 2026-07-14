@@ -1,6 +1,6 @@
 [versions]
 lombok = "1.18.46"
-kotlin-stdlib = "2.4.0"
+kotlin-stdlib = "2.4.10"
 spigot8-api = "1.8.8-R0.1-SNAPSHOT"
 spigot16-api = "1.16.5-R0.1-SNAPSHOT"
 bungeecord-api = "1.21-R0.4"
