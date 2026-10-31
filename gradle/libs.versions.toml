@@ -4,8 +4,8 @@ kotlin-stdlib = "2.4.0"
 spigot8-api = "1.8.8-R0.1-SNAPSHOT"
 spigot16-api = "1.16.5-R0.1-SNAPSHOT"
 bungeecord-api = "1.21-R0.4"
-dream-utilties = "1.6.1"
-dream-command = "2.3.0"
+dream-utilties = "2.0.2"
+dream-command = "2.4.0"
 okaeri-configs = "6.1.0-beta.4"
 okaeri-persistence = "3.0.1-beta.20"
 okaeri-injector = "2.1.0"
@@ -13,9 +13,13 @@ javacord = "3.8.0"
 log4j-slf4j = "2.26.0"
 slf4j-api = "2.0.18"
 logback = "1.5.18"
+junit = "5.10.3"
+junit-platform = "1.10.3"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-stdlib" }
 spigot8-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot8-api" }
 spigot16-api = { module = "org.spigotmc:spigot-api", version.ref = "spigot16-api" }

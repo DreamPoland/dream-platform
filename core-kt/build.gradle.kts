@@ -20,7 +20,7 @@ dependencies {
 
 tasks.withType<KotlinJvmCompile>().configureEach {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_1_8)
+        jvmTarget.set(JvmTarget.JVM_21)
         languageVersion.set(KotlinVersion.KOTLIN_2_0)
     }
 }

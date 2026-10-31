@@ -1,5 +1,3 @@
-import org.gradle.internal.impldep.com.amazonaws.util.XpathUtils.asNode
-
 plugins {
     id("java-library")
     id("maven-publish")
@@ -7,7 +5,7 @@ plugins {
 
 allprojects {
     group = "cc.dreamcode.platform"
-    version = "1.14.1"
+    version = "2.0.0"
 
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
@@ -21,8 +19,8 @@ allprojects {
 
 subprojects {
     java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
 
         withSourcesJar()
         withJavadocJar()
@@ -39,6 +37,7 @@ subprojects {
     }
 
     tasks.withType<Test> {
+        useJUnitPlatform()
         failOnNoDiscoveredTests = false
     }
 
@@ -47,39 +46,45 @@ subprojects {
         annotationProcessor(rootProject.libs.lombok)
         testCompileOnly(rootProject.libs.lombok)
         testAnnotationProcessor(rootProject.libs.lombok)
+
+        testImplementation(rootProject.libs.junit.jupiter)
+        testRuntimeOnly(rootProject.libs.junit.platform.launcher)
     }
 
-    publishing {
-        repositories {
-            maven {
-                if (version.toString().endsWith("-SNAPSHOT")) {
-                    name = "snapshots"
-                    url = uri("https://repo.dreamcode.cc/snapshots")
-                } else {
-                    name = "releases"
-                    url = uri("https://repo.dreamcode.cc/releases")
-                }
+    if (project.name != "bukkit-example") {
+        publishing {
+            repositories {
+                maven {
+                    if (version.toString().endsWith("-SNAPSHOT")) {
+                        name = "snapshots"
+                        url = uri("https://repo.dreamcode.cc/snapshots")
+                    } else {
+                        name = "releases"
+                        url = uri("https://repo.dreamcode.cc/releases")
+                    }
 
-                credentials {
-                    username = System.getenv("MAVEN_USERNAME")
-                    password = System.getenv("MAVEN_TOKEN")
+                    credentials {
+                        username = System.getenv("MAVEN_USERNAME")
+                        password = System.getenv("MAVEN_TOKEN")
+                    }
                 }
             }
-        }
 
-        publications {
-            create<MavenPublication>("library") {
-                from(components.getByName("java"))
+            publications {
+                create<MavenPublication>("library") {
+                    from(components.getByName("java"))
 
-                pom.withXml {
-                    val repositories = asNode().appendNode("repositories")
-                    project.repositories.findAll(closureOf<Any> {
-                        if (this is MavenArtifactRepository && this.url.toString().startsWith("https")) {
-                            val repository = repositories.appendNode("repository")
-                            repository.appendNode("id", this.url.toString().replace("https://", "").replace("/", "-").replace(".", "-").trim())
-                            repository.appendNode("url", this.url.toString().trim())
-                        }
-                    })
+                    pom.withXml {
+                        val repositories = asNode().appendNode("repositories")
+                        project.repositories
+                            .filterIsInstance<MavenArtifactRepository>()
+                            .filter { it.url.toString().startsWith("https") }
+                            .forEach { repo ->
+                                val repository = repositories.appendNode("repository")
+                                repository.appendNode("id", repo.url.toString().replace("https://", "").replace("/", "-").replace(".", "-").trim())
+                                repository.appendNode("url", repo.url.toString().trim())
+                            }
+                    }
                 }
             }
         }
