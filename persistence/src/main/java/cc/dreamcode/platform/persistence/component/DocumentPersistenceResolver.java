@@ -18,6 +18,7 @@ import eu.okaeri.persistence.document.DocumentPersistence;
 import eu.okaeri.persistence.flat.FlatPersistence;
 import eu.okaeri.persistence.jdbc.H2Persistence;
 import eu.okaeri.persistence.jdbc.MariaDbPersistence;
+import eu.okaeri.persistence.jdbc.PostgresPersistence;
 import eu.okaeri.persistence.mongo.MongoPersistence;
 import lombok.NonNull;
 
@@ -56,6 +57,7 @@ public class DocumentPersistenceResolver implements ComponentClassResolver<Docum
     public DocumentPersistence resolve(@NonNull Injector injector, @NonNull Class<DocumentPersistence> documentPersistenceClass) {
         try { Class.forName("org.mariadb.jdbc.Driver"); } catch (ClassNotFoundException ignored) { }
         try { Class.forName("org.h2.Driver"); } catch (ClassNotFoundException ignored) { }
+        try { Class.forName("org.postgresql.Driver"); } catch (ClassNotFoundException ignored) { }
 
         if (!(this.dreamPlatform instanceof DreamPersistence)) {
             throw new PlatformException(this.dreamPlatform.getClass().getSimpleName() + " class must implement DreamPersistence.");
@@ -79,6 +81,18 @@ public class DocumentPersistenceResolver implements ComponentClassResolver<Docum
                 return new DocumentPersistence(
                         new MariaDbPersistence(
                                 mariadbHikari,
+                                new JsonSimpleConfigurer(),
+                                new SerdesCommons(),
+                                dreamPersistence.getPersistenceSerdesPack()
+                        )
+                );
+            case POSTGRESQL:
+                HikariConfig postgresHikari = new HikariConfig();
+                postgresHikari.setJdbcUrl(this.storageConfig.uri);
+
+                return new DocumentPersistence(
+                        new PostgresPersistence(
+                                postgresHikari,
                                 new JsonSimpleConfigurer(),
                                 new SerdesCommons(),
                                 dreamPersistence.getPersistenceSerdesPack()

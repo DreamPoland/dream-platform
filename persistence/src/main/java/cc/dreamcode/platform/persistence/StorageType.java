@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 public enum StorageType {
     FLAT("FLAT"),
     MYSQL("MySQL"),
+    POSTGRESQL("PostgreSQL"),
     H2("H2"),
     MONGO("MongoDB");
 

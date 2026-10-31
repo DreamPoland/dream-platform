@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 public class StorageConfig extends OkaeriConfig {
 
     @Comment({"W jakiej formie maja byc zapisywane dane o graczu?",
-            "Dostepne zapisy: (FLAT, MYSQL, MONGO, H2)"})
+            "Dostepne zapisy: (FLAT, MYSQL, POSTGRESQL, MONGO, H2)"})
     @CustomKey("storage-type")
     public StorageType storageType = StorageType.FLAT;
 
@@ -21,10 +21,11 @@ public class StorageConfig extends OkaeriConfig {
     @CustomKey("prefix")
     public String prefix = "dreamtemplate";
 
-    @Comment("FLAT   : not applicable")
-    @Comment("MONGO  : mongodb://{host}:{port}/{database}")
-    @Comment("MYSQL  : jdbc:mysql://{host}:{port}/{database}?user={username}&password={password}")
-    @Comment("H2     : jdbc:h2:file:./plugins/{data_folder}/storage;mode=mysql")
+    @Comment("FLAT        : not applicable")
+    @Comment("MONGO       : mongodb://{host}:{port}/{database}")
+    @Comment("MYSQL       : jdbc:mysql://{host}:{port}/{database}?user={username}&password={password}")
+    @Comment("POSTGRESQL  : jdbc:postgresql://{host}:{port}/{database}?user={username}&password={password}")
+    @Comment("H2          : jdbc:h2:file:./plugins/{data_folder}/storage;mode=mysql")
     @Comment("uri")
     public String uri = "";
 

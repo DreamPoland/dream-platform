@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -16,7 +17,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("rawtypes")
 public final class ComponentService {
 
-    private final Injector injector;
+    @Getter private final Injector injector;
 
     private final List<ComponentClassResolver> classResolvers = new ArrayList<>();
     private final List<ComponentMethodResolver> methodResolvers = new ArrayList<>();
@@ -29,6 +30,14 @@ public final class ComponentService {
         this.injector = injector;
 
         this.defaultClassResolver = injector.createInstance(RawObjectResolver.class);
+    }
+
+    public List<ComponentClassResolver> getClassResolvers() {
+        return Collections.unmodifiableList(this.classResolvers);
+    }
+
+    public List<ComponentMethodResolver> getMethodResolvers() {
+        return Collections.unmodifiableList(this.methodResolvers);
     }
 
     /**
@@ -76,13 +85,50 @@ public final class ComponentService {
             consumer.accept(t);
         }
 
+        this.processMethodResolvers(componentClass, t);
+    }
+
+    /**
+     * Register an existing instantiated object as a component and bind it into the injector,
+     * then process any annotated methods.
+     *
+     * @param componentObject instance to register and bind
+     * @param consumer        apply changes after register.
+     */
+    @SuppressWarnings("ALL")
+    public <T> void registerComponentObject(@NonNull T componentObject, Consumer<T> consumer) {
+        this.injector.registerInjectable(componentObject);
+
+        if (consumer != null) {
+            consumer.accept(componentObject);
+        }
+
+        this.processMethodResolvers((Class<T>) componentObject.getClass(), componentObject);
+    }
+
+    /**
+     * Register an existing instantiated object as a component.
+     *
+     * @param componentObject instance to register and bind
+     */
+    public <T> void registerComponentObject(@NonNull T componentObject) {
+        this.registerComponentObject(componentObject, null);
+    }
+
+    /**
+     * Process method resolvers for a component class and its instance.
+     *
+     * @param componentClass class to scan methods from
+     * @param instance       instance of the class
+     */
+    @SuppressWarnings("ALL")
+    private <T> void processMethodResolvers(@NonNull Class<T> componentClass, @NonNull T instance) {
         for (Method declaredMethod : componentClass.getDeclaredMethods()) {
             for (Annotation annotation : declaredMethod.getAnnotations()) {
-
-                final Class<? extends Annotation> annotationClass = annotation.getClass();
+                final Class<? extends Annotation> annotationType = annotation.annotationType();
                 this.methodResolvers.stream()
-                        .filter(resolver -> resolver.isAssignableFrom(annotationClass))
-                        .forEach(resolver -> resolver.register(this.injector, annotation, declaredMethod, t, this.debug));
+                        .filter(resolver -> resolver.isAssignableFrom(annotationType))
+                        .forEach(resolver -> resolver.register(this.injector, annotation, declaredMethod, instance, this.debug));
             }
         }
     }

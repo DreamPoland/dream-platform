@@ -21,7 +21,6 @@ import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public abstract class DreamJavacordPlatform implements DreamPlatform {
@@ -39,6 +38,7 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
 
         this.injector = OkaeriInjector.create();
         this.injector.registerInjectable(this);
+        this.injector.registerInjectable(this.injector);
 
         this.dreamLogger = new DreamJavacordLogger(LoggerFactory.getLogger(this.getClass()));
         this.injector.registerInjectable(this.dreamLogger);
@@ -85,68 +85,6 @@ public abstract class DreamJavacordPlatform implements DreamPlatform {
     }
 
     public abstract @NonNull DiscordApi login(@NonNull ComponentService componentService);
-
-    @Override
-    public <T> T registerInjectable(Class<T> type) {
-
-        final T t = this.createInstance(type);
-        return this.registerInjectable(t);
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull String name, Class<T> type) {
-
-        final T t = this.createInstance(type);
-        return this.registerInjectable(name, t);
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull T t) {
-        this.injector.registerInjectable(t);
-
-        if (this.componentService.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added object instance")
-                            .name(t.getClass().getSimpleName())
-                            .build()
-            );
-        }
-
-        return t;
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull String name, @NonNull T t) {
-        this.injector.registerInjectable(name, t);
-
-        if (this.componentService.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added object instance")
-                            .name(t.getClass().getSimpleName())
-                            .meta("name", name)
-                            .build()
-            );
-        }
-
-        return t;
-    }
-
-    @Override
-    public <T> T createInstance(@NonNull Class<T> type) {
-        return this.injector.createInstance(type);
-    }
-
-    @Override
-    public <T> Optional<T> getInject(@NonNull String name, @NonNull Class<T> value) {
-        return this.injector.get(name, value);
-    }
-
-    @Override
-    public <T> Optional<T> getInject(@NonNull Class<T> value) {
-        return this.getInject("", value);
-    }
 
     Thread shutdownHook(boolean disableMethod) {
         Thread shutdownHook = new Thread(() -> {

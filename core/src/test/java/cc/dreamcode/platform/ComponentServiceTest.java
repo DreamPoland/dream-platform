@@ -99,6 +99,23 @@ class ComponentServiceTest {
     }
 
     @Test
+    void shouldRegisterComponentObject() {
+        SampleComponent object = new SampleComponent();
+        AtomicBoolean consumed = new AtomicBoolean(false);
+
+        this.componentService.registerComponentObject(object, comp -> consumed.set(true));
+
+        assertTrue(consumed.get());
+        assertTrue(this.injector.get("", SampleComponent.class).isPresent());
+    }
+
+    @Test
+    void shouldReturnResolversList() {
+        this.componentService.registerResolver(CustomResolver.class);
+        assertFalse(this.componentService.getClassResolvers().isEmpty());
+    }
+
+    @Test
     void shouldRegisterExtension() {
         AtomicBoolean extensionExecuted = new AtomicBoolean(false);
 

@@ -13,17 +13,19 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
+import java.io.File;
 
 public abstract class DreamCliPlatform implements DreamPlatform {
 
     @Getter private Injector injector;
     @Getter private DreamLogger dreamLogger;
     @Getter private ComponentService componentService;
+    @Getter private final File dataFolder = new File(".");
 
     private void initialize() {
         this.injector = OkaeriInjector.create();
         this.injector.registerInjectable(this);
+        this.injector.registerInjectable(this.injector);
 
         this.dreamLogger = new DreamCliLogger(LoggerFactory.getLogger(this.getClass()));
         this.injector.registerInjectable(this.dreamLogger);
@@ -72,68 +74,6 @@ public abstract class DreamCliPlatform implements DreamPlatform {
 
         shutdownHook.setName("Shutdown-Worker");
         return shutdownHook;
-    }
-
-    @Override
-    public <T> T registerInjectable(Class<T> type) {
-
-        final T t = this.createInstance(type);
-        return this.registerInjectable(t);
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull String name, Class<T> type) {
-
-        final T t = this.createInstance(type);
-        return this.registerInjectable(name, t);
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull T t) {
-        this.injector.registerInjectable(t);
-
-        if (this.componentService.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added object instance")
-                            .name(t.getClass().getSimpleName())
-                            .build()
-            );
-        }
-
-        return t;
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull String name, @NonNull T t) {
-        this.injector.registerInjectable(name, t);
-
-        if (this.componentService.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added object instance")
-                            .name(t.getClass().getSimpleName())
-                            .meta("name", name)
-                            .build()
-            );
-        }
-
-        return t;
-    }
-
-    @Override
-    public <T> T createInstance(@NonNull Class<T> type) {
-        return this.injector.createInstance(type);
-    }
-
-    @Override
-    public <T> Optional<T> getInject(@NonNull String name, @NonNull Class<T> value) {
-        return this.injector.get(name, value);
-    }
-
-    @Override
-    public <T> Optional<T> getInject(@NonNull Class<T> value) {
-        return this.getInject("", value);
     }
 
     public static void run(@NonNull DreamCliPlatform dreamCliPlatform) {

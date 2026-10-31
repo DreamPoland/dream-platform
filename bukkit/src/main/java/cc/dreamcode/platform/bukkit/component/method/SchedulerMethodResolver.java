@@ -42,6 +42,7 @@ public class SchedulerMethodResolver implements ComponentMethodResolver<Schedule
 
     @Override
     public void apply(@NonNull Injector injector, @NonNull Scheduler scheduler, @NonNull Method method, @NonNull Object instance) {
+        method.setAccessible(true);
         final Runnable runnable = () -> {
             try {
                 method.invoke(instance);

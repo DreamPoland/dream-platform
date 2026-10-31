@@ -8,6 +8,7 @@ import lombok.NonNull;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,19 +25,36 @@ public class PluginHookService {
         this.dreamLogger = dreamLogger;
     }
 
-    @SuppressWarnings("unchecked")
+    public List<PluginHook> getPluginHooks() {
+        return Collections.unmodifiableList(this.pluginHooks);
+    }
+
     public <T extends PluginHook> Optional<T> get(@NonNull Class<T> pluginHookClass) {
-        return (Optional<T>) this.pluginHooks
+        return this.pluginHooks
                 .stream()
-                .filter(hook -> hook.getClass().isAssignableFrom(pluginHookClass))
+                .filter(pluginHookClass::isInstance)
+                .map(pluginHookClass::cast)
                 .findAny();
+    }
+
+    public boolean isHookLoaded(@NonNull Class<? extends PluginHook> pluginHookClass) {
+        return this.get(pluginHookClass).isPresent();
+    }
+
+    public boolean isHookLoaded(@NonNull String pluginName) {
+        return this.pluginHooks
+                .stream()
+                .anyMatch(hook -> {
+                    final Hook annotation = hook.getClass().getAnnotation(Hook.class);
+                    return annotation != null && annotation.name().equalsIgnoreCase(pluginName);
+                });
     }
 
     public void registerHook(@NonNull Class<? extends PluginHook> pluginHookClass) {
         final long time = System.currentTimeMillis();
 
         if (!pluginHookClass.isAnnotationPresent(Hook.class)) {
-            throw new RuntimeException("Hook annotation not found");
+            throw new RuntimeException("Hook annotation not found on class " + pluginHookClass.getName());
         }
 
         final Hook hook = pluginHookClass.getAnnotation(Hook.class);

@@ -2,6 +2,7 @@ package cc.dreamcode.platform.bungee;
 
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
+import cc.dreamcode.platform.DreamVersion;
 import cc.dreamcode.platform.bungee.component.ListenerResolver;
 import cc.dreamcode.platform.bungee.component.RunnableResolver;
 import cc.dreamcode.platform.bungee.component.method.SchedulerMethodResolver;
@@ -12,8 +13,10 @@ import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
 import lombok.NonNull;
 import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.plugin.PluginDescription;
+import net.md_5.bungee.api.scheduler.ScheduledTask;
 
-import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class DreamBungeePlatform extends Plugin implements DreamPlatform {
@@ -27,6 +30,10 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
     public void onLoad() {
         this.injector = OkaeriInjector.create();
         this.injector.registerInjectable(this);
+        this.injector.registerInjectable(this.injector);
+        this.injector.registerInjectable(this.getProxy());
+        this.injector.registerInjectable(this.getProxy().getScheduler());
+        this.injector.registerInjectable(this.getProxy().getPluginManager());
 
         this.dreamLogger = new DreamBungeeLogger(this.getLogger());
         this.injector.registerInjectable(this.dreamLogger);
@@ -87,72 +94,40 @@ public abstract class DreamBungeePlatform extends Plugin implements DreamPlatfor
     public abstract void load(@NonNull ComponentService componentService);
 
     @Override
-    public <T> T registerInjectable(Class<T> type) {
-
-        final T t = this.createInstance(type);
-        return this.registerInjectable(t);
+    public @NonNull DreamVersion getDreamVersion() {
+        final PluginDescription desc = this.getDescription();
+        return DreamVersion.create(
+                desc.getName(),
+                desc.getVersion(),
+                desc.getAuthor() != null ? desc.getAuthor() : "Unknown"
+        );
     }
 
-    @Override
-    public <T> T registerInjectable(@NonNull String name, Class<T> type) {
-
-        final T t = this.createInstance(type);
-        return this.registerInjectable(name, t);
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull T t) {
-        this.injector.registerInjectable(t);
-
-        if (this.componentService.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added object instance")
-                            .name(t.getClass().getSimpleName())
-                            .build()
-            );
-        }
-
-        return t;
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull String name, @NonNull T t) {
-        this.injector.registerInjectable(name, t);
-
-        if (this.componentService.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added object instance")
-                            .name(t.getClass().getSimpleName())
-                            .meta("name", name)
-                            .build()
-            );
-        }
-
-        return t;
-    }
-
-    @Override
-    public <T> T createInstance(@NonNull Class<T> type) {
-        return this.injector.createInstance(type);
-    }
-
-    @Override
-    public <T> Optional<T> getInject(@NonNull String name, @NonNull Class<T> value) {
-        return this.injector.get(name, value);
-    }
-
-    @Override
-    public <T> Optional<T> getInject(@NonNull Class<T> value) {
-        return this.getInject("", value);
+    public boolean isPluginDisabled() {
+        return this.pluginDisabled.get();
     }
 
     public void runAsync(@NonNull Runnable runnable) {
-        if (this.getPluginDisabled().get()) {
+        if (this.isPluginDisabled()) {
             return;
         }
 
         this.getProxy().getScheduler().runAsync(this, runnable);
+    }
+
+    public ScheduledTask runLater(@NonNull Runnable runnable, long delay, @NonNull TimeUnit unit) {
+        if (this.isPluginDisabled()) {
+            return null;
+        }
+
+        return this.getProxy().getScheduler().schedule(this, runnable, delay, unit);
+    }
+
+    public ScheduledTask runTimer(@NonNull Runnable runnable, long delay, long period, @NonNull TimeUnit unit) {
+        if (this.isPluginDisabled()) {
+            return null;
+        }
+
+        return this.getProxy().getScheduler().schedule(this, runnable, delay, period, unit);
     }
 }

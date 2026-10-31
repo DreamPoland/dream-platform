@@ -33,7 +33,7 @@ public class SchedulerMethodResolver implements ComponentMethodResolver<Schedule
 
     @Override
     public void apply(@NonNull Injector injector, @NonNull Scheduler scheduler, @NonNull Method method, @NonNull Object instance) {
-
+        method.setAccessible(true);
         final TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {

@@ -2,6 +2,7 @@ package cc.dreamcode.platform.bukkit;
 
 import cc.dreamcode.platform.DreamLogger;
 import cc.dreamcode.platform.DreamPlatform;
+import cc.dreamcode.platform.DreamVersion;
 import cc.dreamcode.platform.bukkit.component.ListenerResolver;
 import cc.dreamcode.platform.bukkit.component.RunnableResolver;
 import cc.dreamcode.platform.bukkit.component.method.SchedulerMethodResolver;
@@ -11,7 +12,9 @@ import eu.okaeri.injector.Injector;
 import eu.okaeri.injector.OkaeriInjector;
 import lombok.Getter;
 import lombok.NonNull;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -91,72 +94,64 @@ public abstract class DreamBukkitPlatform extends JavaPlugin implements DreamPla
     public abstract void load(@NonNull ComponentService componentService);
 
     @Override
-    public <T> T registerInjectable(Class<T> type) {
-
-        final T t = this.createInstance(type);
-        return this.registerInjectable(t);
+    public @NonNull DreamVersion getDreamVersion() {
+        final PluginDescriptionFile desc = this.getDescription();
+        return DreamVersion.create(
+                desc.getName(),
+                desc.getVersion(),
+                desc.getAuthors().isEmpty() ? "Unknown" : String.join(", ", desc.getAuthors())
+        );
     }
 
-    @Override
-    public <T> T registerInjectable(@NonNull String name, Class<T> type) {
-
-        final T t = this.createInstance(type);
-        return this.registerInjectable(name, t);
+    public boolean isPluginDisabled() {
+        return this.pluginDisabled.get();
     }
 
-    @Override
-    public <T> T registerInjectable(@NonNull T t) {
-        this.injector.registerInjectable(t);
-
-        if (this.componentService.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added object instance")
-                            .name(t.getClass().getSimpleName())
-                            .build()
-            );
+    public void runSync(@NonNull Runnable runnable) {
+        if (!this.isEnabled() || this.isPluginDisabled()) {
+            return;
         }
 
-        return t;
-    }
-
-    @Override
-    public <T> T registerInjectable(@NonNull String name, @NonNull T t) {
-        this.injector.registerInjectable(name, t);
-
-        if (this.componentService.isDebug()) {
-            this.dreamLogger.info(
-                    new DreamLogger.Builder()
-                            .type("Added object instance")
-                            .name(t.getClass().getSimpleName())
-                            .meta("name", name)
-                            .build()
-            );
-        }
-
-        return t;
-    }
-
-    @Override
-    public <T> T createInstance(@NonNull Class<T> type) {
-        return this.injector.createInstance(type);
-    }
-
-    @Override
-    public <T> Optional<T> getInject(@NonNull String name, @NonNull Class<T> value) {
-        return this.injector.get(name, value);
-    }
-
-    @Override
-    public <T> Optional<T> getInject(@NonNull Class<T> value) {
-        return this.getInject("", value);
+        this.getServer().getScheduler().runTask(this, runnable);
     }
 
     public void runAsync(@NonNull Runnable runnable) {
-        if (!this.isEnabled() || this.getPluginDisabled().get()) {
+        if (!this.isEnabled() || this.isPluginDisabled()) {
             return;
         }
 
         this.getServer().getScheduler().runTaskAsynchronously(this, runnable);
+    }
+
+    public BukkitTask runLater(@NonNull Runnable runnable, long delayTicks) {
+        if (!this.isEnabled() || this.isPluginDisabled()) {
+            return null;
+        }
+
+        return this.getServer().getScheduler().runTaskLater(this, runnable, delayTicks);
+    }
+
+    public BukkitTask runLaterAsync(@NonNull Runnable runnable, long delayTicks) {
+        if (!this.isEnabled() || this.isPluginDisabled()) {
+            return null;
+        }
+
+        return this.getServer().getScheduler().runTaskLaterAsynchronously(this, runnable, delayTicks);
+    }
+
+    public BukkitTask runTimer(@NonNull Runnable runnable, long delayTicks, long periodTicks) {
+        if (!this.isEnabled() || this.isPluginDisabled()) {
+            return null;
+        }
+
+        return this.getServer().getScheduler().runTaskTimer(this, runnable, delayTicks, periodTicks);
+    }
+
+    public BukkitTask runTimerAsync(@NonNull Runnable runnable, long delayTicks, long periodTicks) {
+        if (!this.isEnabled() || this.isPluginDisabled()) {
+            return null;
+        }
+
+        return this.getServer().getScheduler().runTaskTimerAsynchronously(this, runnable, delayTicks, periodTicks);
     }
 }
