@@ -17,13 +17,13 @@ dependencies {
     implementation("cc.dreamcode:utilities-adventure:2.0.2")
 
     // -- dream-notice --
-    implementation("cc.dreamcode.notice:bukkit:1.8.3")
-    implementation("cc.dreamcode.notice:bukkit-serializer:1.8.3")
+    implementation("cc.dreamcode.notice:bukkit:2.0.4")
+    implementation("cc.dreamcode.notice:bukkit-serializer:2.0.4")
 
     // -- dream-command --
     implementation("cc.dreamcode.command:bukkit:2.4.0")
 
     // -- dream-menu --
-    implementation("cc.dreamcode.menu:bukkit:1.5.1")
-    implementation("cc.dreamcode.menu:bukkit-serializer:1.5.1")
+    implementation("cc.dreamcode.menu:bukkit:2.0.1")
+    implementation("cc.dreamcode.menu:bukkit-serializer:2.0.1")
 }
