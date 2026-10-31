@@ -29,7 +29,7 @@ class DreamPlatformTest {
         };
         @Getter private final ComponentService componentService = new ComponentService(injector);
         @Getter private final File dataFolder = new File(".");
-        @Getter private final DreamVersion dreamVersion = DreamVersion.create("test", "2.0.0", "author");
+        @Getter private final DreamVersion dreamVersion = DreamVersion.create("test", "2.0.1", "author");
 
         @Override public void enable(@NonNull ComponentService componentService) {}
         @Override public void disable() {}
