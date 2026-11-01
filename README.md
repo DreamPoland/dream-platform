@@ -1,7 +1,7 @@
 # Dream-Platform
 
 [![Build](https://github.com/DreamPoland/dream-platform/actions/workflows/gradle.yml/badge.svg)](https://github.com/DreamPoland/dream-platform/actions/workflows/gradle.yml)
-[![Version](https://img.shields.io/badge/version-2.0.1-blue.svg)](https://repo.dreamcode.cc/#/releases/cc/dreamcode/platform)
+[![Version](https://img.shields.io/badge/version-2.0.2-blue.svg)](https://repo.dreamcode.cc/#/releases/cc/dreamcode/platform)
 [![Java](https://img.shields.io/badge/java-21%2B-orange.svg)](https://www.oracle.com/java/)
 
 Modern, multi-module application framework for Minecraft plugins (Bukkit, BungeeCord), Discord bots (Javacord), and standalone CLI applications, powered by **Okaeri Injector** and **Okaeri Configs**.
@@ -52,12 +52,12 @@ Add dependencies for your target platform:
 <dependency>
   <groupId>cc.dreamcode.platform</groupId>
   <artifactId>bukkit</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2</version>
 </dependency>
 <dependency>
   <groupId>cc.dreamcode.platform</groupId>
   <artifactId>bukkit-config</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2</version>
 </dependency>
 ```
 
@@ -66,7 +66,7 @@ Add dependencies for your target platform:
 <dependency>
   <groupId>cc.dreamcode.platform</groupId>
   <artifactId>bungee</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2</version>
 </dependency>
 ```
 
@@ -75,7 +75,7 @@ Add dependencies for your target platform:
 <dependency>
   <groupId>cc.dreamcode.platform</groupId>
   <artifactId>javacord</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2</version>
 </dependency>
 ```
 
@@ -84,7 +84,7 @@ Add dependencies for your target platform:
 <dependency>
   <groupId>cc.dreamcode.platform</groupId>
   <artifactId>cli</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2</version>
 </dependency>
 ```
 
@@ -93,7 +93,7 @@ Add dependencies for your target platform:
 <dependency>
   <groupId>cc.dreamcode.platform</groupId>
   <artifactId>persistence</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2</version>
 </dependency>
 ```
 
@@ -110,18 +110,18 @@ repositories {
 
 dependencies {
     // Core Platform
-    implementation("cc.dreamcode.platform:core:2.0.1")
+    implementation("cc.dreamcode.platform:core:2.0.2")
 
     // Platform Modules (choose your target)
-    implementation("cc.dreamcode.platform:bukkit:2.0.1")
-    implementation("cc.dreamcode.platform:bukkit-config:2.0.1")
-    implementation("cc.dreamcode.platform:bukkit-hook:2.0.1")
+    implementation("cc.dreamcode.platform:bukkit:2.0.2")
+    implementation("cc.dreamcode.platform:bukkit-config:2.0.2")
+    implementation("cc.dreamcode.platform:bukkit-hook:2.0.2")
 
     // Persistence Layer (Flat, MySQL, PostgreSQL, Mongo, H2)
-    implementation("cc.dreamcode.platform:persistence:2.0.1")
+    implementation("cc.dreamcode.platform:persistence:2.0.2")
 
     // Kotlin Extensions
-    implementation("cc.dreamcode.platform:core-kt:2.0.1")
+    implementation("cc.dreamcode.platform:core-kt:2.0.2")
 }
 ```
 
